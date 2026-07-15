@@ -1,0 +1,12 @@
+astroid
+capsys
+fromlineno
+gajaguar
+gerónimo
+klass
+kwonlyargs
+orelse
+posonlyargs
+pylint
+tolineno
+vasconcelos

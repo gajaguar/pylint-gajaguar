@@ -1,0 +1,78 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pylint-plugin"
+version = "1.0.0"
+description = "Plugin with a series of rules based on good practices and personal tastes."
+requires-python = ">=3.14"
+dependencies = []
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/checkers"]
+include = ["src/main.py"]
+sources = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=src --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+  "pragma: no cover",
+  "if __name__ == .__main__.:",
+  "raise NotImplementedError",
+]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 119
+lint.select = ["ALL"]
+lint.ignore = ["COM812", "CPY", "D"]
+lint.isort.section-order = [
+  "future",
+  "standard-library",
+  "third-party",
+  "first-party",
+  "local-folder",
+]
+lint.isort.force-single-line = true
+lint.isort.case-sensitive = true
+lint.per-file-ignores."tests/**/*.py" = [
+  "S101",
+  "PLR2004",
+  "ANN",
+  "ARG",
+  "SLF001",
+]
+
+[tool.mypy]
+strict = true
+exclude = ["tests/"]
+
+[[tool.mypy.overrides]]
+module = ["astroid.*", "pylint.*"]
+ignore_missing_imports = true
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+include = ["src"]
+exclude = ["**/.venv", "**/node_modules", "tests"]
+
+[dependency-groups]
+dev = [
+  "astroid>=4.0.4",
+  "mypy>=2.1.0",
+  "pre-commit>=4.0",
+  "pylint>=4.0.5",
+  "pyright>=1.1.409",
+  "pytest>=8.0",
+  "pytest-cov>=6.0",
+  "ruff>=0.15.15",
+]
