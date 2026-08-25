@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING
 
 from pylint.checkers import BaseChecker
 
+from checkers.scopes import is_test_function
+
 if TYPE_CHECKING:
     from astroid.nodes import FunctionDef
     from astroid.nodes import NodeNG
@@ -43,7 +45,7 @@ class TestNoBlankLinesChecker(BaseChecker):
             self._loaded_filepath = filepath
 
     def visit_functiondef(self, node: FunctionDef) -> None:
-        if not node.name.startswith("test_"):
+        if not is_test_function(node):
             return
         self._load_lines(node)
         if not self._lines:

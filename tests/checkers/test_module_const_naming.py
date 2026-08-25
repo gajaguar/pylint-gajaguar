@@ -39,7 +39,7 @@ class TestModuleConstNamingChecker(CheckerTestCase):
         # Assert
         assert messages == []
 
-    def test_private_screaming_snake_case_is_silent(self) -> None:
+    def test_underscore_prefixed_screaming_snake_case_is_silent(self) -> None:
         # Arrange
         node = astroid.extract_node("_PRIVATE_NAME = 1")
         assign_name = node.targets[0]

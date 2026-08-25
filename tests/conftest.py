@@ -18,6 +18,13 @@ def build_module_from_source(tmp_path: pathlib.Path, source: str) -> Module:
     return AstroidBuilder(astroid.MANAGER).file_build(str(path))
 
 
+# Checkers scoped to test files read the module path, so the filename matters.
+def build_test_module_from_source(tmp_path: pathlib.Path, source: str) -> Module:
+    path = tmp_path / "test_sample_module.py"
+    path.write_text(source, encoding="utf-8")
+    return AstroidBuilder(astroid.MANAGER).file_build(str(path))
+
+
 def node_position(node: NodeNG) -> dict[str, int]:
     # pylint reports FunctionDef/ClassDef messages using node.position (the
     # header span), not the full node span (which includes the body).

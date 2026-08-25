@@ -70,19 +70,42 @@ Conventions across checkers:
 
 Registered rules:
 
-| Rule (`name`)                 | Code  | Enforces                                                        |
-| ----------------------------- | ----- | --------------------------------------------------------------- |
-| `app-no-docstrings`           | W9001 | No docstrings on functions/methods/classes (use comments)       |
-| `app-test-aaa-markers`        | W9002 | `test_*` bodies contain `# Arrange`, `# Act`, `# Assert`        |
-| `app-test-no-blank-lines`     | W9003 | No blank lines inside test method bodies                        |
-| `app-unused-arg-use-del`      | W9004 | Use `del arg` at body top, not a `_`-prefixed arg               |
-| `app-module-const-naming`     | C9005 | Module-level names are `SCREAMING_SNAKE_CASE`                   |
-| `app-no-file-level-disable`   | W9006 | No standalone `# pylint: disable=`; use inline / `disable-next` |
-| `app-no-inline-imports`       | W9008 | Imports at module top, not inside functions                     |
-| `app-no-relative-imports`     | W9009 | Absolute imports only                                           |
-| `app-use-contextlib-suppress` | W9012 | `contextlib.suppress(...)` over `try/except/pass`               |
-| `app-frozenset-constant`      | W9013 | Module-level set constants use `frozenset(...)`                 |
-| `app-require-final`           | C9014 | Module-level constants carry a `Final` annotation               |
+| Rule (`name`)                         | Code  | Enforces                                                        |
+| ------------------------------------- | ----- | --------------------------------------------------------------- |
+| `app-no-docstrings`                   | W9001 | No docstrings on functions/methods/classes (use comments)       |
+| `app-test-aaa-markers`                | W9002 | `test_*` bodies contain `# Arrange`, `# Act`, `# Assert`        |
+| `app-test-no-blank-lines`             | W9003 | No blank lines inside test method bodies                        |
+| `app-test-no-extra-comments`          | W9015 | Test bodies carry only the configured section markers           |
+| `app-test-partial-assertion`          | W9016 | Field assertions without a whole-object assertion (advisory)    |
+| `app-test-name-implementation-detail` | W9017 | Test names naming mocks, patches, internals (advisory)          |
+| `app-unused-arg-use-del`              | W9004 | Use `del arg` at body top, not a `_`-prefixed arg               |
+| `app-module-const-naming`             | C9005 | Module-level names are `SCREAMING_SNAKE_CASE`                   |
+| `app-no-file-level-disable`           | W9006 | No standalone `# pylint: disable=`; use inline / `disable-next` |
+| `app-no-inline-imports`               | W9008 | Imports at module top, not inside functions                     |
+| `app-no-relative-imports`             | W9009 | Absolute imports only                                           |
+| `app-use-contextlib-suppress`         | W9012 | `contextlib.suppress(...)` over `try/except/pass`               |
+| `app-frozenset-constant`              | W9013 | Module-level set constants use `frozenset(...)`                 |
+| `app-require-final`                   | C9014 | Module-level constants carry a `Final` annotation               |
+
+### Test-scoped checkers
+
+`app-test-*` rules fire only inside test files — a module whose stem starts
+with `test_`/ends with `_test`, or that sits under a `test`/`tests` directory
+— *and* on `test_`-prefixed functions. Scoping lives in `checkers/scopes.py`
+(`is_test_file`, `is_test_function`); before it existed, a `test_report`
+property in production code tripped `app-test-aaa-markers`.
+
+`checkers/scopes.py` also owns the **one** section-marker list, exposed as the
+`--test-section-markers` option (default `# Arrange,# Act,# Assert`).
+`app-test-aaa-markers` registers the option; `app-test-no-extra-comments`
+reads it via `linter.config`. Never hardcode the vocabulary in a checker —
+both rules must agree, and a project that prefers
+`# Setup,# Action,# Expected` switches both by setting the option once.
+
+`app-test-partial-assertion` and `app-test-name-implementation-detail` are
+**heuristics with a real false-positive rate** — they flagged two legitimate
+test names in this repo on first run. Treat them as advisory: surface them for
+a human or reviewing agent to judge, never as a hard gate.
 
 `make pylint` deliberately runs `--disable=all` then `--enable=` only these
 `app-*` rules: pylint's built-ins overlap with ruff or conflict with these rules
@@ -96,6 +119,11 @@ Registered rules:
   isort force-single-line`).
 - ruff runs with `lint.select = ["ALL"]` and a curated ignore list; line length
   119. mypy is `strict` (tests excluded); pyright covers `src` only.
-- `tests/` currently holds only `__init__.py` — no test suite exists yet. Test
-  files mirror `src/` and must satisfy the AAA-marker and no-blank-line rules
-  above.
+- `tests/` mirrors `src/`, one file per checker, using pylint's
+  `CheckerTestCase`. Helpers live in `tests/conftest.py`:
+  `build_module_from_source` writes a non-test filename,
+  `build_test_module_from_source` a `test_`-prefixed one — pick the right one,
+  since test-scoped checkers read the module path.
+- Test files must satisfy every rule above, including the new
+  `app-test-no-extra-comments`: only the section markers, no other prose
+  comments, no blank lines in bodies.
