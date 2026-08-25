@@ -11,7 +11,10 @@ from checkers.no_relative_imports import NoRelativeImportsChecker
 from checkers.require_final import RequireFinalChecker
 from checkers.smoke import SmokeChecker
 from checkers.test_aaa_markers import TestAAAMarkersChecker
+from checkers.test_name_implementation_detail import TestNameImplementationDetailChecker
 from checkers.test_no_blank_lines import TestNoBlankLinesChecker
+from checkers.test_no_extra_comments import TestNoExtraCommentsChecker
+from checkers.test_partial_assertion import TestPartialAssertionChecker
 from checkers.unused_arg_use_del import UnusedArgUseDelChecker
 from checkers.use_contextlib_suppress import UseContextlibSuppressChecker
 
@@ -24,6 +27,9 @@ def register(linter: PyLinter) -> None:
     linter.register_checker(NoDocstringsChecker(linter))
     linter.register_checker(TestAAAMarkersChecker(linter))
     linter.register_checker(TestNoBlankLinesChecker(linter))
+    linter.register_checker(TestNoExtraCommentsChecker(linter))
+    linter.register_checker(TestPartialAssertionChecker(linter))
+    linter.register_checker(TestNameImplementationDetailChecker(linter))
     linter.register_checker(UnusedArgUseDelChecker(linter))
     linter.register_checker(NoRelativeImportsChecker(linter))
     linter.register_checker(UseContextlibSuppressChecker(linter))

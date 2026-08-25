@@ -10,7 +10,7 @@ FILES ?=
 # Only the custom app-* checkers are enabled: pylint's built-ins overlap with
 # ruff (line length, import placement) or actively conflict with our own
 # rules (missing-module-docstring vs. app-no-docstrings).
-PYLINT_RULES := app-no-docstrings,app-test-aaa-markers,app-test-no-blank-lines,app-unused-arg-use-del,app-module-const-naming,app-no-file-level-disable,app-no-inline-imports,app-no-relative-imports,app-use-contextlib-suppress,app-frozenset-constant,app-require-final
+PYLINT_RULES := app-no-docstrings,app-test-aaa-markers,app-test-no-blank-lines,app-test-no-extra-comments,app-test-partial-assertion,app-test-name-implementation-detail,app-unused-arg-use-del,app-module-const-naming,app-no-file-level-disable,app-no-inline-imports,app-no-relative-imports,app-use-contextlib-suppress,app-frozenset-constant,app-require-final
 
 .DEFAULT_GOAL := help
 
