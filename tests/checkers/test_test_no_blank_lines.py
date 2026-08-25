@@ -6,7 +6,7 @@ from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
 from checkers.test_no_blank_lines import TestNoBlankLinesChecker as NoBlankLinesCheckerUnderTest
-from tests.conftest import build_module_from_source
+from tests.conftest import build_test_module_from_source
 from tests.conftest import node_position
 
 if TYPE_CHECKING:
@@ -19,7 +19,7 @@ class TestTestNoBlankLinesChecker(CheckerTestCase):
     def test_blank_line_in_body_fires(self, tmp_path: pathlib.Path) -> None:
         # Arrange
         source = "def test_thing():\n    x = 1\n\n    assert x\n"
-        module = build_module_from_source(tmp_path, source)
+        module = build_test_module_from_source(tmp_path, source)
         func = module.body[0]
         self.checker.open()
         position = node_position(func)
@@ -34,7 +34,7 @@ class TestTestNoBlankLinesChecker(CheckerTestCase):
     def test_no_blank_line_is_silent(self, tmp_path: pathlib.Path) -> None:
         # Arrange
         source = "def test_thing():\n    x = 1\n    assert x\n"
-        module = build_module_from_source(tmp_path, source)
+        module = build_test_module_from_source(tmp_path, source)
         func = module.body[0]
         self.checker.open()
         # Act
@@ -46,7 +46,7 @@ class TestTestNoBlankLinesChecker(CheckerTestCase):
     def test_non_test_function_is_ignored(self, tmp_path: pathlib.Path) -> None:
         # Arrange
         source = "def helper():\n    x = 1\n\n    return x\n"
-        module = build_module_from_source(tmp_path, source)
+        module = build_test_module_from_source(tmp_path, source)
         func = module.body[0]
         self.checker.open()
         # Act
