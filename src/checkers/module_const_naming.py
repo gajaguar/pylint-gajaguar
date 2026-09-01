@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import re
 from typing import TYPE_CHECKING
-from typing import Final
 
 import astroid.nodes
 from pylint.checkers import BaseChecker
 
 if TYPE_CHECKING:
     from re import Pattern
+    from typing import Final
 
     from astroid.nodes import AssignName
 

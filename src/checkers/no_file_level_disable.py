@@ -3,26 +3,28 @@ from __future__ import annotations
 import re
 import tokenize
 from typing import TYPE_CHECKING
-from typing import Final
 
 from pylint.checkers import BaseTokenChecker
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
     from re import Pattern
+    from typing import Final
 
 _DISABLE_RE: Final[Pattern[str]] = re.compile(r"#\s*pylint:\s*disable=")
 _DISABLE_NEXT_RE: Final[Pattern[str]] = re.compile(r"#\s*pylint:\s*disable-next=")
 
-_NON_CODE: Final = frozenset({
-    tokenize.NL,
-    tokenize.NEWLINE,
-    tokenize.COMMENT,
-    tokenize.ENCODING,
-    tokenize.INDENT,
-    tokenize.DEDENT,
-    tokenize.ENDMARKER,
-})
+_NON_CODE: Final = frozenset(
+    {
+        tokenize.NL,
+        tokenize.NEWLINE,
+        tokenize.COMMENT,
+        tokenize.ENCODING,
+        tokenize.INDENT,
+        tokenize.DEDENT,
+        tokenize.ENDMARKER,
+    }
+)
 
 
 class NoFileLevelDisableChecker(BaseTokenChecker):

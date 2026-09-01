@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import re
 from typing import TYPE_CHECKING
-from typing import Final
 
 from pylint.checkers import BaseChecker
 
 from checkers.scopes import is_test_function
 
 if TYPE_CHECKING:
+    from typing import Final
+
     from astroid.nodes import FunctionDef
 
 _IMPLEMENTATION_TERMS: Final[tuple[str, ...]] = (

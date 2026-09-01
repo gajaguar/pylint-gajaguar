@@ -5,7 +5,6 @@ import io
 import pathlib
 import tokenize
 from typing import TYPE_CHECKING
-from typing import Final
 
 from pylint.checkers import BaseChecker
 
@@ -13,6 +12,8 @@ from checkers.scopes import is_test_function
 from checkers.scopes import section_markers
 
 if TYPE_CHECKING:
+    from typing import Final
+
     from astroid.nodes import FunctionDef
     from astroid.nodes import NodeNG
     from pylint.lint import PyLinter
