@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pylint-plugin"
-version = "1.1.0"
+version = "1.1.1"
 description = "Plugin with a series of rules based on good practices and personal tastes."
 requires-python = ">=3.14"
 dependencies = []
