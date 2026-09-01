@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from typing import Final
 
 import astroid.nodes
 from pylint.checkers import BaseChecker
 
 if TYPE_CHECKING:
+    from typing import Final
+
     from astroid.nodes import FunctionDef
 
 _SKIP_NAMES: Final[frozenset[str]] = frozenset({"self", "cls"})
