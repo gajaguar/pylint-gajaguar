@@ -13,6 +13,8 @@ from tests.conftest import build_test_module_from_source
 if TYPE_CHECKING:
     import pathlib
 
+    import pytest
+
 
 @dataclass(frozen=True)
 class FakeConfig:
@@ -59,13 +61,35 @@ class TestTestScope:
         # Act
         markers = section_markers(linter)
         # Assert
-        assert markers == DEFAULT_SECTION_MARKERS
+        assert markers == tuple(f"# {name}" for name in DEFAULT_SECTION_MARKERS)
 
     @staticmethod
     def test_section_markers_read_the_configured_list(tmp_path: pathlib.Path) -> None:
         # Arrange
-        linter = FakeLinter(FakeConfig([" # Setup", "# Action ", "# Expected"]))
+        linter = FakeLinter(FakeConfig([" Setup", "Action ", "Expected"]))
         # Act
         markers = section_markers(linter)
         # Assert
         assert markers == ("# Setup", "# Action", "# Expected")
+
+    @staticmethod
+    def test_section_markers_are_overridden_by_the_environment_variable(monkeypatch: pytest.MonkeyPatch) -> None:
+        # Arrange
+        monkeypatch.setenv("TEST_SECTION_MARKERS", "Given When Then")
+        linter = FakeLinter(FakeConfig(["Setup", "Action", "Expected"]))
+        # Act
+        markers = section_markers(linter)
+        # Assert
+        assert markers == ("# Given", "# When", "# Then")
+
+    @staticmethod
+    def test_section_markers_fall_back_to_the_configured_list_when_the_environment_variable_is_unset(
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        # Arrange
+        monkeypatch.delenv("TEST_SECTION_MARKERS", raising=False)
+        linter = FakeLinter(FakeConfig(["Given", "When", "Then"]))
+        # Act
+        markers = section_markers(linter)
+        # Assert
+        assert markers == ("# Given", "# When", "# Then")
