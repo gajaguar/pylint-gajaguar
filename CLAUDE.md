@@ -16,10 +16,6 @@ that ruff doesn't cover. The plugin entrypoint is `register(linter)` in
 top-level importable modules — there is no wrapping package directory. Imports
 inside `main.py` are `from checkers.x import Y`.
 
-`[project.scripts] app = "main:main"` in `pyproject.toml` is dead — `main.py`
-exposes `register`, not `main`. Pre-existing issue, not introduced by the
-flattening; flag before fixing.
-
 ## Self-linting
 
 `make pylint` and the pre-commit `pylint` hook load `--load-plugins=main` — this

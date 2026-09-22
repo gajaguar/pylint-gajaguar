@@ -1,5 +1,5 @@
 {
-	"name": "app-template-node-tools",
+	"name": "pylint-plugin-node-tools",
 	"private": true,
 	"devDependencies": {
 		"markdownlint-cli2": "^0.22.1",

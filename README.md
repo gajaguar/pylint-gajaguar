@@ -33,38 +33,57 @@ lint FILES="src/main.py"`.
 - **pytest** + **pytest-cov** — testing and coverage
 - **markdownlint-cli2** + **cspell** (pnpm, dev-only) — Markdown lint & spell
   check
-- **pylint** + [`pylint-plugin`](https://github.com/gajaguar/pylint-plugin) (uv
-  git dependency) — custom checkers for personal-preference rules ruff doesn't
-  cover (e.g. no docstrings — see below). Check-only: pylint has no autofix.
+- **pylint** — runs this repo's own checkers against itself
+  (`--load-plugins=main`, see below). Check-only: pylint has no autofix.
 - **pre-commit** — git hook running ruff, ruff-format, mypy, and pylint before
   each commit
 
 ### Docstring policy
 
 This project does not use docstrings — use comments only where the *why* isn't
-obvious from the code. `pylint-plugin`'s `app-no-docstrings` (W9001) checker
-fails `make check`/`make pylint` if any function, method, or class has one;
-remove docstrings manually.
+obvious from the code. `app-no-docstrings` (W9001) fails `make check`/`make
+pylint` if any function, method, or class has one; remove docstrings manually.
 
-### Custom pylint checkers (`pylint-plugin`)
+### Custom pylint checkers
 
-A standalone pylint plugin encoding personal code-review preferences beyond
-ruff's rule set, installed as a `uv` git dependency pinned in `pyproject.toml`'s
-`[tool.uv.sources]` — see [the plugin's
-README](https://github.com/gajaguar/pylint-plugin) for the full checker list.
-It's a separate repo, not vendored, so the same rules can be reused and updated
-across every project built from this template without copy-pasting checker code.
+A pylint plugin encoding personal code-review preferences beyond ruff's rule
+set. `src/main.py` exposes `register(linter)`, which registers every checker in
+`src/checkers/`. `make pylint` self-lints this repo with those same checkers
+(`--load-plugins=main --disable=all --enable=<the app-* rules>`).
 
-## Using this as a template
+| Rule (`name`)                         | Code  | Enforces                                                         |
+| -------------------------------------- | ----- | ----------------------------------------------------------------- |
+| `app-no-docstrings`                   | W9001 | No docstrings on functions/methods/classes (use comments)        |
+| `app-test-aaa-markers`                | W9002 | `test_*` bodies contain `# Arrange`, `# Act`, `# Assert`         |
+| `app-test-no-blank-lines`             | W9003 | No blank lines inside test method bodies                         |
+| `app-test-no-extra-comments`          | W9015 | Test bodies carry only the configured section markers            |
+| `app-test-partial-assertion`          | W9016 | Field assertions without a whole-object assertion (advisory)     |
+| `app-test-name-implementation-detail` | W9017 | Test names naming mocks, patches, internals (advisory)           |
+| `app-unused-arg-use-del`              | W9004 | Use `del arg` at body top, not a `_`-prefixed arg                |
+| `app-module-const-naming`             | C9005 | Module-level names are `SCREAMING_SNAKE_CASE`                    |
+| `app-no-file-level-disable`           | W9006 | No standalone `# pylint: disable=`; use inline / `disable-next`  |
+| `app-no-inline-imports`               | W9008 | Imports at module top, not inside functions                      |
+| `app-no-relative-imports`             | W9009 | Absolute imports only                                            |
+| `app-use-contextlib-suppress`         | W9012 | `contextlib.suppress(...)` over `try/except/pass`                |
+| `app-frozenset-constant`              | W9013 | Module-level set constants use `frozenset(...)`                  |
+| `app-require-final`                   | C9014 | Module-level constants carry a `Final` annotation                |
 
-`src/` is a flat layout (`sources = ["src"]` in `pyproject.toml`): `main.py` and
-`checkers/` are top-level importable modules, not wrapped in a package
-directory. To start a real project:
+`app-test-partial-assertion` and `app-test-name-implementation-detail` are
+heuristics with a real false-positive rate — treat them as advisory, not a hard
+gate.
 
-1. Update `[project].name` and `[project.scripts]` in `pyproject.toml`.
-2. Update this README and `LICENSE` copyright holder if needed.
-3. Run `make install && make check && make test` to confirm everything still
-   passes.
+## Usage in another project
+
+Add this repo as a `uv` git dependency and load it as a pylint plugin:
+
+```toml
+[dependency-groups]
+dev = ["pylint-plugin @ git+https://github.com/gajaguar/pylint-plugin"]
+```
+
+```bash
+pylint --load-plugins=main --disable=all --enable=app-no-docstrings,... src tests
+```
 
 ## Project layout
 
@@ -72,7 +91,6 @@ directory. To start a real project:
 .
 ├── pyproject.toml   # deps, ruff/mypy/pyright/pytest/coverage config
 ├── Makefile          # check/fix command surface
-├── scripts/            # docstring-stripping script (pylint has no autofix)
 ├── src/                # flat source layout: main.py + checkers/
 └── tests/              # test suite (mirrors src/)
 ```
