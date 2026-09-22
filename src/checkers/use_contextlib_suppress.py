@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class UseContextlibSuppressChecker(BaseChecker):
     name = "app-use-contextlib-suppress"
-    msgs = {  # noqa: RUF012
+    msgs = {  # ruff: ignore[mutable-class-default]
         "W9012": (
             "Use 'contextlib.suppress(...)' instead of 'try/except/pass'",
             "app-use-contextlib-suppress",

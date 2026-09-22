@@ -8,16 +8,18 @@ dictionaryDefinitions:
 
 dictionaries:
   - project-words
-  - python
   - bash
   - filetypes
+  - python
 
 ignorePaths:
+  - "**/node_modules/**"
+  - "**/*.lock"
+  - "**/pnpm-lock.yaml"
+  - ".gitignore" # vendored toptal.com boilerplate, not authored here
   - "**/.venv/**"
   - "**/.mypy_cache/**"
   - "**/.ruff_cache/**"
   - "**/.pytest_cache/**"
   - "**/htmlcov/**"
   - "**/uv.lock"
-  - "**/*.lock"
-  - "**/pnpm-lock.yaml"

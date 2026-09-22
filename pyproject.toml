@@ -16,7 +16,7 @@ sources = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=src --cov-report=term-missing"
+addopts = "--cov --cov-report=term-missing"
 
 [tool.coverage.run]
 source = ["src"]
@@ -65,14 +65,42 @@ venv = ".venv"
 include = ["src"]
 exclude = ["**/.venv", "**/node_modules", "tests"]
 
+[tool.pylint.main]
+load-plugins = ["checkers"]
+
+[tool.pylint.format]
+max-line-length = 119
+
+[tool.pylint."messages control"]
+disable = [
+  "missing-module-docstring",
+  "missing-class-docstring",
+  "missing-function-docstring",
+  # Duplicate-code fires on the AAA-fixture scaffolding shared between
+  # app-test-* checkers; the similarity is structural, not refactorable.
+  "duplicate-code",
+  # use-implicit-booleaness-not-comparison duplicates ruff's PLC1802.
+  "use-implicit-booleaness-not-comparison",
+  # Tests inherit pylint.testutils.CheckerTestCase, which only exposes one
+  # assertion-style public method, and intentionally reach into pylint
+  # internals (linter._checkers) and pytest fixtures (tmp_path) that
+  # remain unused inside the body.
+  "too-few-public-methods",
+  "protected-access",
+  "unused-argument",
+]
+
 [dependency-groups]
 dev = [
   "astroid>=4.0.4",
   "mypy>=2.1.0",
-  "pre-commit>=4.0",
   "pylint>=4.0.5",
   "pyright>=1.1.409",
   "pytest>=8.0",
   "pytest-cov>=6.0",
   "ruff>=0.15.15",
 ]
+
+[tool.uv]
+python-preference = "only-system"
+python-downloads = "never"

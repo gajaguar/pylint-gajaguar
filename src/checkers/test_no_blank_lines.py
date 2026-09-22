@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 class TestNoBlankLinesChecker(BaseChecker):
     name = "app-test-no-blank-lines"
-    msgs = {  # noqa: RUF012
+    msgs = {  # ruff: ignore[mutable-class-default]
         "W9003": (
             "Test method '%s' contains a blank line at line %d",
             "app-test-no-blank-lines",

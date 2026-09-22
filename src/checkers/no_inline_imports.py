@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 class NoInlineImportsChecker(BaseChecker):
     name = "app-no-inline-imports"
-    msgs = {  # noqa: RUF012
+    msgs = {  # ruff: ignore[mutable-class-default]
         "W9008": (
             "Import of '%s' inside %s; move to top of module",
             "app-no-inline-imports",

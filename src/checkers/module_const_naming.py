@@ -18,7 +18,7 @@ _DUNDER: Final[Pattern[str]] = re.compile(r"^__\w+__$")
 
 class ModuleConstNamingChecker(BaseChecker):
     name = "app-module-const-naming"
-    msgs = {  # noqa: RUF012
+    msgs = {  # ruff: ignore[mutable-class-default]
         "C9005": (
             "Module-level name '%s' should be SCREAMING_SNAKE_CASE",
             "app-module-const-naming",

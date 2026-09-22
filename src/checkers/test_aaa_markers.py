@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 class TestAAAMarkersChecker(BaseChecker):
     name = "app-test-aaa-markers"
-    msgs = {  # noqa: RUF012
+    msgs = {  # ruff: ignore[mutable-class-default]
         "W9002": (
             "Test method '%s' missing AAA marker(s): %s",
             "app-test-aaa-markers",

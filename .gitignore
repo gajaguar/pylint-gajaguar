@@ -424,3 +424,7 @@ pyrightconfig.json
 
 # Artifacts
 .prompts/
+
+# mise local overrides
+mise.local.toml
+.mise.local.toml

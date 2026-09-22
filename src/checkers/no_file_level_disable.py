@@ -14,22 +14,20 @@ if TYPE_CHECKING:
 _DISABLE_RE: Final[Pattern[str]] = re.compile(r"#\s*pylint:\s*disable=")
 _DISABLE_NEXT_RE: Final[Pattern[str]] = re.compile(r"#\s*pylint:\s*disable-next=")
 
-_NON_CODE: Final = frozenset(
-    {
-        tokenize.NL,
-        tokenize.NEWLINE,
-        tokenize.COMMENT,
-        tokenize.ENCODING,
-        tokenize.INDENT,
-        tokenize.DEDENT,
-        tokenize.ENDMARKER,
-    }
-)
+_NON_CODE: Final = frozenset({
+    tokenize.NL,
+    tokenize.NEWLINE,
+    tokenize.COMMENT,
+    tokenize.ENCODING,
+    tokenize.INDENT,
+    tokenize.DEDENT,
+    tokenize.ENDMARKER,
+})
 
 
 class NoFileLevelDisableChecker(BaseTokenChecker):
     name = "app-no-file-level-disable"
-    msgs = {  # noqa: RUF012
+    msgs = {  # ruff: ignore[mutable-class-default]
         "W9006": (
             "Standalone '# pylint: disable=' found; use inline or 'disable-next=' instead",
             "app-no-file-level-disable",

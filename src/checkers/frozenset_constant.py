@@ -25,7 +25,7 @@ def _is_mutable_set(value: NodeNG) -> bool:
 
 class FrozensetConstantChecker(BaseChecker):
     name = "app-frozenset-constant"
-    msgs = {  # noqa: RUF012
+    msgs = {  # ruff: ignore[mutable-class-default]
         "W9013": (
             "Set constant should be a frozenset(...) for immutability",
             "app-frozenset-constant",

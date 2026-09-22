@@ -30,7 +30,7 @@ _WORD_PATTERN: Final[re.Pattern[str]] = re.compile(r"[a-z0-9]+")
 
 class TestNameImplementationDetailChecker(BaseChecker):
     name = "app-test-name-implementation-detail"
-    msgs = {  # noqa: RUF012
+    msgs = {  # ruff: ignore[mutable-class-default]
         "W9017": (
             "Test name '%s' names an implementation detail: %s",
             "app-test-name-implementation-detail",

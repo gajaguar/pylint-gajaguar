@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class NoDocstringsChecker(BaseChecker):
     name = "app-no-docstrings"
-    msgs = {  # noqa: RUF012
+    msgs = {  # ruff: ignore[mutable-class-default]
         "W9001": (
             "Docstring found in '%s'; use comments instead",
             "app-no-docstrings",
