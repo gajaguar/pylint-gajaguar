@@ -41,6 +41,8 @@ of shadowing it with its own.
   `checkmake.ini` disables the `minphony` rule's `all`/`clean` expectations,
   which don't apply to this Makefile's install/check/fix/test shape.
 - **pre-commit** — git hook running the universal checks (whitespace,
-  EOF, YAML, TOML, merge-conflict, large-files, line endings),
-  markdownlint, cspell, and checkmake, plus the project's own mypy and
-  pylint hooks.
+  EOF, YAML, TOML, merge-conflict, large-files, line endings) from the
+  upstream `pre-commit-hooks`/`checkmake` repos, plus local hooks that
+  all shell out to `make` targets (`md-lint`, `spell`, `lint-fix`,
+  `format`, `mypy`, `pylint`) so the hook and `make check` can never
+  reach a different verdict on the same file.
