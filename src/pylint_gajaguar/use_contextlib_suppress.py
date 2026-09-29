@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class UseContextlibSuppressChecker(BaseChecker):
-    name = "gajaguar-use-contextlib-suppress"
+    name = "gajaguar"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9012": (
             "Use 'contextlib.suppress(...)' instead of 'try/except/pass'",

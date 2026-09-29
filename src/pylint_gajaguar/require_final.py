@@ -32,7 +32,7 @@ def _skip_name(name: str) -> bool:
 
 
 class RequireFinalChecker(BaseChecker):
-    name = "gajaguar-require-final"
+    name = "gajaguar"
     msgs = {  # ruff: ignore[mutable-class-default]
         "C9014": (
             "Module-level constant '%s' must be annotated Final",

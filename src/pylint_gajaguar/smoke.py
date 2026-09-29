@@ -11,5 +11,5 @@ if TYPE_CHECKING:
 
 
 class SmokeChecker(BaseChecker):
-    name = "gajaguar-smoke"
+    name = "gajaguar"
     msgs: dict[str, _MSGS_VAL] = {}  # ruff: ignore[mutable-class-default]
