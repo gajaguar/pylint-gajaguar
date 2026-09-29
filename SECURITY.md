@@ -2,8 +2,10 @@
 
 ## Supported versions
 
-The latest commit on `main` receives security fixes. Older revisions are not
-patched; pin the git ref you build from if you need a frozen target.
+The latest release published on
+[PyPI](https://pypi.org/project/pylint-gajaguar/) receives security fixes.
+Older releases are not patched; pin the version you install if you need a
+frozen target.
 
 ## Reporting a vulnerability
 
