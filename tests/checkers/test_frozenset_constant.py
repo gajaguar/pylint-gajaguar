@@ -4,7 +4,7 @@ import astroid
 from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
-from checkers.frozenset_constant import FrozensetConstantChecker
+from pylint_gajaguar.frozenset_constant import FrozensetConstantChecker
 
 
 class TestFrozensetConstantChecker(CheckerTestCase):

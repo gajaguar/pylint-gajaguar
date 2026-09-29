@@ -4,7 +4,7 @@ import astroid
 from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
-from checkers.no_relative_imports import NoRelativeImportsChecker
+from pylint_gajaguar.no_relative_imports import NoRelativeImportsChecker
 
 
 class TestNoRelativeImportsChecker(CheckerTestCase):

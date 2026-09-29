@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from astroid import nodes
 from pylint.checkers import BaseChecker
 
-from checkers.scopes import is_test_function
+from pylint_gajaguar.scopes import is_test_function
 
 if TYPE_CHECKING:
     from astroid.nodes import FunctionDef

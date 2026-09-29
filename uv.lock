@@ -408,7 +408,7 @@ wheels = [
 ]
 
 [[package]]
-name = "pylint-plugin"
+name = "pylint-gajaguar"
 version = "1.1.2"
 source = { editable = "." }
 

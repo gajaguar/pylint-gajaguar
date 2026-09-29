@@ -18,11 +18,11 @@ pylint configuration) live in [`docs/python.md`](docs/python.md).
 
 A new checker touches three files. Keep them in this order:
 
-1. Create the checker module in `src/checkers/<name>.py`. Subclass
+1. Create the checker module in `src/pylint_gajaguar/<name>.py`. Subclass
    `pylint.checkers.BaseChecker`, set a unique `name = "app-..."` and a unique
    message code, and group test-related checkers around the helpers in
-   `src/checkers/scopes.py`.
-2. Register the class in `src/checkers/_register.py`. Import the new checker
+   `src/pylint_gajaguar/scopes.py`.
+2. Register the class in `src/pylint_gajaguar/_register.py`. Import the new checker
    and add `linter.register_checker(NewChecker(linter))` to `register`. The
    order is cosmetic but stable.
 3. Add `tests/checkers/test_<name>.py`. Use `pylint.testutils.CheckerTestCase`

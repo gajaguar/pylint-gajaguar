@@ -73,7 +73,7 @@ md-fix: ## Auto-fix Markdown files with markdownlint-cli2 — accepts FILES="...
 	fi
 
 # Only invoke md-fix with Markdown files — prevents `fix`/`fix-unsafe` from
-# forwarding a non-Markdown FILES scope (e.g. FILES="src/main.py") into
+# forwarding a non-Markdown FILES scope (e.g. FILES="src/pylint_gajaguar/__init__.py") into
 # markdownlint-cli2. Not a public target; used internally by fix/fix-unsafe.
 _md-fix-scoped:
 	@if [ -z "$(FILES)" ]; then $(MAKE) md-fix; else \

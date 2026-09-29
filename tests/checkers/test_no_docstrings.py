@@ -4,7 +4,7 @@ import astroid
 from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
-from checkers.no_docstrings import NoDocstringsChecker
+from pylint_gajaguar.no_docstrings import NoDocstringsChecker
 
 
 class TestNoDocstringsChecker(CheckerTestCase):

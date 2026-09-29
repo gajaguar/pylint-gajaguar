@@ -3,10 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from checkers.scopes import DEFAULT_SECTION_MARKERS
-from checkers.scopes import is_test_file
-from checkers.scopes import is_test_function
-from checkers.scopes import section_markers
+from pylint_gajaguar.scopes import DEFAULT_SECTION_MARKERS
+from pylint_gajaguar.scopes import is_test_file
+from pylint_gajaguar.scopes import is_test_function
+from pylint_gajaguar.scopes import section_markers
 from tests.conftest import build_module_from_source
 from tests.conftest import build_test_module_from_source
 

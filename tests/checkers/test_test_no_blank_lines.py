@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
-from checkers.test_no_blank_lines import TestNoBlankLinesChecker as NoBlankLinesCheckerUnderTest
+from pylint_gajaguar.test_no_blank_lines import TestNoBlankLinesChecker as NoBlankLinesCheckerUnderTest
 from tests.conftest import build_test_module_from_source
 from tests.conftest import node_position
 

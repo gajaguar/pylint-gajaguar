@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pylint.testutils import CheckerTestCase
 
-from checkers.smoke import SmokeChecker
+from pylint_gajaguar.smoke import SmokeChecker
 
 
 class TestSmokeChecker(CheckerTestCase):
