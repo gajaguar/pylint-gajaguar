@@ -99,14 +99,14 @@ wheels = [
 
 [[package]]
 name = "conventional-git"
-version = "1.1.0"
+version = "1.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ee/81/e042099cf8373b3cf12cf9661f1cbdc9b95d4c1bfafbfca42efe95f3494b/conventional_git-1.1.0.tar.gz", hash = "sha256:03698bc6420afdc13a095ea994ff5bab488a136db6385ac1f7d27ceda3e9d6ad", size = 147612, upload-time = "2026-09-29T04:30:48.811Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/43/5b/4079df321de64a9c231f54282d5affde251a05fa2e721104164c3f4da647/conventional_git-1.2.0.tar.gz", hash = "sha256:37fc4242c02cb85855a9500ef7045e4e5e0e5a764f5949094df3282b58d037f5", size = 147288, upload-time = "2026-09-29T05:03:53.327Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/85/42/1902204cb89ab8a3f75f3f152bda46e249c7b8925081c2694ae3311f1a4d/conventional_git-1.1.0-py3-none-any.whl", hash = "sha256:4f80ce6e9443b5991a63c77cfabaf5e6a2a9bdb372d312b45ba2f2b9c3e7d4d2", size = 40663, upload-time = "2026-09-29T04:30:47.679Z" },
+    { url = "https://files.pythonhosted.org/packages/99/2a/49b27dc061aaf47c4cd73271d81ecae79bfa1a6be93f8e1df7fdb57d356c/conventional_git-1.2.0-py3-none-any.whl", hash = "sha256:68d266eba75f2577bbd8f4ebfd366fc5e182b607afd9f2e9cba347c241f10793", size = 40693, upload-time = "2026-09-29T05:03:51.777Z" },
 ]
 
 [[package]]
