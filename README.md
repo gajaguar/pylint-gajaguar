@@ -5,13 +5,13 @@
 [![ruff](https://img.shields.io/badge/ruff-checked-orange?style=flat-square&logo=ruff&logoColor=white)](https://docs.astral.sh/ruff/)
 [![pylint](https://img.shields.io/badge/pylint-checked-428f7f?style=flat-square)](https://pylint.pycqa.org/)
 [![mypy](https://img.shields.io/badge/mypy-checked-blue?style=flat-square)](http://mypy-lang.org/)
-[![version](https://img.shields.io/badge/version-2.0.0-blue?style=flat-square)](https://github.com/gajaguar/pylint-gajaguar)
+[![PyPI](https://img.shields.io/pypi/v/pylint-gajaguar?style=flat-square)](https://pypi.org/project/pylint-gajaguar/)
 [![python](https://img.shields.io/badge/python->=3.14-blue?style=flat-square)](https://docs.python.org/3.14/)
 [![Topics](https://img.shields.io/badge/topics-pylint%20%7C%20pylint--plugin-informational)](https://github.com/gajaguar/pylint-gajaguar)
 [![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 
-Opinionated pylint checkers that encode personal review preferences beyond
-ruff, self-linting this repository.
+Opinionated pylint checkers that encode review preferences beyond ruff,
+self-linting this repository.
 
 ## Table of Contents
 
@@ -55,8 +55,8 @@ defines the rule.
   named `test` or `tests`. Production code paths stay unaffected.
 - **Configurable section markers**: tune the AAA markers via pylint
   option or environment variable without editing the plugin source.
-- **Zero runtime dependencies**: the wheel ships with
-  `dependencies = []`; only `pylint` is required to consume it.
+- **One runtime dependency**: the wheel requires only `pylint`
+  (`pylint>=4.0`).
 - **Self-linting**: the plugin runs against itself in CI and in
   pre-commit; a rule violation fails the same gate that defines it.
 
@@ -114,19 +114,21 @@ TEST_SECTION_MARKERS="Given When Then" make pylint
 
 ### Use in another project
 
-Add the plugin as a dev dependency:
-
-```toml
-[dependency-groups]
-dev = ["pylint-gajaguar @ git+https://github.com/gajaguar/pylint-gajaguar"]
-```
-
-Then sync and run pylint with the plugin loaded (see [Usage](#usage) for
-the `--enable=gajaguar` command).
+Install the plugin from [PyPI](https://pypi.org/project/pylint-gajaguar/)
+as a dev dependency:
 
 ```bash
-uv sync
+uv add --dev pylint-gajaguar
 ```
+
+or with pip:
+
+```bash
+pip install pylint-gajaguar
+```
+
+Then run pylint with the plugin loaded (see [Usage](#usage) for the
+`--enable=gajaguar` command).
 
 ### Develop this repository
 
@@ -265,7 +267,6 @@ process.
 ## Open items
 
 - Dynamic checker discovery to remove the three-file registration step.
-- PyPI publication.
 - `CHANGELOG.md`.
 
 ## License
