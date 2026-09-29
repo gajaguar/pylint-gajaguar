@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class TestAAAMarkersChecker(BaseChecker):
-    name = "gajaguar-test-aaa-markers"
+    name = "gajaguar"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9002": (
             "Test method '%s' missing AAA marker(s): %s",

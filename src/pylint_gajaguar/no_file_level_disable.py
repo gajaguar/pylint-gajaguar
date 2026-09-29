@@ -26,7 +26,7 @@ _NON_CODE: Final = frozenset({
 
 
 class NoFileLevelDisableChecker(BaseTokenChecker):
-    name = "gajaguar-no-file-level-disable"
+    name = "gajaguar"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9006": (
             "Standalone '# pylint: disable=' found; use inline or 'disable-next=' instead",

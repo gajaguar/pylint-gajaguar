@@ -73,20 +73,20 @@ targets.
 Run pylint with the plugin against your source tree:
 
 ```bash
-uv run pylint --load-plugins=pylint_gajaguar --disable=all --enable=gajaguar-no-docstrings,\
-gajaguar-test-aaa-markers,gajaguar-test-no-blank-lines,gajaguar-test-no-extra-comments,\
-gajaguar-test-partial-assertion,gajaguar-test-name-implementation-detail,\
-gajaguar-unused-arg-use-del,gajaguar-module-const-naming,gajaguar-no-file-level-disable,\
-gajaguar-no-inline-imports,gajaguar-no-relative-imports,gajaguar-use-contextlib-suppress,\
-gajaguar-frozenset-constant,gajaguar-require-final src tests
+uv run pylint --load-plugins=pylint_gajaguar \
+  --disable=all --enable=gajaguar src tests
 ```
 
 The `pylint_gajaguar` argument is the module the wheel installs (see
 [Architecture](#architecture)). The `--disable=all` flag is
 deliberate: pylint's built-in rules overlap with ruff (line length,
 import placement), and `missing-module-docstring` conflicts with
-`gajaguar-no-docstrings`. The `--enable=...` list selects only the plugin's
-own rules.
+`gajaguar-no-docstrings`. `--enable=gajaguar` selects only the plugin's own
+rules: every checker registers under the single name `gajaguar`, so rules
+added in a later release are enabled without touching your configuration.
+
+To run a subset, enable rules by message name instead, for example
+`--enable=gajaguar-no-docstrings,gajaguar-require-final`.
 
 For the local development loop in this repository:
 
@@ -122,7 +122,7 @@ dev = ["pylint-gajaguar @ git+https://github.com/gajaguar/pylint-gajaguar"]
 ```
 
 Then sync and run pylint with the plugin loaded (see [Usage](#usage) for
-the full `--enable=...` command).
+the `--enable=gajaguar` command).
 
 ```bash
 uv sync
@@ -217,6 +217,13 @@ as advisory, not a hard gate.
 Resolution order: `TEST_SECTION_MARKERS` (env) →
 `--test-section-markers` (linter config) → the default tuple. Set the
 env var to experiment with markers without rewriting the linter config.
+
+In `pyproject.toml` the option lives under the checker name:
+
+```toml
+[tool.pylint.gajaguar]
+test-section-markers = ["Given", "When", "Then"]
+```
 
 ### Test scoping
 

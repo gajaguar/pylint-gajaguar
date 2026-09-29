@@ -28,8 +28,9 @@ Run `make help` for the full list of targets.
 A new checker touches three files. Keep them in this order:
 
 1. Create the checker module in `src/pylint_gajaguar/<name>.py`. Subclass
-   `pylint.checkers.BaseChecker`, set a unique `name = "gajaguar-..."` and a
-   unique message code, and group test-related checkers around the helpers in
+   `pylint.checkers.BaseChecker`, set `name = "gajaguar"` (shared by every
+   checker), a unique `gajaguar-...` message symbol and a unique message code,
+   and group test-related checkers around the helpers in
    `src/pylint_gajaguar/scopes.py`.
 2. Register the class in `src/pylint_gajaguar/_register.py`. Import the new
    checker and add `linter.register_checker(NewChecker(linter))` to
@@ -40,11 +41,10 @@ A new checker touches three files. Keep them in this order:
    test-scoped, build the module through `build_test_module_from_source` so
    the filename starts with `test_`.
 
-Then enable the new rule in `pyproject.toml`'s
-`[tool.pylint."messages control"].enable`; `make check` fails until you do.
-It also runs the rule against the plugin's own source, so a change that
-violates its own rule surfaces there first. Keep each checker in its own
-pull request.
+The rule is enabled automatically, because `pyproject.toml` enables the
+shared `gajaguar` name. `make check` runs it against the plugin's own
+source, so a change that violates its own rule surfaces there first. Keep
+each checker in its own pull request.
 
 ## Conventions
 
