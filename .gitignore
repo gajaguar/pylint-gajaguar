@@ -1,3 +1,12 @@
+### Project-specific stuff
+
+# mise local overrides
+mise.local.toml
+.mise.local.toml
+
+# Obsidian vault metadata (docs/ is opened directly as a vault)
+.obsidian/
+
 # Created by https://www.toptal.com/developers/gitignore/api/linux,macos,jetbrains+all,visualstudiocode,node,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,macos,jetbrains+all,visualstudiocode,node,python
 
@@ -112,7 +121,6 @@ fabric.properties
 
 # Icon must end with two \r
 Icon
-
 
 # Thumbnails
 ._*
@@ -466,67 +474,3 @@ pyrightconfig.json
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,macos,jetbrains+all,visualstudiocode,node,python
-
-# mise local overrides
-mise.local.toml
-.mise.local.toml
-
-# Artifacts
-.prompts/
-
-### Python ###
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Distribution / packaging
-.Python
-develop-eggs/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-cover/
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# ruff
-.ruff_cache/
-
-# LSP config files
-pyrightconfig.json
-
-# Environments
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
