@@ -9,11 +9,11 @@ if TYPE_CHECKING:
 
 
 class NoRelativeImportsChecker(BaseChecker):
-    name = "app-no-relative-imports"
+    name = "gajaguar-no-relative-imports"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9009": (
             "Relative import '%s' is not allowed; use absolute imports",
-            "app-no-relative-imports",
+            "gajaguar-no-relative-imports",
             "Relative imports are forbidden in this project.",
         )
     }
@@ -22,4 +22,4 @@ class NoRelativeImportsChecker(BaseChecker):
         if node.level and node.level > 0:
             dots = "." * node.level
             modname = node.modname or ""
-            self.add_message("app-no-relative-imports", node=node, args=(f"{dots}{modname}",))
+            self.add_message("gajaguar-no-relative-imports", node=node, args=(f"{dots}{modname}",))

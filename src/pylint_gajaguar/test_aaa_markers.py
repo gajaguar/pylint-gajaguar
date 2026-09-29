@@ -17,11 +17,11 @@ if TYPE_CHECKING:
 
 
 class TestAAAMarkersChecker(BaseChecker):
-    name = "app-test-aaa-markers"
+    name = "gajaguar-test-aaa-markers"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9002": (
             "Test method '%s' missing AAA marker(s): %s",
-            "app-test-aaa-markers",
+            "gajaguar-test-aaa-markers",
             "Test methods must carry every configured section marker.",
         )
     }
@@ -60,7 +60,7 @@ class TestAAAMarkersChecker(BaseChecker):
         missing = [marker for marker in section_markers(self.linter) if marker not in raw]
         if missing:
             self.add_message(
-                "app-test-aaa-markers",
+                "gajaguar-test-aaa-markers",
                 node=node,
                 args=(node.name, ", ".join(missing)),
             )

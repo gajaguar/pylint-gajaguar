@@ -19,7 +19,7 @@ class TestUseContextlibSuppressChecker(CheckerTestCase):
             pass
         """)
         expected = MessageTest(
-            "app-use-contextlib-suppress",
+            "gajaguar-use-contextlib-suppress",
             node=node,
             line=node.fromlineno,
             col_offset=node.col_offset,

@@ -18,11 +18,11 @@ def _collect_name_usages(func_node: astroid.nodes.FunctionDef) -> frozenset[str]
 
 
 class UnusedArgUseDelChecker(BaseChecker):
-    name = "app-unused-arg-use-del"
+    name = "gajaguar-unused-arg-use-del"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9004": (
             "Argument '%s' uses leading underscore; use 'del %s' at the top of the body instead",
-            "app-unused-arg-use-del",
+            "gajaguar-unused-arg-use-del",
             "Unused function arguments MUST be discarded via `del arg`, not renamed with a leading underscore.",
         )
     }
@@ -38,6 +38,6 @@ class UnusedArgUseDelChecker(BaseChecker):
                 continue
             if arg_name in used_names:
                 continue
-            self.add_message("app-unused-arg-use-del", node=arg, args=(arg_name, arg_name))
+            self.add_message("gajaguar-unused-arg-use-del", node=arg, args=(arg_name, arg_name))
 
     visit_asyncfunctiondef = visit_functiondef

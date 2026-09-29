@@ -22,7 +22,7 @@ class TestTestNameImplementationDetailChecker(CheckerTestCase):
         module = build_test_module_from_source(tmp_path, "def test_mock_client_is_called():\n    assert True\n")
         func = module.body[0]
         expected = MessageTest(
-            "app-test-name-implementation-detail",
+            "gajaguar-test-name-implementation-detail",
             node=func,
             args=("test_mock_client_is_called", "called, mock"),
             **node_position(func),

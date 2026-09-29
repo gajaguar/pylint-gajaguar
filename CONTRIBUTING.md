@@ -19,7 +19,7 @@ pylint configuration) live in [`docs/python.md`](docs/python.md).
 A new checker touches three files. Keep them in this order:
 
 1. Create the checker module in `src/pylint_gajaguar/<name>.py`. Subclass
-   `pylint.checkers.BaseChecker`, set a unique `name = "app-..."` and a unique
+   `pylint.checkers.BaseChecker`, set a unique `name = "gajaguar-..."` and a unique
    message code, and group test-related checkers around the helpers in
    `src/pylint_gajaguar/scopes.py`.
 2. Register the class in `src/pylint_gajaguar/_register.py`. Import the new checker
@@ -38,8 +38,8 @@ introductions that violate the rule will surface there first.
 ## Conventions
 
 - No docstrings. Use comments only when the *why* isn't obvious from the
-  code; `app-no-docstrings` fails `make check` on any.
-- Absolute imports only. `app-no-relative-imports` enforces this.
+  code; `gajaguar-no-docstrings` fails `make check` on any.
+- Absolute imports only. `gajaguar-no-relative-imports` enforces this.
 - Linting: ruff with `lint.select = ["ALL"]`. Justified ignores are written
   with `# noqa: <rule>` next to the line.
 - Typing: mypy in `strict` mode and pyright clean. Use `TYPE_CHECKING` for

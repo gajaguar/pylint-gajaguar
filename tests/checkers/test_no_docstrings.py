@@ -19,7 +19,7 @@ class TestNoDocstringsChecker(CheckerTestCase):
         """)
         doc_node = node.doc_node
         expected = MessageTest(
-            "app-no-docstrings",
+            "gajaguar-no-docstrings",
             node=doc_node,
             args=("greet",),
             line=doc_node.fromlineno,
@@ -55,7 +55,7 @@ class TestNoDocstringsChecker(CheckerTestCase):
         """).body[0]
         doc_node = node.doc_node
         expected = MessageTest(
-            "app-no-docstrings",
+            "gajaguar-no-docstrings",
             node=doc_node,
             args=("bar",),
             line=doc_node.fromlineno,
@@ -77,7 +77,7 @@ class TestNoDocstringsChecker(CheckerTestCase):
         """)
         doc_node = node.doc_node
         expected = MessageTest(
-            "app-no-docstrings",
+            "gajaguar-no-docstrings",
             node=doc_node,
             args=("Foo",),
             line=doc_node.fromlineno,
@@ -112,7 +112,7 @@ class TestNoDocstringsChecker(CheckerTestCase):
         """)
         doc_node = node.doc_node
         expected = MessageTest(
-            "app-no-docstrings",
+            "gajaguar-no-docstrings",
             node=doc_node,
             args=("greet",),
             line=doc_node.fromlineno,

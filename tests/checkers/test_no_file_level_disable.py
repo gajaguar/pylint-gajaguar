@@ -19,7 +19,7 @@ class TestNoFileLevelDisableChecker(CheckerTestCase):
     def test_standalone_disable_fires(self) -> None:
         # Arrange
         tokens = _tokens("x = 1\n# pylint: disable=invalid-name\ny = 2\n")
-        expected = MessageTest("app-no-file-level-disable", line=2)
+        expected = MessageTest("gajaguar-no-file-level-disable", line=2)
         # Act
         self.checker.process_tokens(tokens)
         messages = self.linter.release_messages()

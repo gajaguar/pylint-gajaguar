@@ -24,7 +24,7 @@ class TestTestNoBlankLinesChecker(CheckerTestCase):
         self.checker.open()
         position = node_position(func)
         position["line"] = 3
-        expected = MessageTest("app-test-no-blank-lines", node=func, args=("test_thing", 3), **position)
+        expected = MessageTest("gajaguar-test-no-blank-lines", node=func, args=("test_thing", 3), **position)
         # Act
         self.checker.visit_functiondef(func)
         messages = self.linter.release_messages()

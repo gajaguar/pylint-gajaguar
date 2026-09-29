@@ -23,7 +23,7 @@ class TestTestPartialAssertionChecker(CheckerTestCase):
         module = build_test_module_from_source(tmp_path, source)
         func = module.body[0]
         expected = MessageTest(
-            "app-test-partial-assertion",
+            "gajaguar-test-partial-assertion",
             node=func,
             args=("test_thing", "response"),
             **node_position(func),

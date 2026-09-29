@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 
 
 class NoInlineImportsChecker(BaseChecker):
-    name = "app-no-inline-imports"
+    name = "gajaguar-no-inline-imports"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9008": (
             "Import of '%s' inside %s; move to top of module",
-            "app-no-inline-imports",
+            "gajaguar-no-inline-imports",
             "Inline imports are strictly forbidden; they usually indicate circular import issues.",
         )
     }
@@ -30,7 +30,7 @@ class NoInlineImportsChecker(BaseChecker):
             names = ", ".join(alias[1] or alias[0] for alias in node.names)
         else:
             names = node.modname or "?"
-        self.add_message("app-no-inline-imports", node=node, args=(names, frame_type))
+        self.add_message("gajaguar-no-inline-imports", node=node, args=(names, frame_type))
 
     def visit_import(self, node: Import) -> None:
         self._check(node)

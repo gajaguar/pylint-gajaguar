@@ -3,7 +3,7 @@
 ## Docstring policy
 
 This project does not use docstrings — use comments only where the *why*
-isn't obvious from the code. The plugin's own `app-no-docstrings` (W9001)
+isn't obvious from the code. The plugin's own `gajaguar-no-docstrings` (W9001)
 checker fails `make check`/`make pylint` on any function, method, or class
 that has one. pylint has no autofix for this, so docstrings must be
 removed by hand.
@@ -31,4 +31,4 @@ target and the pre-commit `pylint` hook both invoke `uv run pylint`
 without `--load-plugins=` or `--enable=` flags — the plugin's own checker
 list stays in one place. See the
 [README's rule reference](../README.md#configuration) for the full list
-of `app-*` checkers.
+of `gajaguar-*` checkers.
