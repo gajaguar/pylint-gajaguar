@@ -1,7 +1,5 @@
 UV := uv
-# Empty: this repo is pylint-gajaguar, so it is not its own git dependency.
-GIT_DEPS :=
-PYPI_DEPS := conventional-git
+PYPI_DEPS := pylint-gajaguar conventional-git
 
 # Use the project's own pinned, dev-dependency copy in make commits-check
 # (defined in the base Makefile) instead of an ephemeral uvx fetch.
@@ -15,8 +13,10 @@ LANG_TEST_TARGETS       += pytest
 
 ##@ Python
 
+# No `uv tool install --editable .` here: this package ships no console script,
+# so uv fails with "No executables are provided by package".
 install-python: ## Sync Python deps into the project venv
-	$(UV) sync $(addprefix --upgrade-package ,$(GIT_DEPS) $(PYPI_DEPS))
+	$(UV) sync $(addprefix --upgrade-package ,$(PYPI_DEPS))
 
 lint: ## Lint with Ruff — accepts FILES="..." to limit scope
 	$(UV) run ruff check --preview $(or $(FILES),.)
