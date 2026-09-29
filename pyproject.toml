@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling>=1.21"]
+requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
@@ -9,46 +9,18 @@ description = "Plugin with a series of rules based on good practices and persona
 requires-python = ">=3.14"
 dependencies = []
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/pylint_gajaguar"]
-sources = ["src"]
-
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-addopts = "--cov --cov-report=term-missing"
-
-[tool.coverage.run]
-source = ["src"]
+addopts = "--cov=src --cov-report=term-missing"
 
 [tool.coverage.report]
-show_missing = true
-exclude_lines = [
-  "pragma: no cover",
-  "if __name__ == .__main__.:",
-  "raise NotImplementedError",
-]
+exclude_also = ["if __name__ == .__main__.:"]
 
 [tool.ruff]
-target-version = "py314"
 line-length = 119
 lint.select = ["ALL"]
 lint.ignore = ["CPY", "D", "missing-trailing-comma"]
-lint.isort.section-order = [
-  "future",
-  "standard-library",
-  "third-party",
-  "first-party",
-  "local-folder",
-]
 lint.isort.force-single-line = true
-lint.isort.case-sensitive = true
-lint.per-file-ignores."tests/**/*.py" = [
-  "ANN",
-  "ARG",
-  "assert",
-  "magic-value-comparison",
-  "private-member-access",
-]
+lint.per-file-ignores."tests/**/*.py" = ["ARG", "assert", "private-member-access"]
 
 [tool.mypy]
 strict = true
@@ -59,47 +31,38 @@ module = ["astroid.*", "pylint.*"]
 ignore_missing_imports = true
 
 [tool.pyright]
-venvPath = "."
-venv = ".venv"
 include = ["src"]
-exclude = ["**/.venv", "**/node_modules", "tests"]
 
 [tool.pylint.main]
 load-plugins = ["pylint_gajaguar"]
 
-[tool.pylint.format]
-max-line-length = 119
-
 [tool.pylint."messages control"]
-disable = [
-  "missing-module-docstring",
-  "missing-class-docstring",
-  "missing-function-docstring",
-  # Duplicate-code fires on the AAA-fixture scaffolding shared between
-  # gajaguar-test-* checkers; the similarity is structural, not refactorable.
-  "duplicate-code",
-  # use-implicit-booleaness-not-comparison duplicates ruff's PLC1802.
-  "use-implicit-booleaness-not-comparison",
-  # Tests inherit pylint.testutils.CheckerTestCase, which only exposes one
-  # assertion-style public method, and intentionally reach into pylint
-  # internals (linter._checkers) and pytest fixtures (tmp_path) that
-  # remain unused inside the body.
-  "too-few-public-methods",
-  "protected-access",
-  "unused-argument",
+disable = ["all"]
+enable = [
+  "gajaguar-frozenset-constant",
+  "gajaguar-module-const-naming",
+  "gajaguar-no-docstrings",
+  "gajaguar-no-file-level-disable",
+  "gajaguar-no-inline-imports",
+  "gajaguar-no-relative-imports",
+  "gajaguar-require-final",
+  "gajaguar-test-aaa-markers",
+  "gajaguar-test-name-implementation-detail",
+  "gajaguar-test-no-blank-lines",
+  "gajaguar-test-no-extra-comments",
+  "gajaguar-test-partial-assertion",
+  "gajaguar-unused-arg-use-del",
+  "gajaguar-use-contextlib-suppress",
 ]
 
 [dependency-groups]
 dev = [
   "astroid>=4.0.4",
+  "conventional-git>=1.0",
   "mypy>=2.3.1",
-  "pylint>=4.0.8",
+  "pylint>=4.0.9",
   "pyright>=1.1.414",
-  "pytest>=8.0",
-  "pytest-cov>=6.0",
+  "pytest-cov>=7.1",
+  "pytest>=9.1",
   "ruff>=0.16.8",
 ]
-
-[tool.uv]
-python-preference = "only-system"
-python-downloads = "never"
