@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 
 class NoRelativeImportsChecker(BaseChecker):
-    name = "gajaguar-no-relative-imports"
+    name = "gajaguar"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9009": (
             "Relative import '%s' is not allowed; use absolute imports",

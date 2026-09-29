@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class NoDocstringsChecker(BaseChecker):
-    name = "gajaguar-no-docstrings"
+    name = "gajaguar"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9001": (
             "Docstring found in '%s'; use comments instead",

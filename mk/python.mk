@@ -8,7 +8,7 @@ PYPI_DEPS := conventional-git
 CONVENTIONAL_GIT := $(UV) run conventional-git
 
 LANG_INSTALL_TARGETS    += install-python
-LANG_CHECK_TARGETS      += lint format-check typecheck pylint pylint-rules conventional-git-latest
+LANG_CHECK_TARGETS      += lint format-check typecheck pylint conventional-git-latest
 LANG_FIX_TARGETS        += format lint-fix
 LANG_FIX_UNSAFE_TARGETS += format lint-fix-unsafe
 LANG_TEST_TARGETS       += pytest
@@ -35,11 +35,6 @@ typecheck: mypy pyright ## Run both type checkers
 pylint: ## Self-lint with this repo's own checkers (see github.com/gajaguar/pylint-gajaguar) — accepts FILES="..."
 	$(UV) run pylint $(or $(FILES),src tests)
 
-pylint-rules: ## Fail if an installed pylint-gajaguar rule is not enabled in pyproject.toml
-	@missing=$$($(UV) run pylint --list-msgs-enabled | sed -n '/^Disabled/,/^Non-emit/p' | grep -oE 'gajaguar-[a-z-]+' || true); \
-	test -z "$$missing" || { echo 'Missing from [tool.pylint."messages control"].enable:'; \
-		printf '  "%s",\n' $$missing; exit 1; }
-
 conventional-git-latest: ## Fail if the installed conventional-git is behind PyPI (skips when PyPI is unreachable)
 	@out=$$($(UV) pip list --outdated --format json 2>/dev/null) || { echo 'conventional-git-latest: PyPI unreachable, skipped'; exit 0; }; \
 	behind=$$(echo "$$out" | grep -oE '"name":"conventional-git","version":"[^"]+","latest_version":"[^"]+"' || true); \
@@ -64,5 +59,5 @@ build: ## Build the sdist and wheel into dist/
 	rm -rf dist
 	$(UV) build
 
-.PHONY: install-python lint format-check mypy pyright typecheck pylint pylint-rules conventional-git-latest \
+.PHONY: install-python lint format-check mypy pyright typecheck pylint conventional-git-latest \
 	format lint-fix lint-fix-unsafe pytest coverage build

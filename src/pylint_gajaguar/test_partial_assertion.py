@@ -36,7 +36,7 @@ def _compared_names(test: nodes.NodeNG) -> tuple[set[str], set[str]]:
 
 
 class TestPartialAssertionChecker(BaseChecker):
-    name = "gajaguar-test-partial-assertion"
+    name = "gajaguar"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9016": (
             "Test method '%s' asserts on '%s[...]' without ever asserting the whole object",
