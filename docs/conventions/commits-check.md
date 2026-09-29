@@ -23,8 +23,9 @@ Two layers enforce both, via
 
 Dependabot always names its branches `dependabot/<ecosystem>/<dependency>`,
 which is not a Conventional Branch type, and its prefix can't be changed.
-`make commits-check` therefore skips the branch-name check for
-`dependabot/*` branches; the commit messages are still validated, and
+`conventional-git` therefore accepts names that start with `dependabot/` or
+`renovate/` (1.1.0 and later), in the hook and in `make commits-check`
+alike; the commit messages are still validated, and
 `.github/dependabot.yml` sets their `ci`/`chore` prefixes.
 
 `make commits-check` runs through `$(UV) run conventional-git` — the

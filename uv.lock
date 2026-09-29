@@ -99,14 +99,14 @@ wheels = [
 
 [[package]]
 name = "conventional-git"
-version = "1.0.0"
+version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e5/6e/9c5d4db16f173ea85e8d4c2032895badb0ad67334911313d78bdb63e44d4/conventional_git-1.0.0.tar.gz", hash = "sha256:d6da55fe466a20861af18dd348f392d90428f8cb6404747eba70dbcc3d6f75e9", size = 146622, upload-time = "2026-09-27T03:58:25.831Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ee/81/e042099cf8373b3cf12cf9661f1cbdc9b95d4c1bfafbfca42efe95f3494b/conventional_git-1.1.0.tar.gz", hash = "sha256:03698bc6420afdc13a095ea994ff5bab488a136db6385ac1f7d27ceda3e9d6ad", size = 147612, upload-time = "2026-09-29T04:30:48.811Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/11/fe/ab0b4ce4b1ff7ac68659067717e2a527f576926c7bed14eda0d607b6a2eb/conventional_git-1.0.0-py3-none-any.whl", hash = "sha256:51094890469bb79fec70e7d71530e8f2ab512e302e183ef017e6fdf924f156e4", size = 40050, upload-time = "2026-09-27T03:58:24.32Z" },
+    { url = "https://files.pythonhosted.org/packages/85/42/1902204cb89ab8a3f75f3f152bda46e249c7b8925081c2694ae3311f1a4d/conventional_git-1.1.0-py3-none-any.whl", hash = "sha256:4f80ce6e9443b5991a63c77cfabaf5e6a2a9bdb372d312b45ba2f2b9c3e7d4d2", size = 40663, upload-time = "2026-09-29T04:30:47.679Z" },
 ]
 
 [[package]]
@@ -475,7 +475,7 @@ requires-dist = [{ name = "pylint", specifier = ">=4.0" }]
 [package.metadata.requires-dev]
 dev = [
     { name = "astroid", specifier = ">=4.0.4" },
-    { name = "conventional-git", specifier = ">=1.0" },
+    { name = "conventional-git", specifier = ">=1.1" },
     { name = "mypy", specifier = ">=2.3.1" },
     { name = "pylint", specifier = ">=4.0.9" },
     { name = "pyright", specifier = ">=1.1.414" },
