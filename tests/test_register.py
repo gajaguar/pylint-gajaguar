@@ -4,7 +4,7 @@ from typing import Final
 
 from pylint.lint import PyLinter
 
-from main import register
+from pylint_gajaguar import register
 
 EXPECTED_CHECKER_NAMES: Final = frozenset({
     "app-smoke",

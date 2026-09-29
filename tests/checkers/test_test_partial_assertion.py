@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
-from checkers.test_partial_assertion import TestPartialAssertionChecker as CheckerUnderTest
+from pylint_gajaguar.test_partial_assertion import TestPartialAssertionChecker as CheckerUnderTest
 from tests.conftest import build_module_from_source
 from tests.conftest import build_test_module_from_source
 from tests.conftest import node_position

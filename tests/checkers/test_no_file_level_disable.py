@@ -6,7 +6,7 @@ import tokenize
 from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
-from checkers.no_file_level_disable import NoFileLevelDisableChecker
+from pylint_gajaguar.no_file_level_disable import NoFileLevelDisableChecker
 
 
 def _tokens(source: str) -> list[tokenize.TokenInfo]:

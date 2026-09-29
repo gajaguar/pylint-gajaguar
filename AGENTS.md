@@ -24,7 +24,7 @@ make help              # list every target
 Scope any target to specific files with `FILES=`:
 
 ```bash
-make lint FILES="src/checkers/scopes.py"
+make lint FILES="src/pylint_gajaguar/scopes.py"
 make pylint FILES="src"
 make md-lint FILES="README.md"
 ```
@@ -47,20 +47,20 @@ non-zero on problems (the CI gate); `fix*` targets mutate files in place.
 ## Architecture
 
 ```text
-pylint --load-plugins=main
-  -> src/main.py (re-exports register)
-    -> checkers/_register.py: register(linter)
+pylint --load-plugins=pylint_gajaguar
+  -> src/pylint_gajaguar/__init__.py (re-exports register)
+    -> pylint_gajaguar/_register.py: register(linter)
       -> instantiates and registers each Checker class
 scopes.py -> shared section-marker option + test-scoping helpers,
              consumed by app-test-* checkers
 ```
 
-The wheel ships a **flat layout**: `[tool.hatch.build.targets.wheel]` sets
-`sources = ["src"]`, so `src/main.py` and `src/checkers/` install as
-top-level modules (`main`, `checkers`), not a nested `pylint_plugin`
-package. That's why `--load-plugins=main` resolves, and why in-repo
-imports read `from checkers.foo import Bar` rather than
-`from src.checkers.foo import Bar`.
+The distribution is `pylint-gajaguar` and the single top-level package is
+`pylint_gajaguar`: `[tool.hatch.build.targets.wheel]` sets
+`sources = ["src"]`, so `src/pylint_gajaguar/` installs as
+`pylint_gajaguar`. That's why `--load-plugins=pylint_gajaguar` resolves,
+and why in-repo imports read `from pylint_gajaguar.foo import Bar` rather
+than `from src.pylint_gajaguar.foo import Bar`.
 
 Pylint's plugin loading and the messages-control disable list live in
 `pyproject.toml` (`[tool.pylint.main]`, `[tool.pylint."messages
@@ -72,11 +72,11 @@ construction.
 
 Keep these in order; each new checker gets its own scoped commit/PR:
 
-1. **`src/checkers/<name>.py`** — subclass `pylint.checkers.BaseChecker`,
+1. **`src/pylint_gajaguar/<name>.py`** — subclass `pylint.checkers.BaseChecker`,
    set a unique `name = "app-..."` and message code. Group test-related
-   checkers around the helpers in `src/checkers/scopes.py`
+   checkers around the helpers in `src/pylint_gajaguar/scopes.py`
    (`is_test_file`, `is_test_function`, `section_markers`).
-2. **`src/checkers/_register.py`** — import the new checker and add
+2. **`src/pylint_gajaguar/_register.py`** — import the new checker and add
    `linter.register_checker(NewChecker(linter))` inside `register()`.
    Order is cosmetic but kept stable.
 3. **`tests/checkers/test_<name>.py`** — use
@@ -108,7 +108,7 @@ file are not. Non-test-scoped checkers (`app-no-docstrings`,
   `app-no-docstrings` fails `make check` on any. Comments only when the
   _why_ isn't obvious from the code; pylint has no autofix for this, so
   remove docstrings by hand.
-- Absolute imports only (`app-no-relative-imports`); `from checkers.foo
+- Absolute imports only (`app-no-relative-imports`); `from pylint_gajaguar.foo
 import Bar`, not `from .foo import Bar`.
 - Module-level constants: `SCREAMING_SNAKE_CASE` name
   (`app-module-const-naming`) and a `Final` annotation
