@@ -96,18 +96,23 @@ The distribution is `pylint-gajaguar` and the single top-level package is
 and why in-repo imports read `from pylint_gajaguar.foo import Bar` rather
 than `from src.pylint_gajaguar.foo import Bar`.
 
-Pylint's plugin loading and the messages-control disable list live in
+Pylint's plugin loading and the messages-control `enable` list live in
 `pyproject.toml` (`[tool.pylint.main]`, `[tool.pylint."messages
 control"]`) — not passed as CLI flags — so `mk/python.mk`'s `pylint`
 target and the pre-commit `pylint` hook stay in sync with each other by
 construction.
+
+Every checker registers under the single name `gajaguar`, so
+`enable = ["gajaguar"]` turns on every rule, including future ones. The
+`gajaguar-*` names are message symbols, not checker names.
 
 ## Adding a checker (three-file procedure)
 
 Keep these in order; each new checker gets its own scoped commit/PR:
 
 1. **`src/pylint_gajaguar/<name>.py`** — subclass `pylint.checkers.BaseChecker`,
-   set a unique `name = "gajaguar-..."` and message code. Group test-related
+   set `name = "gajaguar"` (shared by every checker), a unique
+   `gajaguar-...` message symbol and a unique message code. Group test-related
    checkers around the helpers in `src/pylint_gajaguar/scopes.py`
    (`is_test_file`, `is_test_function`, `section_markers`).
 2. **`src/pylint_gajaguar/_register.py`** — import the new checker and add
@@ -143,9 +148,9 @@ file are not. Non-test-scoped checkers (`gajaguar-no-docstrings`,
   `gajaguar-no-docstrings` checker enforces this and fails
   `make check`/`make pylint` otherwise; pylint has no autofix for it, so
   remove docstrings by hand.
-- Every `gajaguar-*` rule MUST be enabled in `pyproject.toml`'s
-  `[tool.pylint."messages control"].enable`; `make pylint-rules` (part of
-  `make check`) fails and lists any that are missing.
+- Every checker MUST use `name = "gajaguar"`, and `pyproject.toml` MUST
+  enable it with `enable = ["gajaguar"]` rather than listing rules, so a new
+  rule never needs a configuration change.
 - `conventional-git` MUST be the latest PyPI release; `make
   conventional-git-latest` (part of `make check`) fails otherwise, and `make
   install` upgrades it.
