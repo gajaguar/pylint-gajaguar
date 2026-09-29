@@ -18,7 +18,7 @@ def _collect_name_usages(func_node: astroid.nodes.FunctionDef) -> frozenset[str]
 
 
 class UnusedArgUseDelChecker(BaseChecker):
-    name = "gajaguar-unused-arg-use-del"
+    name = "gajaguar"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9004": (
             "Argument '%s' uses leading underscore; use 'del %s' at the top of the body instead",

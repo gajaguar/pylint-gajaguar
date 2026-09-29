@@ -23,7 +23,7 @@ _PRAGMA_PREFIXES: Final[tuple[str, ...]] = ("# noqa", "# pylint:", "# type:", "#
 
 
 class TestNoExtraCommentsChecker(BaseChecker):
-    name = "gajaguar-test-no-extra-comments"
+    name = "gajaguar"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9015": (
             "Test method '%s' has an explanatory comment at line %d: %s",

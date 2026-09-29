@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class NoInlineImportsChecker(BaseChecker):
-    name = "gajaguar-no-inline-imports"
+    name = "gajaguar"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9008": (
             "Import of '%s' inside %s; move to top of module",

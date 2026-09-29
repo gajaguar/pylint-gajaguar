@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 class TestNoBlankLinesChecker(BaseChecker):
-    name = "gajaguar-test-no-blank-lines"
+    name = "gajaguar"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9003": (
             "Test method '%s' contains a blank line at line %d",
