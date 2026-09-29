@@ -90,11 +90,11 @@ scopes.py -> shared section-marker option + test-scoping helpers,
 ```
 
 The distribution is `pylint-gajaguar` and the single top-level package is
-`pylint_gajaguar`: `[tool.hatch.build.targets.wheel]` sets
-`sources = ["src"]`, so `src/pylint_gajaguar/` installs as
-`pylint_gajaguar`. That's why `--load-plugins=pylint_gajaguar` resolves,
-and why in-repo imports read `from pylint_gajaguar.foo import Bar` rather
-than `from src.pylint_gajaguar.foo import Bar`.
+`pylint_gajaguar`: hatchling finds `src/pylint_gajaguar/` from the project
+name and installs it as `pylint_gajaguar`, without the `src/` prefix. That's
+why `--load-plugins=pylint_gajaguar` resolves, and why in-repo imports read
+`from pylint_gajaguar.foo import Bar` rather than
+`from src.pylint_gajaguar.foo import Bar`.
 
 Pylint's plugin loading and the messages-control `enable` list live in
 `pyproject.toml` (`[tool.pylint.main]`, `[tool.pylint."messages
