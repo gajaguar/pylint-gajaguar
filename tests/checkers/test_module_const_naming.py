@@ -4,7 +4,7 @@ import astroid
 from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
-from checkers.module_const_naming import ModuleConstNamingChecker
+from pylint_gajaguar.module_const_naming import ModuleConstNamingChecker
 
 
 class TestModuleConstNamingChecker(CheckerTestCase):

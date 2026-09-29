@@ -6,7 +6,9 @@ from typing import TYPE_CHECKING
 
 from pylint.checkers import BaseChecker
 
-from checkers.scopes import is_test_function
+from pylint_gajaguar.scopes import SECTION_MARKERS_OPTION
+from pylint_gajaguar.scopes import is_test_function
+from pylint_gajaguar.scopes import section_markers
 
 if TYPE_CHECKING:
     from astroid.nodes import FunctionDef
@@ -14,15 +16,17 @@ if TYPE_CHECKING:
     from pylint.lint import PyLinter
 
 
-class TestNoBlankLinesChecker(BaseChecker):
-    name = "app-test-no-blank-lines"
+class TestAAAMarkersChecker(BaseChecker):
+    name = "app-test-aaa-markers"
     msgs = {  # ruff: ignore[mutable-class-default]
-        "W9003": (
-            "Test method '%s' contains a blank line at line %d",
-            "app-test-no-blank-lines",
-            "Test method bodies MUST NOT contain blank lines.",
+        "W9002": (
+            "Test method '%s' missing AAA marker(s): %s",
+            "app-test-aaa-markers",
+            "Test methods must carry every configured section marker.",
         )
     }
+
+    options = SECTION_MARKERS_OPTION
 
     def __init__(self, linter: PyLinter) -> None:
         super().__init__(linter)
@@ -50,17 +54,15 @@ class TestNoBlankLinesChecker(BaseChecker):
         self._load_lines(node)
         if not self._lines:
             return
-        # fromlineno is the def line (1-indexed); body starts at next line
-        start = node.fromlineno  # 0-indexed index of first body line
+        start = node.fromlineno - 1
         end = node.tolineno
-        for index in range(start, end):
-            if index < len(self._lines) and not self._lines[index].strip():
-                self.add_message(
-                    "app-test-no-blank-lines",
-                    line=index + 1,
-                    node=node,
-                    args=(node.name, index + 1),
-                )
-                break
+        raw = "".join(self._lines[start:end])
+        missing = [marker for marker in section_markers(self.linter) if marker not in raw]
+        if missing:
+            self.add_message(
+                "app-test-aaa-markers",
+                node=node,
+                args=(node.name, ", ".join(missing)),
+            )
 
     visit_asyncfunctiondef = visit_functiondef

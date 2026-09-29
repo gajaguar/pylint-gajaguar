@@ -4,7 +4,7 @@ import astroid
 from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
-from checkers.unused_arg_use_del import UnusedArgUseDelChecker
+from pylint_gajaguar.unused_arg_use_del import UnusedArgUseDelChecker
 
 
 class TestUnusedArgUseDelChecker(CheckerTestCase):

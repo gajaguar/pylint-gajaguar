@@ -1,13 +1,13 @@
 # Pylint Plugin
 
-[![CI](https://github.com/gajaguar/pylint-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/gajaguar/pylint-plugin/actions/workflows/ci.yml)
-[![Python CI](https://github.com/gajaguar/pylint-plugin/actions/workflows/python.yml/badge.svg?branch=main)](https://github.com/gajaguar/pylint-plugin/actions/workflows/python.yml)
+[![CI](https://github.com/gajaguar/pylint-gajaguar/actions/workflows/ci.yml/badge.svg)](https://github.com/gajaguar/pylint-gajaguar/actions/workflows/ci.yml)
+[![Python CI](https://github.com/gajaguar/pylint-gajaguar/actions/workflows/python.yml/badge.svg?branch=main)](https://github.com/gajaguar/pylint-gajaguar/actions/workflows/python.yml)
 [![ruff](https://img.shields.io/badge/ruff-checked-orange?style=flat-square&logo=ruff&logoColor=white)](https://docs.astral.sh/ruff/)
 [![pylint](https://img.shields.io/badge/pylint-checked-428f7f?style=flat-square)](https://pylint.pycqa.org/)
 [![mypy](https://img.shields.io/badge/mypy-checked-blue?style=flat-square)](http://mypy-lang.org/)
-[![version](https://img.shields.io/badge/version-1.1.2-blue?style=flat-square)](https://github.com/gajaguar/pylint-plugin)
+[![version](https://img.shields.io/badge/version-1.1.2-blue?style=flat-square)](https://github.com/gajaguar/pylint-gajaguar)
 [![python](https://img.shields.io/badge/python->=3.14-blue?style=flat-square)](https://docs.python.org/3.14/)
-[![Topics](https://img.shields.io/badge/topics-pylint%20%7C%20pylint--plugin-informational)](https://github.com/gajaguar/pylint-plugin)
+[![Topics](https://img.shields.io/badge/topics-pylint%20%7C%20pylint--plugin-informational)](https://github.com/gajaguar/pylint-gajaguar)
 [![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 
 Opinionated pylint checkers that encode personal review preferences beyond
@@ -73,7 +73,7 @@ targets.
 Run pylint with the plugin against your source tree:
 
 ```bash
-uv run pylint --load-plugins=main --disable=all --enable=app-no-docstrings,\
+uv run pylint --load-plugins=pylint_gajaguar --disable=all --enable=app-no-docstrings,\
 app-test-aaa-markers,app-test-no-blank-lines,app-test-no-extra-comments,\
 app-test-partial-assertion,app-test-name-implementation-detail,\
 app-unused-arg-use-del,app-module-const-naming,app-no-file-level-disable,\
@@ -81,8 +81,8 @@ app-no-inline-imports,app-no-relative-imports,app-use-contextlib-suppress,\
 app-frozenset-constant,app-require-final src tests
 ```
 
-The `main` argument is the module the wheel exposes at the package root
-(see [Architecture](#architecture)). The `--disable=all` flag is
+The `pylint_gajaguar` argument is the module the wheel installs (see
+[Architecture](#architecture)). The `--disable=all` flag is
 deliberate: pylint's built-in rules overlap with ruff (line length,
 import placement), and `missing-module-docstring` conflicts with
 `app-no-docstrings`. The `--enable=...` list selects only the plugin's
@@ -100,7 +100,7 @@ make help    # list every target
 Scope a target to specific files:
 
 ```bash
-make lint FILES="src/checkers/scopes.py"
+make lint FILES="src/pylint_gajaguar/scopes.py"
 make pylint FILES="src"
 ```
 
@@ -118,7 +118,7 @@ Add the plugin as a dev dependency:
 
 ```toml
 [dependency-groups]
-dev = ["pylint-plugin @ git+https://github.com/gajaguar/pylint-plugin"]
+dev = ["pylint-gajaguar @ git+https://github.com/gajaguar/pylint-gajaguar"]
 ```
 
 Then sync and run pylint with the plugin loaded (see [Usage](#usage) for
@@ -134,8 +134,8 @@ Clone the repository and install everything (toolchain, Python deps,
 Node toolchain, git hook):
 
 ```bash
-git clone https://github.com/gajaguar/pylint-plugin.git
-cd pylint-plugin
+git clone https://github.com/gajaguar/pylint-gajaguar.git
+cd pylint-gajaguar
 make install
 ```
 
@@ -143,24 +143,23 @@ make install
 
 ```mermaid
 flowchart LR
-  Run[pylint --load-plugins=main] --> Main[main: src/main.py]
-  Main --> Reg[checkers.register]
-  Reg --> Def[checkers._register.register]
+  Run[pylint --load-plugins=pylint_gajaguar] --> Pkg[pylint_gajaguar.register]
+  Pkg --> Def[pylint_gajaguar._register.register]
   Def --> Checks[Checker classes]
   Scopes[scopes.py: markers + scoping] --> Checks
   Checks --> Msgs[pylint messages]
 ```
 
-The wheel ships a flat layout: `[tool.hatch.build.targets.wheel]` sets
-`sources = ["src"]`, so `src/main.py` and `src/checkers/` are exposed as
-top-level modules on the installed package. That is why
-`--load-plugins=main` resolves: the plugin entry point is the `main.py`
-file at the package root, not a nested `pylint_plugin` subpackage.
+The wheel ships a single top-level package, `pylint_gajaguar`:
+`[tool.hatch.build.targets.wheel]` sets `sources = ["src"]`, so
+`src/pylint_gajaguar/` installs as `pylint_gajaguar`. That is why
+`--load-plugins=pylint_gajaguar` resolves: pylint calls `register` from the
+package's `__init__.py`.
 
-`src/main.py` re-exports `register` from `checkers`, and `register` in
-`checkers/_register.py` instantiates and registers each checker with the
-pylint linter. `scopes.py` provides the shared section-marker option and
-test-scoping helpers that the `app-test-*` checkers consume.
+`pylint_gajaguar/__init__.py` re-exports `register` from `_register.py`,
+which instantiates and registers each checker with the pylint linter.
+`scopes.py` provides the shared section-marker option and test-scoping
+helpers that the `app-test-*` checkers consume.
 
 ## Built with
 
@@ -235,7 +234,7 @@ function in the same file is not.
 
 | Variable | Behavior         | Examples                                                                            |
 | -------- | ---------------- | ----------------------------------------------------------------------------------- |
-| `FILES`  | Scope by path    | `FILES="src/checkers/scopes.py"` or `FILES="src/checkers/*.py"`                     |
+| `FILES`  | Scope by path    | `FILES="src/pylint_gajaguar/scopes.py"` or `FILES="src/pylint_gajaguar/*.py"`       |
 | `check*` | Read-only gate   | `make check`, `make lint`, `make pylint`, `make mypy`, `make md-lint`, `make spell` |
 | `fix*`   | Mutates in place | `make fix`, `make lint-fix`, `make format`, `make md-fix`                           |
 

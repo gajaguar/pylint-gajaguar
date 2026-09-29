@@ -4,7 +4,7 @@ import astroid
 from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
-from checkers.use_contextlib_suppress import UseContextlibSuppressChecker
+from pylint_gajaguar.use_contextlib_suppress import UseContextlibSuppressChecker
 
 
 class TestUseContextlibSuppressChecker(CheckerTestCase):

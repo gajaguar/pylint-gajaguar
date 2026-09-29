@@ -4,7 +4,7 @@ import astroid
 from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
-from checkers.require_final import RequireFinalChecker
+from pylint_gajaguar.require_final import RequireFinalChecker
 
 
 class TestRequireFinalChecker(CheckerTestCase):

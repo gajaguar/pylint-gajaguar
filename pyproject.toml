@@ -3,15 +3,14 @@ requires = ["hatchling>=1.21"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pylint-plugin"
+name = "pylint-gajaguar"
 version = "1.1.2"
 description = "Plugin with a series of rules based on good practices and personal tastes."
 requires-python = ">=3.14"
 dependencies = []
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/checkers"]
-include = ["src/main.py"]
+packages = ["src/pylint_gajaguar"]
 sources = ["src"]
 
 [tool.pytest.ini_options]
@@ -66,7 +65,7 @@ include = ["src"]
 exclude = ["**/.venv", "**/node_modules", "tests"]
 
 [tool.pylint.main]
-load-plugins = ["checkers"]
+load-plugins = ["pylint_gajaguar"]
 
 [tool.pylint.format]
 max-line-length = 119

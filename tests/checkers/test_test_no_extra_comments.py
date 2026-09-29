@@ -6,7 +6,7 @@ from typing import Final
 from pylint.testutils import CheckerTestCase
 from pylint.testutils import MessageTest
 
-from checkers.test_no_extra_comments import TestNoExtraCommentsChecker as CheckerUnderTest
+from pylint_gajaguar.test_no_extra_comments import TestNoExtraCommentsChecker as CheckerUnderTest
 from tests.conftest import build_module_from_source
 from tests.conftest import build_test_module_from_source
 from tests.conftest import node_position

@@ -8,8 +8,8 @@ from typing import TYPE_CHECKING
 
 from pylint.checkers import BaseChecker
 
-from checkers.scopes import is_test_function
-from checkers.scopes import section_markers
+from pylint_gajaguar.scopes import is_test_function
+from pylint_gajaguar.scopes import section_markers
 
 if TYPE_CHECKING:
     from typing import Final
