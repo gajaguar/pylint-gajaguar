@@ -22,7 +22,7 @@ class TestTestAAAMarkersChecker(CheckerTestCase):
         func = module.body[0]
         self.checker.open()
         expected = MessageTest(
-            "app-test-aaa-markers",
+            "gajaguar-test-aaa-markers",
             node=func,
             args=("test_thing", "# Arrange, # Act, # Assert"),
             **node_position(func),
@@ -40,7 +40,7 @@ class TestTestAAAMarkersChecker(CheckerTestCase):
         func = module.body[0]
         self.checker.open()
         expected = MessageTest(
-            "app-test-aaa-markers",
+            "gajaguar-test-aaa-markers",
             node=func,
             args=("test_thing", "# Act, # Assert"),
             **node_position(func),

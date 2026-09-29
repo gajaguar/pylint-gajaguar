@@ -15,7 +15,7 @@ class TestModuleConstNamingChecker(CheckerTestCase):
         node = astroid.extract_node("lower_name = 1")
         assign_name = node.targets[0]
         expected = MessageTest(
-            "app-module-const-naming",
+            "gajaguar-module-const-naming",
             node=assign_name,
             args=("lower_name",),
             line=assign_name.fromlineno,

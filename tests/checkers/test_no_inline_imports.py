@@ -19,7 +19,7 @@ class TestNoInlineImportsChecker(CheckerTestCase):
         """)
         import_node = node.body[0]
         expected = MessageTest(
-            "app-no-inline-imports",
+            "gajaguar-no-inline-imports",
             node=import_node,
             args=("os", "FunctionDef"),
             line=import_node.fromlineno,
@@ -51,7 +51,7 @@ class TestNoInlineImportsChecker(CheckerTestCase):
         """)
         importfrom_node = node.body[0]
         expected = MessageTest(
-            "app-no-inline-imports",
+            "gajaguar-no-inline-imports",
             node=importfrom_node,
             args=("path", "FunctionDef"),
             line=importfrom_node.fromlineno,

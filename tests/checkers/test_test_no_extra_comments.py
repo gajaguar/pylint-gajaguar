@@ -37,7 +37,7 @@ class TestTestNoExtraCommentsChecker(CheckerTestCase):
         self.checker.open()
         position = {**node_position(func), "line": 3}
         expected = MessageTest(
-            "app-test-no-extra-comments",
+            "gajaguar-test-no-extra-comments",
             node=func,
             args=("test_thing", 3, "# builds the widget"),
             **position,

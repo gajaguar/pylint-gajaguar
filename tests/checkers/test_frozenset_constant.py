@@ -15,7 +15,7 @@ class TestFrozensetConstantChecker(CheckerTestCase):
         node = astroid.extract_node("BAD = {1, 2, 3}")
         value = node.value
         expected = MessageTest(
-            "app-frozenset-constant",
+            "gajaguar-frozenset-constant",
             node=value,
             line=value.fromlineno,
             col_offset=value.col_offset,
@@ -33,7 +33,7 @@ class TestFrozensetConstantChecker(CheckerTestCase):
         node = astroid.extract_node("BAD = {x for x in range(3)}")
         value = node.value
         expected = MessageTest(
-            "app-frozenset-constant",
+            "gajaguar-frozenset-constant",
             node=value,
             line=value.fromlineno,
             col_offset=value.col_offset,
@@ -51,7 +51,7 @@ class TestFrozensetConstantChecker(CheckerTestCase):
         node = astroid.extract_node("BAD = set([1, 2, 3])")
         value = node.value
         expected = MessageTest(
-            "app-frozenset-constant",
+            "gajaguar-frozenset-constant",
             node=value,
             line=value.fromlineno,
             col_offset=value.col_offset,
@@ -78,7 +78,7 @@ class TestFrozensetConstantChecker(CheckerTestCase):
         node = astroid.extract_node("BAD: set[int] = {1, 2, 3}")
         value = node.value
         expected = MessageTest(
-            "app-frozenset-constant",
+            "gajaguar-frozenset-constant",
             node=value,
             line=value.fromlineno,
             col_offset=value.col_offset,

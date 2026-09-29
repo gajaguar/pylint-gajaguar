@@ -29,11 +29,11 @@ _WORD_PATTERN: Final[re.Pattern[str]] = re.compile(r"[a-z0-9]+")
 
 
 class TestNameImplementationDetailChecker(BaseChecker):
-    name = "app-test-name-implementation-detail"
+    name = "gajaguar-test-name-implementation-detail"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9017": (
             "Test name '%s' names an implementation detail: %s",
-            "app-test-name-implementation-detail",
+            "gajaguar-test-name-implementation-detail",
             "Test names SHOULD describe observable behavior, not how it is implemented.",
         )
     }
@@ -47,7 +47,7 @@ class TestNameImplementationDetailChecker(BaseChecker):
         found = [term for term in _IMPLEMENTATION_TERMS if (term in lowered if "_" in term else term in words)]
         if found:
             self.add_message(
-                "app-test-name-implementation-detail",
+                "gajaguar-test-name-implementation-detail",
                 node=node,
                 args=(node.name, ", ".join(sorted(set(found)))),
             )

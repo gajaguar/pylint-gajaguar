@@ -14,7 +14,7 @@ class TestRequireFinalChecker(CheckerTestCase):
         # Arrange
         node = astroid.extract_node("FOO = 1")
         expected = MessageTest(
-            "app-require-final",
+            "gajaguar-require-final",
             node=node,
             args=("FOO",),
             line=node.fromlineno,
@@ -32,7 +32,7 @@ class TestRequireFinalChecker(CheckerTestCase):
         # Arrange
         node = astroid.extract_node("FOO: int = 1")
         expected = MessageTest(
-            "app-require-final",
+            "gajaguar-require-final",
             node=node,
             args=("FOO",),
             line=node.fromlineno,

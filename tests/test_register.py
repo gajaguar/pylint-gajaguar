@@ -7,21 +7,21 @@ from pylint.lint import PyLinter
 from pylint_gajaguar import register
 
 EXPECTED_CHECKER_NAMES: Final = frozenset({
-    "app-smoke",
-    "app-no-docstrings",
-    "app-test-aaa-markers",
-    "app-test-no-blank-lines",
-    "app-test-no-extra-comments",
-    "app-test-partial-assertion",
-    "app-test-name-implementation-detail",
-    "app-unused-arg-use-del",
-    "app-no-relative-imports",
-    "app-use-contextlib-suppress",
-    "app-module-const-naming",
-    "app-no-file-level-disable",
-    "app-no-inline-imports",
-    "app-frozenset-constant",
-    "app-require-final",
+    "gajaguar-smoke",
+    "gajaguar-no-docstrings",
+    "gajaguar-test-aaa-markers",
+    "gajaguar-test-no-blank-lines",
+    "gajaguar-test-no-extra-comments",
+    "gajaguar-test-partial-assertion",
+    "gajaguar-test-name-implementation-detail",
+    "gajaguar-unused-arg-use-del",
+    "gajaguar-no-relative-imports",
+    "gajaguar-use-contextlib-suppress",
+    "gajaguar-module-const-naming",
+    "gajaguar-no-file-level-disable",
+    "gajaguar-no-inline-imports",
+    "gajaguar-frozenset-constant",
+    "gajaguar-require-final",
 })
 
 

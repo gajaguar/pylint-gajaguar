@@ -26,11 +26,11 @@ _NON_CODE: Final = frozenset({
 
 
 class NoFileLevelDisableChecker(BaseTokenChecker):
-    name = "app-no-file-level-disable"
+    name = "gajaguar-no-file-level-disable"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9006": (
             "Standalone '# pylint: disable=' found; use inline or 'disable-next=' instead",
-            "app-no-file-level-disable",
+            "gajaguar-no-file-level-disable",
             "Lint suppressions must be inline or use disable-next, not standalone disables.",
         )
     }
@@ -46,4 +46,4 @@ class NoFileLevelDisableChecker(BaseTokenChecker):
 
         for lineno, text in comments:
             if _DISABLE_RE.search(text) and not _DISABLE_NEXT_RE.search(text) and lineno not in lines_with_code:
-                self.add_message("app-no-file-level-disable", line=lineno)
+                self.add_message("gajaguar-no-file-level-disable", line=lineno)

@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 
 class UseContextlibSuppressChecker(BaseChecker):
-    name = "app-use-contextlib-suppress"
+    name = "gajaguar-use-contextlib-suppress"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9012": (
             "Use 'contextlib.suppress(...)' instead of 'try/except/pass'",
-            "app-use-contextlib-suppress",
+            "gajaguar-use-contextlib-suppress",
             "When ignoring an expected exception, contextlib.suppress conveys intent explicitly.",
         )
     }
@@ -30,4 +30,4 @@ class UseContextlibSuppressChecker(BaseChecker):
             body = handler.body
             if not (len(body) == 1 and isinstance(body[0], astroid.nodes.Pass)):
                 return
-        self.add_message("app-use-contextlib-suppress", node=node)
+        self.add_message("gajaguar-use-contextlib-suppress", node=node)

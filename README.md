@@ -5,7 +5,7 @@
 [![ruff](https://img.shields.io/badge/ruff-checked-orange?style=flat-square&logo=ruff&logoColor=white)](https://docs.astral.sh/ruff/)
 [![pylint](https://img.shields.io/badge/pylint-checked-428f7f?style=flat-square)](https://pylint.pycqa.org/)
 [![mypy](https://img.shields.io/badge/mypy-checked-blue?style=flat-square)](http://mypy-lang.org/)
-[![version](https://img.shields.io/badge/version-1.1.2-blue?style=flat-square)](https://github.com/gajaguar/pylint-gajaguar)
+[![version](https://img.shields.io/badge/version-2.0.0-blue?style=flat-square)](https://github.com/gajaguar/pylint-gajaguar)
 [![python](https://img.shields.io/badge/python->=3.14-blue?style=flat-square)](https://docs.python.org/3.14/)
 [![Topics](https://img.shields.io/badge/topics-pylint%20%7C%20pylint--plugin-informational)](https://github.com/gajaguar/pylint-gajaguar)
 [![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
@@ -50,7 +50,7 @@ defines the rule.
 - **14 enforced checkers**: docstrings, AAA test markers, blank-line
   discipline, imports, naming, `Final` annotations, `frozenset`
   constants, and `contextlib.suppress`.
-- **Test-scoped rules**: the `app-test-*` checkers activate only on files
+- **Test-scoped rules**: the `gajaguar-test-*` checkers activate only on files
   under `tests/`, files matching `test_*.py` or `*_test.py`, or any parent
   named `test` or `tests`. Production code paths stay unaffected.
 - **Configurable section markers**: tune the AAA markers via pylint
@@ -73,19 +73,19 @@ targets.
 Run pylint with the plugin against your source tree:
 
 ```bash
-uv run pylint --load-plugins=pylint_gajaguar --disable=all --enable=app-no-docstrings,\
-app-test-aaa-markers,app-test-no-blank-lines,app-test-no-extra-comments,\
-app-test-partial-assertion,app-test-name-implementation-detail,\
-app-unused-arg-use-del,app-module-const-naming,app-no-file-level-disable,\
-app-no-inline-imports,app-no-relative-imports,app-use-contextlib-suppress,\
-app-frozenset-constant,app-require-final src tests
+uv run pylint --load-plugins=pylint_gajaguar --disable=all --enable=gajaguar-no-docstrings,\
+gajaguar-test-aaa-markers,gajaguar-test-no-blank-lines,gajaguar-test-no-extra-comments,\
+gajaguar-test-partial-assertion,gajaguar-test-name-implementation-detail,\
+gajaguar-unused-arg-use-del,gajaguar-module-const-naming,gajaguar-no-file-level-disable,\
+gajaguar-no-inline-imports,gajaguar-no-relative-imports,gajaguar-use-contextlib-suppress,\
+gajaguar-frozenset-constant,gajaguar-require-final src tests
 ```
 
 The `pylint_gajaguar` argument is the module the wheel installs (see
 [Architecture](#architecture)). The `--disable=all` flag is
 deliberate: pylint's built-in rules overlap with ruff (line length,
 import placement), and `missing-module-docstring` conflicts with
-`app-no-docstrings`. The `--enable=...` list selects only the plugin's
+`gajaguar-no-docstrings`. The `--enable=...` list selects only the plugin's
 own rules.
 
 For the local development loop in this repository:
@@ -159,7 +159,7 @@ package's `__init__.py`.
 `pylint_gajaguar/__init__.py` re-exports `register` from `_register.py`,
 which instantiates and registers each checker with the pylint linter.
 `scopes.py` provides the shared section-marker option and test-scoping
-helpers that the `app-test-*` checkers consume.
+helpers that the `gajaguar-test-*` checkers consume.
 
 ## Built with
 
@@ -182,28 +182,28 @@ helpers that the `app-test-*` checkers consume.
 
 ### Rule reference
 
-`app-smoke` registers with pylint but carries no messages; it exists to
+`gajaguar-smoke` registers with pylint but carries no messages; it exists to
 verify the registration wiring. The remaining 14 rules each carry a
 message code and report violations.
 
-| Rule (`name`)                         | Code  | Enforces                                                        |
-| ------------------------------------- | ----- | --------------------------------------------------------------- |
-| `app-no-docstrings`                   | W9001 | No docstrings on functions, methods, or classes (use comments)  |
-| `app-test-aaa-markers`                | W9002 | `test_*` bodies contain `# Arrange`, `# Act`, `# Assert`        |
-| `app-test-no-blank-lines`             | W9003 | No blank lines inside test method bodies                        |
-| `app-unused-arg-use-del`              | W9004 | Use `del arg` at body top, not a `_`-prefixed arg               |
-| `app-module-const-naming`             | C9005 | Module-level names are `SCREAMING_SNAKE_CASE`                   |
-| `app-no-file-level-disable`           | W9006 | No standalone `# pylint: disable=`; use inline / `disable-next` |
-| `app-no-inline-imports`               | W9008 | Imports at module top, not inside functions                     |
-| `app-no-relative-imports`             | W9009 | Absolute imports only                                           |
-| `app-use-contextlib-suppress`         | W9012 | `contextlib.suppress(...)` over `try/except/pass`               |
-| `app-frozenset-constant`              | W9013 | Module-level set constants use `frozenset(...)`                 |
-| `app-require-final`                   | C9014 | Module-level constants carry a `Final` annotation               |
-| `app-test-no-extra-comments`          | W9015 | Test bodies carry only the configured section markers           |
-| `app-test-partial-assertion`          | W9016 | Field assertions without a whole-object assertion (advisory)    |
-| `app-test-name-implementation-detail` | W9017 | Test names naming mocks, patches, internals (advisory)          |
+| Rule (`name`)                              | Code  | Enforces                                                        |
+| ------------------------------------------ | ----- | --------------------------------------------------------------- |
+| `gajaguar-no-docstrings`                   | W9001 | No docstrings on functions, methods, or classes (use comments)  |
+| `gajaguar-test-aaa-markers`                | W9002 | `test_*` bodies contain `# Arrange`, `# Act`, `# Assert`        |
+| `gajaguar-test-no-blank-lines`             | W9003 | No blank lines inside test method bodies                        |
+| `gajaguar-unused-arg-use-del`              | W9004 | Use `del arg` at body top, not a `_`-prefixed arg               |
+| `gajaguar-module-const-naming`             | C9005 | Module-level names are `SCREAMING_SNAKE_CASE`                   |
+| `gajaguar-no-file-level-disable`           | W9006 | No standalone `# pylint: disable=`; use inline / `disable-next` |
+| `gajaguar-no-inline-imports`               | W9008 | Imports at module top, not inside functions                     |
+| `gajaguar-no-relative-imports`             | W9009 | Absolute imports only                                           |
+| `gajaguar-use-contextlib-suppress`         | W9012 | `contextlib.suppress(...)` over `try/except/pass`               |
+| `gajaguar-frozenset-constant`              | W9013 | Module-level set constants use `frozenset(...)`                 |
+| `gajaguar-require-final`                   | C9014 | Module-level constants carry a `Final` annotation               |
+| `gajaguar-test-no-extra-comments`          | W9015 | Test bodies carry only the configured section markers           |
+| `gajaguar-test-partial-assertion`          | W9016 | Field assertions without a whole-object assertion (advisory)    |
+| `gajaguar-test-name-implementation-detail` | W9017 | Test names naming mocks, patches, internals (advisory)          |
 
-`app-test-partial-assertion` and `app-test-name-implementation-detail`
+`gajaguar-test-partial-assertion` and `gajaguar-test-name-implementation-detail`
 use heuristics with a measurable false-positive rate; treat their output
 as advisory, not a hard gate.
 
@@ -220,7 +220,7 @@ env var to experiment with markers without rewriting the linter config.
 
 ### Test scoping
 
-The `app-test-*` rules activate only on files matching one of these:
+The `gajaguar-test-*` rules activate only on files matching one of these:
 
 - Stem starts with `test_` (e.g. `test_module.py`)
 - Stem ends with `_test` (e.g. `module_test.py`)
