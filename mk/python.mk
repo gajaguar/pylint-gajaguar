@@ -36,7 +36,7 @@ pylint: ## Self-lint with this repo's own checkers (see github.com/gajaguar/pyli
 	$(UV) run pylint $(or $(FILES),src tests)
 
 pylint-rules: ## Fail if an installed pylint-gajaguar rule is not enabled in pyproject.toml
-	@missing=$$($(UV) run pylint --list-msgs-enabled | sed -n '/^Disabled/,/^Non-emit/p' | grep -oE 'gajaguar-[a-z-]+'); \
+	@missing=$$($(UV) run pylint --list-msgs-enabled | sed -n '/^Disabled/,/^Non-emit/p' | grep -oE 'gajaguar-[a-z-]+' || true); \
 	test -z "$$missing" || { echo 'Missing from [tool.pylint."messages control"].enable:'; \
 		printf '  "%s",\n' $$missing; exit 1; }
 
