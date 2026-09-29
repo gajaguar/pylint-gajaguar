@@ -7,8 +7,8 @@
 [![mypy](https://img.shields.io/badge/mypy-checked-blue?style=flat-square)](http://mypy-lang.org/)
 [![PyPI](https://img.shields.io/pypi/v/pylint-gajaguar?style=flat-square)](https://pypi.org/project/pylint-gajaguar/)
 [![python](https://img.shields.io/badge/python->=3.14-blue?style=flat-square)](https://docs.python.org/3.14/)
-[![Topics](https://img.shields.io/badge/topics-pylint%20%7C%20pylint--plugin-informational)](https://github.com/gajaguar/pylint-gajaguar)
-[![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+[![Topics](https://img.shields.io/badge/topics-pylint%20%7C%20pylint--plugin%20%7C%20linter%20%7C%20static--analysis%20%7C%20code--quality-informational)](https://github.com/gajaguar/pylint-gajaguar)
+[![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](https://github.com/gajaguar/pylint-gajaguar/blob/main/LICENSE)
 
 Opinionated pylint checkers that encode review preferences beyond ruff,
 self-linting this repository.
@@ -143,18 +143,19 @@ make install
 
 ## Architecture
 
-```mermaid
-flowchart LR
-  Run[pylint --load-plugins=pylint_gajaguar] --> Pkg[pylint_gajaguar.register]
-  Pkg --> Def[pylint_gajaguar._register.register]
-  Def --> Checks[Checker classes]
-  Scopes[scopes.py: markers + scoping] --> Checks
-  Checks --> Msgs[pylint messages]
+```text
+pylint --load-plugins=pylint_gajaguar
+  -> pylint_gajaguar/__init__.py (re-exports register)
+    -> pylint_gajaguar/_register.py: register(linter)
+      -> instantiates and registers each Checker class
+         -> pylint messages
+scopes.py -> shared section-marker option + test-scoping helpers,
+             consumed by the gajaguar-test-* checkers
 ```
 
-The wheel ships a single top-level package, `pylint_gajaguar`:
-`[tool.hatch.build.targets.wheel]` sets `sources = ["src"]`, so
-`src/pylint_gajaguar/` installs as `pylint_gajaguar`. That is why
+The wheel ships a single top-level package, `pylint_gajaguar`: hatchling
+finds `src/pylint_gajaguar/` from the project name and installs it as
+`pylint_gajaguar`, without the `src/` prefix. That is why
 `--load-plugins=pylint_gajaguar` resolves: pylint calls `register` from the
 package's `__init__.py`.
 
@@ -252,7 +253,7 @@ function in the same file is not.
 Contributions optimize this plugin. Fork the repository, create a
 feature branch, commit your change, push, and open a Pull Request.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the local setup, the
+See [CONTRIBUTING.md][contributing] for the local setup, the
 `check` vs `fix` convention, and the three-file procedure for adding a
 new checker.
 
@@ -261,7 +262,7 @@ new checker.
 Report vulnerabilities privately by email to <dev@gajaguar.com>. Do not
 open a public issue, pull request, or discussion.
 
-See [SECURITY.md](SECURITY.md) for supported versions and the reporting
+See [SECURITY.md][security] for supported versions and the reporting
 process.
 
 ## Open items
@@ -271,5 +272,9 @@ process.
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](LICENSE) for the full
+Distributed under the MIT License. See [LICENSE][license] for the full
 text.
+
+[contributing]: https://github.com/gajaguar/pylint-gajaguar/blob/main/CONTRIBUTING.md
+[security]: https://github.com/gajaguar/pylint-gajaguar/blob/main/SECURITY.md
+[license]: https://github.com/gajaguar/pylint-gajaguar/blob/main/LICENSE
