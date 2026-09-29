@@ -453,6 +453,9 @@ wheels = [
 name = "pylint-gajaguar"
 version = "2.0.0"
 source = { editable = "." }
+dependencies = [
+    { name = "pylint" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -467,6 +470,7 @@ dev = [
 ]
 
 [package.metadata]
+requires-dist = [{ name = "pylint", specifier = ">=4.0" }]
 
 [package.metadata.requires-dev]
 dev = [

@@ -24,3 +24,4 @@ uv
 checkmake
 editorconfig
 smol
+pypa

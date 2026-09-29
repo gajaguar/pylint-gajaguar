@@ -5,9 +5,26 @@ build-backend = "hatchling.build"
 [project]
 name = "pylint-gajaguar"
 version = "2.0.0"
-description = "Plugin with a series of rules based on good practices and personal tastes."
+description = "Opinionated pylint checkers that encode review preferences beyond ruff"
+readme = "README.md"
+authors = [{ name = "gajaguar", email = "dev@gajaguar.com" }]
+license = "MIT"
+keywords = ["pylint", "pylint-plugin", "linter", "code-quality"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Quality Assurance",
+]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = ["pylint>=4.0"]
+
+[project.urls]
+Homepage = "https://github.com/gajaguar/pylint-gajaguar"
+Repository = "https://github.com/gajaguar/pylint-gajaguar"
+Issues = "https://github.com/gajaguar/pylint-gajaguar/issues"
 
 [tool.pytest.ini_options]
 addopts = "--cov=src --cov-report=term-missing"

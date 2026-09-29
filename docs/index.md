@@ -17,6 +17,11 @@ out under this directory.
 
 See [`log.md`](log.md) for the bundle's change history.
 
+## Release
+
+* [Release](release/index.md) - how this project ships new versions to
+  PyPI.
+
 ## Python
 
 * [Python](python/index.md) - the interpreter source and the
