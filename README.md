@@ -1,14 +1,10 @@
 # Pylint Plugin
 
 [![CI](https://github.com/gajaguar/pylint-gajaguar/actions/workflows/ci.yml/badge.svg)](https://github.com/gajaguar/pylint-gajaguar/actions/workflows/ci.yml)
-[![Python CI](https://github.com/gajaguar/pylint-gajaguar/actions/workflows/python.yml/badge.svg?branch=main)](https://github.com/gajaguar/pylint-gajaguar/actions/workflows/python.yml)
-[![ruff](https://img.shields.io/badge/ruff-checked-orange?style=flat-square&logo=ruff&logoColor=white)](https://docs.astral.sh/ruff/)
-[![pylint](https://img.shields.io/badge/pylint-checked-428f7f?style=flat-square)](https://pylint.pycqa.org/)
-[![mypy](https://img.shields.io/badge/mypy-checked-blue?style=flat-square)](http://mypy-lang.org/)
-[![PyPI](https://img.shields.io/pypi/v/pylint-gajaguar?style=flat-square)](https://pypi.org/project/pylint-gajaguar/)
-[![python](https://img.shields.io/badge/python->=3.14-blue?style=flat-square)](https://docs.python.org/3.14/)
-[![Topics](https://img.shields.io/badge/topics-pylint%20%7C%20pylint--plugin%20%7C%20linter%20%7C%20static--analysis%20%7C%20code--quality-informational)](https://github.com/gajaguar/pylint-gajaguar)
-[![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](https://github.com/gajaguar/pylint-gajaguar/blob/main/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/pylint-gajaguar.svg)](https://pypi.org/project/pylint-gajaguar/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python 3.14+](https://img.shields.io/badge/python-3.14%2B-blue.svg)](pyproject.toml)
+[![Topics](https://img.shields.io/badge/topics-pylint%20%7C%20pylint--plugin%20%7C%20code--quality%20%7C%20coding--standards%20%7C%20lint%20%7C%20linter%20%7C%20python%20%7C%20python--linter%20%7C%20static--analysis-informational)](https://github.com/gajaguar/pylint-gajaguar)
 
 Opinionated pylint checkers that encode review preferences beyond ruff,
 self-linting this repository.
