@@ -18,7 +18,7 @@ class TestUnusedArgUseDelChecker(CheckerTestCase):
         """)
         arg = node.args.args[0]
         expected = MessageTest(
-            "app-unused-arg-use-del",
+            "gajaguar-unused-arg-use-del",
             node=arg,
             args=("_bar", "_bar"),
             line=arg.fromlineno,

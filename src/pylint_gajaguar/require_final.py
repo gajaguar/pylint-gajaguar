@@ -32,11 +32,11 @@ def _skip_name(name: str) -> bool:
 
 
 class RequireFinalChecker(BaseChecker):
-    name = "app-require-final"
+    name = "gajaguar-require-final"
     msgs = {  # ruff: ignore[mutable-class-default]
         "C9014": (
             "Module-level constant '%s' must be annotated Final",
-            "app-require-final",
+            "gajaguar-require-final",
             "Module-level constants must carry a Final annotation to make immutability explicit.",
         )
     }
@@ -49,7 +49,7 @@ class RequireFinalChecker(BaseChecker):
         name = node.targets[0].name
         if _skip_name(name):
             return
-        self.add_message("app-require-final", node=node, args=(name,))
+        self.add_message("gajaguar-require-final", node=node, args=(name,))
 
     def visit_annassign(self, node: AnnAssign) -> None:
         if not isinstance(node.frame(), astroid.nodes.Module):
@@ -60,4 +60,4 @@ class RequireFinalChecker(BaseChecker):
         if _skip_name(name):
             return
         if not _is_final(node.annotation):
-            self.add_message("app-require-final", node=node, args=(name,))
+            self.add_message("gajaguar-require-final", node=node, args=(name,))

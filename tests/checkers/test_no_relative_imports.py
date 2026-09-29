@@ -14,7 +14,7 @@ class TestNoRelativeImportsChecker(CheckerTestCase):
         # Arrange
         node = astroid.extract_node("from . import foo")
         expected = MessageTest(
-            "app-no-relative-imports",
+            "gajaguar-no-relative-imports",
             node=node,
             args=(".",),
             line=node.fromlineno,
@@ -32,7 +32,7 @@ class TestNoRelativeImportsChecker(CheckerTestCase):
         # Arrange
         node = astroid.extract_node("from ..pkg import foo")
         expected = MessageTest(
-            "app-no-relative-imports",
+            "gajaguar-no-relative-imports",
             node=node,
             args=("..pkg",),
             line=node.fromlineno,

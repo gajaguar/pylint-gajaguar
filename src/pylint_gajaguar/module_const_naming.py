@@ -17,11 +17,11 @@ _DUNDER: Final[Pattern[str]] = re.compile(r"^__\w+__$")
 
 
 class ModuleConstNamingChecker(BaseChecker):
-    name = "app-module-const-naming"
+    name = "gajaguar-module-const-naming"
     msgs = {  # ruff: ignore[mutable-class-default]
         "C9005": (
             "Module-level name '%s' should be SCREAMING_SNAKE_CASE",
-            "app-module-const-naming",
+            "gajaguar-module-const-naming",
             "Module-level variables are treated as constants and must use SCREAMING_SNAKE_CASE.",
         )
     }
@@ -33,4 +33,4 @@ class ModuleConstNamingChecker(BaseChecker):
         if _DUNDER.match(name) or name == "_":
             return
         if not _SCREAMING.match(name):
-            self.add_message("app-module-const-naming", node=node, args=(name,))
+            self.add_message("gajaguar-module-const-naming", node=node, args=(name,))

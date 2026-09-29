@@ -15,11 +15,11 @@ if TYPE_CHECKING:
 
 
 class TestNoBlankLinesChecker(BaseChecker):
-    name = "app-test-no-blank-lines"
+    name = "gajaguar-test-no-blank-lines"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9003": (
             "Test method '%s' contains a blank line at line %d",
-            "app-test-no-blank-lines",
+            "gajaguar-test-no-blank-lines",
             "Test method bodies MUST NOT contain blank lines.",
         )
     }
@@ -56,7 +56,7 @@ class TestNoBlankLinesChecker(BaseChecker):
         for index in range(start, end):
             if index < len(self._lines) and not self._lines[index].strip():
                 self.add_message(
-                    "app-test-no-blank-lines",
+                    "gajaguar-test-no-blank-lines",
                     line=index + 1,
                     node=node,
                     args=(node.name, index + 1),

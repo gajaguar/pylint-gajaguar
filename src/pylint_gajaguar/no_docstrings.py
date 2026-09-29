@@ -10,18 +10,18 @@ if TYPE_CHECKING:
 
 
 class NoDocstringsChecker(BaseChecker):
-    name = "app-no-docstrings"
+    name = "gajaguar-no-docstrings"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9001": (
             "Docstring found in '%s'; use comments instead",
-            "app-no-docstrings",
+            "gajaguar-no-docstrings",
             "Functions, methods, and classes MUST NOT have docstrings.",
         )
     }
 
     def _check_docstring(self, node: FunctionDef | ClassDef) -> None:
         if node.doc_node is not None:
-            self.add_message("app-no-docstrings", node=node.doc_node, args=(node.name,))
+            self.add_message("gajaguar-no-docstrings", node=node.doc_node, args=(node.name,))
 
     def visit_functiondef(self, node: FunctionDef) -> None:
         self._check_docstring(node)

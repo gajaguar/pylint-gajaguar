@@ -24,11 +24,11 @@ def _is_mutable_set(value: NodeNG) -> bool:
 
 
 class FrozensetConstantChecker(BaseChecker):
-    name = "app-frozenset-constant"
+    name = "gajaguar-frozenset-constant"
     msgs = {  # ruff: ignore[mutable-class-default]
         "W9013": (
             "Set constant should be a frozenset(...) for immutability",
-            "app-frozenset-constant",
+            "gajaguar-frozenset-constant",
             "Module-level set constants are mutable; use frozenset(...) to prevent accidental mutation.",
         )
     }
@@ -37,10 +37,10 @@ class FrozensetConstantChecker(BaseChecker):
         if not isinstance(node.frame(), astroid.nodes.Module):
             return
         if _is_mutable_set(node.value):
-            self.add_message("app-frozenset-constant", node=node.value)
+            self.add_message("gajaguar-frozenset-constant", node=node.value)
 
     def visit_annassign(self, node: AnnAssign) -> None:
         if not isinstance(node.frame(), astroid.nodes.Module):
             return
         if node.value is not None and _is_mutable_set(node.value):
-            self.add_message("app-frozenset-constant", node=node.value)
+            self.add_message("gajaguar-frozenset-constant", node=node.value)
