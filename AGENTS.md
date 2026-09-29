@@ -1,5 +1,14 @@
 # AGENTS.md
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
+
+## Agent instructions
+
+`AGENTS.md` is the only agent instructions file. The repository MUST NOT
+contain a `CLAUDE.md` or any other tool-specific copy; project rules go here.
+
 ## What this is
 
 A pylint plugin that adds 14 opinionated checkers (`gajaguar-*` rules) encoding
@@ -9,33 +18,22 @@ module constants, etc. The plugin self-lints this repo — `make pylint`
 runs the rules it defines against `src` and `tests`, so a regression in
 the plugin fails the same gate it defines.
 
-## Commands
+## Command surface
 
-```bash
-make install          # sync venv, Node tooling (pnpm), pre-commit hook
-make check             # gate: lint, md-lint, spell, mypy, pyright, pylint
-make fix               # apply safe auto-fixes
-make fix-unsafe        # apply all auto-fixes, including unsafe ones
-make test              # run pytest (with coverage)
-make pylint            # run just the plugin's own checkers against src/tests
-make help              # list every target
-```
+The agent MUST use the `Makefile` targets (`make check`, `make fix`,
+`make test`, ...) instead of invoking the underlying tools directly, and
+MUST NOT add a target without its `##` help line. Run `make help` for the
+full list.
 
 Scope any target to specific files with `FILES=`:
 
 ```bash
 make lint FILES="src/pylint_gajaguar/scopes.py"
 make pylint FILES="src"
-make md-lint FILES="README.md"
+make pytest FILES="tests/checkers/test_scopes.py::test_name -x"
 ```
 
-Run a single test:
-
-```bash
-uv run pytest tests/checkers/test_scopes.py::test_name -x
-```
-
-Override AAA section markers without touching config:
+Override the AAA section markers without touching config:
 
 ```bash
 TEST_SECTION_MARKERS="Given When Then" make pylint
@@ -43,6 +41,42 @@ TEST_SECTION_MARKERS="Given When Then" make pylint
 
 `check`/`fix` are always split: `check*` targets are read-only and exit
 non-zero on problems (the CI gate); `fix*` targets mutate files in place.
+
+## Gate
+
+`make check` MUST pass before any commit. Findings SHOULD be fixed with
+`make fix` before editing by hand.
+
+## Commits and branches
+
+Commit messages MUST follow
+[Conventional Commits](https://www.conventionalcommits.org/); branch names
+MUST follow [Conventional Branch](https://conventionalbranch.org/)
+(`<type>/<description>`, e.g. `feat/add-checker`, `fix/frozenset-false-positive`).
+A commit type may be any Conventional Commits type, but a branch type MUST
+be one of `feat` (or `feature`), `fix` (or `bugfix`), `hotfix`, `release`,
+`chore`; documentation and dependency work uses `chore/`, e.g.
+`chore/update-readme`. A pre-commit hook and `make commits-check` enforce
+both — see
+[`docs/conventions/commits-check.md`](docs/conventions/commits-check.md).
+
+Scope checker and checker-test edits to one checker per change.
+
+## Documentation
+
+Documentation MUST be an OKF bundle of atomic notes under `docs/`: one
+Markdown concept per file, with YAML frontmatter (`type`, `title`,
+`description`). A new note MUST be added to its directory's `index.md` and
+to [`docs/log.md`](docs/log.md). A note MUST cover exactly one concept, and
+only when it explains something a reader can't already get from `make
+help`, a linter's own message, or the configuration it comes from.
+
+## Dependencies
+
+A new tool MUST be added to the ecosystem manager that owns it and MUST
+only go in `mise.toml` when it bootstraps an ecosystem or has none in this
+repository — see
+[`docs/toolchain/layering-rule.md`](docs/toolchain/layering-rule.md).
 
 ## Architecture
 
@@ -102,14 +136,30 @@ functions are checked (`scopes.is_test_function`); helpers in the same
 file are not. Non-test-scoped checkers (`gajaguar-no-docstrings`,
 `gajaguar-module-const-naming`, `gajaguar-require-final`, etc.) apply everywhere.
 
-## Conventions specific to this repo
+## Python
 
-- **No docstrings anywhere** (including on new checkers/tests) —
-  `gajaguar-no-docstrings` fails `make check` on any. Comments only when the
-  _why_ isn't obvious from the code; pylint has no autofix for this, so
+- The agent MUST NOT add docstrings to functions, methods, or classes; use a
+  comment only where the *why* is not obvious from the code. The plugin's own
+  `gajaguar-no-docstrings` checker enforces this and fails
+  `make check`/`make pylint` otherwise; pylint has no autofix for it, so
   remove docstrings by hand.
-- Absolute imports only (`gajaguar-no-relative-imports`); `from pylint_gajaguar.foo
-import Bar`, not `from .foo import Bar`.
+- Every `gajaguar-*` rule MUST be enabled in `pyproject.toml`'s
+  `[tool.pylint."messages control"].enable`; `make pylint-rules` (part of
+  `make check`) fails and lists any that are missing.
+- `conventional-git` MUST be the latest PyPI release; `make
+  conventional-git-latest` (part of `make check`) fails otherwise, and `make
+  install` upgrades it.
+- The agent MUST NOT add a `pyproject.toml` setting that equals the tool's
+  default, and every `lint.per-file-ignores` entry MUST match a current
+  violation — see
+  [`docs/python/pyproject-defaults.md`](docs/python/pyproject-defaults.md).
+- The agent MUST run `make check` and `make test` before committing Python
+  changes, and SHOULD run `make fix` first for anything auto-fixable.
+
+### Conventions specific to this repo
+
+- Absolute imports only (`gajaguar-no-relative-imports`):
+  `from pylint_gajaguar.foo import Bar`, not `from .foo import Bar`.
 - Module-level constants: `SCREAMING_SNAKE_CASE` name
   (`gajaguar-module-const-naming`) and a `Final` annotation
   (`gajaguar-require-final`); module-level set constants must be
@@ -121,7 +171,7 @@ import Bar`, not `from .foo import Bar`.
 - `contextlib.suppress(...)` over `try/except/pass`
   (`gajaguar-use-contextlib-suppress`).
 - Test bodies: exactly the configured AAA section markers (default `#
-Arrange` / `# Act` / `# Assert`) as comments, no blank lines, no extra
+  Arrange` / `# Act` / `# Assert`) as comments, no blank lines, no extra
   comments (`gajaguar-test-aaa-markers`, `gajaguar-test-no-blank-lines`,
   `gajaguar-test-no-extra-comments`). `gajaguar-test-partial-assertion` and
   `gajaguar-test-name-implementation-detail` are advisory heuristics with a
@@ -129,11 +179,3 @@ Arrange` / `# Act` / `# Assert`) as comments, no blank lines, no extra
 - Ruff `lint.select = ["ALL"]`; justified ignores use `# noqa: <rule>`
   inline. mypy runs `strict`; pyright is clean on `src` (tests excluded
   from both).
-- Toolchain layering (see `docs/toolchain.md`): mise pins what bootstraps
-  an ecosystem or belongs to none (node, pnpm, python, uv, checkmake,
-  pre-commit); each ecosystem's own package manager installs everything
-  else (`package.json`/pnpm for cspell/markdownlint-cli2,
-  `pyproject.toml`/uv for ruff/mypy/pyright/pytest/pylint). Don't add a
-  tool to `mise.toml` if it belongs to an existing ecosystem's lockfile.
-- Commits: Conventional Commits. Branches: Conventional Branch.
-- Scope checker/checker-test edits to one checker per change.
