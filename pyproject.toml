@@ -60,7 +60,7 @@ enable = ["gajaguar"]
 [dependency-groups]
 dev = [
   "astroid>=4.0.4",
-  "conventional-git>=1.0",
+  "conventional-git>=1.1",
   "mypy>=2.3.1",
   "pylint>=4.0.9",
   "pyright>=1.1.414",
