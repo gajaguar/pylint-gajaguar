@@ -1,8 +1,8 @@
 {
-	"name": "pylint-gajaguar-node-tools",
+	"name": "pylint-gajaguar-tools",
 	"private": true,
 	"devDependencies": {
-		"cspell": "^10.3.4",
+		"cspell": "^10.3.6",
 		"markdownlint-cli2": "^0.23.3"
 	}
 }

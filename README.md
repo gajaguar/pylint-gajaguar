@@ -246,12 +246,8 @@ function in the same file is not.
 
 ## Contributing
 
-Contributions optimize this plugin. Fork the repository, create a
-feature branch, commit your change, push, and open a Pull Request.
-
-See [CONTRIBUTING.md][contributing] for the local setup, the
-`check` vs `fix` convention, and the three-file procedure for adding a
-new checker.
+Read [CONTRIBUTING.md][contributing] for the local setup, the conventions
+and the procedure for adding a checker.
 
 ## Security
 
