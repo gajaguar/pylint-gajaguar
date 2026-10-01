@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pylint-gajaguar"
-version = "2.0.0"
+version = "2.0.1"
 description = "Opinionated pylint checkers that encode review preferences beyond ruff"
 readme = "README.md"
 authors = [{ name = "gajaguar", email = "dev@gajaguar.com" }]
