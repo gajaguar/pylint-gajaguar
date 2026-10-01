@@ -68,14 +68,22 @@ spell: ## Spell-check files with cspell — accepts FILES="..."
 
 commits-check: ## Validate the commit range and branch name against Conventional Commits/Branch — see docs/conventions/commits-check.md
 	@git log --no-merges --format='%B%x00' $(BASE)..HEAD | while IFS= read -r -d '' message; do \
-		message="$${message#$$'\n'}"; [ -z "$$message" ] && continue; \
+		message="$${message#$$'\n'}"; \
 		echo "$$message" | $(CONVENTIONAL_GIT) check commit || exit 1; \
 	done
 	@$(CONVENTIONAL_GIT) check branch --name "$(BRANCH)"
 
-check: makefile-lint md-lint spell commits-check $(LANG_CHECK_TARGETS) ## Run the full read-only validation gate
+help-check: ## Fail if a Makefile target lacks its ## help line — see docs/conventions/help-check.md
+	@missing=$$(grep -HnE '^[a-zA-Z][a-zA-Z0-9_-]*[[:space:]]*:([^=]|$$)' Makefile mk/*.mk 2>/dev/null | grep -v '##' || true); \
+	test -z "$$missing" || { echo "target without a ## help line:" >&2; echo "$$missing" >&2; exit 1; }
 
-.PHONY: makefile-lint md-lint spell commits-check check
+claude-md-check: ## Fail if a CLAUDE.md exists, since AGENTS.md is the only agent file — see docs/conventions/claude-md-check.md
+	@found=$$(git ls-files --cached --others --exclude-standard | grep -E '(^|/)CLAUDE\.md$$' || true); \
+	test -z "$$found" || { echo "CLAUDE.md found; fold it into AGENTS.md and delete it:" >&2; echo "$$found" >&2; exit 1; }
+
+check: makefile-lint md-lint spell commits-check help-check claude-md-check $(LANG_CHECK_TARGETS) ## Run the full read-only validation gate
+
+.PHONY: makefile-lint md-lint spell commits-check help-check claude-md-check check
 
 ##@ Writable fixes (mutate files in place)
 
