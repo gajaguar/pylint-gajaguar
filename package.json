@@ -1,5 +1,5 @@
 {
-	"name": "pylint-gajaguar-node-tools",
+	"name": "pylint-gajaguar-tools",
 	"private": true,
 	"devDependencies": {
 		"cspell": "^10.3.4",

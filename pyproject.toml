@@ -26,7 +26,20 @@ Homepage = "https://github.com/gajaguar/pylint-gajaguar"
 Repository = "https://github.com/gajaguar/pylint-gajaguar"
 Issues = "https://github.com/gajaguar/pylint-gajaguar/issues"
 
+[dependency-groups]
+dev = [
+  "astroid>=4.0.4",
+  "conventional-git>=1.1",
+  "mypy>=2.3.1",
+  "pylint>=4.0.9",
+  "pyright>=1.1.414",
+  "pytest-cov>=7.1",
+  "pytest>=9.1",
+  "ruff>=0.16.8",
+]
+
 [tool.pytest.ini_options]
+testpaths = ["tests"]
 addopts = "--cov=src --cov-report=term-missing"
 
 [tool.coverage.report]
@@ -56,15 +69,3 @@ load-plugins = ["pylint_gajaguar"]
 [tool.pylint."messages control"]
 disable = ["all"]
 enable = ["gajaguar"]
-
-[dependency-groups]
-dev = [
-  "astroid>=4.0.4",
-  "conventional-git>=1.1",
-  "mypy>=2.3.1",
-  "pylint>=4.0.9",
-  "pyright>=1.1.414",
-  "pytest-cov>=7.1",
-  "pytest>=9.1",
-  "ruff>=0.16.8",
-]
