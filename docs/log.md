@@ -1,5 +1,15 @@
 # Directory Update Log
 
+## 2026-09-30
+
+* **Addition**: [`conventions/help-check.md`](conventions/help-check.md) and
+  [`conventions/claude-md-check.md`](conventions/claude-md-check.md) document
+  the `make help-check` and `make claude-md-check` targets that `make check`
+  now runs.
+* **Change**: [`conventions/commits-check.md`](conventions/commits-check.md)
+  states that `make commits-check` skips merge commits, and the branch-type
+  rule for documentation and dependency work.
+
 ## 2026-09-29
 
 * **Change**: The pre-commit hooks and `CONVENTIONAL_GIT` now run
