@@ -7,7 +7,7 @@ name = "pylint-gajaguar"
 version = "2.0.1"
 description = "Opinionated pylint checkers that encode review preferences beyond ruff"
 readme = "README.md"
-authors = [{ name = "gajaguar", email = "dev@gajaguar.com" }]
+authors = [{ name = "G.A.JAGUAR", email = "dev@gajaguar.com" }]
 license = "MIT"
 keywords = ["pylint", "pylint-plugin", "linter", "code-quality"]
 classifiers = [
