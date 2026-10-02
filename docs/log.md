@@ -1,5 +1,12 @@
 # Directory Update Log
 
+## 2026-10-02
+
+* **Change**: the first `make docs-retag` run re-assigned the tags of several
+  notes.
+* **Addition**: `okf-base.yaml`, `make docs-lint`, `tools/docs-retag.py`,
+  `conventions/tag-vocabulary.md` and `toolchain/retag-notes.md`.
+
 ## 2026-09-30
 
 * **Addition**: [`conventions/help-check.md`](conventions/help-check.md) and
