@@ -171,3 +171,6 @@ scopes.py -> shared section-marker option + test-scoping helpers,
   known false-positive rate, not hard gates.
 - Justify a ruff ignore with an inline `# noqa: <rule>`. mypy runs `strict`
   and pyright is clean on `src` (tests are excluded from both).
+- Tag a minor or major bump with `make release-tag` after its pull request
+  merges, as [`docs/conventions/versioning.md`](docs/conventions/versioning.md)
+  describes; the target tags the base branch as `v<project.version>`.
