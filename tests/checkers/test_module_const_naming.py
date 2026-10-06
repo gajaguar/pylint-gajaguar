@@ -82,3 +82,27 @@ class TestModuleConstNamingChecker(CheckerTestCase):
         messages = self.linter.release_messages()
         # Assert
         assert messages == []
+
+    def test_module_level_comprehension_target_is_ignored(self) -> None:
+        # Arrange
+        node = astroid.extract_node("[s for s in []]")
+        assign_name = node.generators[0].target
+        # Act
+        self.checker.visit_assignname(assign_name)
+        messages = self.linter.release_messages()
+        # Assert
+        assert messages == []
+
+    def test_decorator_comprehension_target_is_ignored(self) -> None:
+        # Arrange
+        node = astroid.extract_node("""
+        @deco([s for s in []])
+        def foo():
+            pass
+        """)
+        assign_name = node.decorators.nodes[0].args[0].generators[0].target
+        # Act
+        self.checker.visit_assignname(assign_name)
+        messages = self.linter.release_messages()
+        # Assert
+        assert messages == []
