@@ -27,7 +27,7 @@ class ModuleConstNamingChecker(BaseChecker):
     }
 
     def visit_assignname(self, node: AssignName) -> None:
-        if not isinstance(node.frame(), astroid.nodes.Module):
+        if not isinstance(node.scope(), astroid.nodes.Module):
             return
         name = node.name
         if _DUNDER.match(name) or name == "_":
