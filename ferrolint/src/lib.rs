@@ -1,6 +1,7 @@
 mod frozenset_constant;
 mod no_docstrings;
 mod no_relative_imports;
+mod require_final;
 mod use_contextlib_suppress;
 
 use ferrolint_plugin_sdk::prelude::*;
@@ -14,6 +15,7 @@ impl Checker for Gajaguar {
             .rule(frozenset_constant::rule())
             .rule(no_docstrings::rule())
             .rule(no_relative_imports::rule())
+            .rule(require_final::rule())
             .rule(use_contextlib_suppress::rule())
     }
 
@@ -21,6 +23,7 @@ impl Checker for Gajaguar {
         frozenset_constant::visit(node, cx);
         no_docstrings::visit(node, cx);
         no_relative_imports::visit(node, cx);
+        require_final::visit(node, cx);
         use_contextlib_suppress::visit(node, cx);
     }
 }
