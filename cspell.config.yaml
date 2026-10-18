@@ -24,3 +24,4 @@ ignorePaths:
   - "**/.pytest_cache/**"
   - "**/htmlcov/**"
   - "**/uv.lock"
+  - "**/target/**"
