@@ -1,5 +1,6 @@
 mod no_docstrings;
 mod no_relative_imports;
+mod use_contextlib_suppress;
 
 use ferrolint_plugin_sdk::prelude::*;
 
@@ -11,11 +12,13 @@ impl Checker for Gajaguar {
         Info::new("pylint-gajaguar", env!("CARGO_PKG_VERSION"))
             .rule(no_docstrings::rule())
             .rule(no_relative_imports::rule())
+            .rule(use_contextlib_suppress::rule())
     }
 
     fn visit(&mut self, node: &Node<'_>, cx: &mut Context<'_>) {
         no_docstrings::visit(node, cx);
         no_relative_imports::visit(node, cx);
+        use_contextlib_suppress::visit(node, cx);
     }
 }
 
