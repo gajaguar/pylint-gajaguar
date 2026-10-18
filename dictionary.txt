@@ -1,6 +1,8 @@
 astroid
 capsys
+cdylib
 checkmake
+clippy
 cspell
 delenv
 editorconfig
@@ -29,5 +31,4 @@ tolineno
 toptal
 uv
 venv
-cdylib
-clippy
+wasip

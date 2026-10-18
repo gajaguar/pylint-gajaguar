@@ -47,7 +47,7 @@ exclude_also = ["if __name__ == .__main__.:"]
 
 [tool.ruff]
 line-length = 119
-extend-exclude = ["tools"]
+extend-exclude = ["tools", "ferrolint"]
 lint.select = ["ALL"]
 lint.ignore = ["CPY", "D", "missing-trailing-comma"]
 lint.isort.force-single-line = true
@@ -55,7 +55,7 @@ lint.per-file-ignores."tests/**/*.py" = ["ARG", "assert", "private-member-access
 
 [tool.mypy]
 strict = true
-exclude = ["tests/", "tools/"]
+exclude = ["tests/", "tools/", "ferrolint/"]
 
 [[tool.mypy.overrides]]
 module = ["astroid.*", "pylint.*"]
