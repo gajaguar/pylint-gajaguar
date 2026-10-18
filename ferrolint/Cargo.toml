@@ -1,0 +1,20 @@
+[package]
+name = "pylint-gajaguar-ferrolint"
+version = "0.1.0"
+edition = "2024"
+description = "The pylint-gajaguar rules as a ferrolint WASM plugin"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# Pinned by revision: the SDK's version is the plugin contract's version.
+ferrolint-plugin-sdk = { git = "ssh://git@github.com/gajaguar/ferrolint.git", rev = "7a104ad982747bf721161efc96821116bd6f3b56" }
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
