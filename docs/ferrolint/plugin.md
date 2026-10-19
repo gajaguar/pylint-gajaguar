@@ -27,6 +27,7 @@ makes cargo fetch it with the `git` CLI, so SSH credentials apply.
 | `GAJ012` | `W9012` | `gajaguar-use-contextlib-suppress`         |
 | `GAJ013` | `W9013` | `gajaguar-frozenset-constant`              |
 | `GAJ014` | `C9014` | `gajaguar-require-final`                   |
+| `GAJ016` | `W9016` | `gajaguar-test-partial-assertion`          |
 | `GAJ017` | `W9017` | `gajaguar-test-name-implementation-detail` |
 
 The code is `GAJ0` plus the last two digits of the Pylint msg-id.
@@ -59,6 +60,5 @@ binary, neither of which CI has.
 
 ## Not ported yet
 
-`gajaguar-no-file-level-disable`, `gajaguar-test-no-extra-comments` and
-`gajaguar-test-partial-assertion` are missing: the first two need comments,
-which the AST does not carry, and the third needs a rule option.
+`gajaguar-no-file-level-disable` and `gajaguar-test-no-extra-comments` are
+missing: they need comments, which the AST does not carry.
