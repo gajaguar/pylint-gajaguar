@@ -4,6 +4,7 @@ mod no_docstrings;
 mod no_inline_imports;
 mod no_relative_imports;
 mod require_final;
+mod test_aaa_markers;
 mod test_name_implementation_detail;
 mod testing;
 mod unused_arg_use_del;
@@ -23,6 +24,7 @@ impl Checker for Gajaguar {
             .rule(no_inline_imports::rule())
             .rule(no_relative_imports::rule())
             .rule(require_final::rule())
+            .rule(test_aaa_markers::rule())
             .rule(test_name_implementation_detail::rule())
             .rule(unused_arg_use_del::rule())
             .rule(use_contextlib_suppress::rule())
@@ -35,6 +37,7 @@ impl Checker for Gajaguar {
         no_inline_imports::visit(node, cx);
         no_relative_imports::visit(node, cx);
         require_final::visit(node, cx);
+        test_aaa_markers::visit(node, cx);
         test_name_implementation_detail::visit(node, cx);
         unused_arg_use_del::visit(node, cx);
         use_contextlib_suppress::visit(node, cx);
