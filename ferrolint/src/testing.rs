@@ -24,6 +24,31 @@ pub fn is_test_function(node: &Node<'_>, cx: &Context<'_>) -> bool {
         && is_test_file(cx.path())
 }
 
+/// The comments a test body may carry, `# ` plus each section name. The
+/// `test-section-markers` option is a comma-separated list: the plugin's own
+/// option wins over the configuration's; the `TEST_SECTION_MARKERS`
+/// environment override is not available to a plugin.
+pub fn section_markers(cx: &Context<'_>) -> Vec<String> {
+    let value = cx
+        .plugin_option("test-section-markers")
+        .or_else(|| cx.option("test-section-markers"));
+    let names: Vec<&str> = value
+        .map(|value| {
+            value
+                .split(',')
+                .map(str::trim)
+                .filter(|name| !name.is_empty())
+                .collect()
+        })
+        .unwrap_or_default();
+    if names.is_empty() {
+        return ["Arrange", "Act", "Assert"]
+            .map(|name| format!("# {name}"))
+            .to_vec();
+    }
+    names.iter().map(|name| format!("# {name}")).collect()
+}
+
 /// The source lines with the byte offset each starts at.
 pub fn lines(source: &str) -> Vec<(usize, &str)> {
     source
