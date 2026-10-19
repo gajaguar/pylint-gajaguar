@@ -39,7 +39,9 @@ The code is `GAJ0` plus the last two digits of the Pylint msg-id.
   `ferrolint/fixtures/<CODE>/` directory with ferrolint (selecting only that
   rule) and with Pylint, and fails when the sets of file, line and message
   differ. `CODES="GAJ009"` limits the run. Pylint is the oracle, so a fixture
-  needs no hand-written expectation.
+  needs no hand-written expectation. A directory may carry a suffix
+  (`GAJ015-markers`) and an `options.json` of option names to text, which
+  ferrolint reads as the plugin's options and Pylint as `--name=value`.
 * `make ferrolint-clippy` and `make ferrolint-fmt` lint and format the crate.
 
 None of these targets is part of `make check` or `make test`: building needs
@@ -48,9 +50,21 @@ binary, neither of which CI has.
 
 ## Differences from the Python checkers
 
-* `test-section-markers` is read as the `test-section-markers` option, a
-  comma-separated list; the `TEST_SECTION_MARKERS` environment variable is
-  not visible to a plugin.
+* `test-section-markers` is a comma-separated list read by
+  `gajaguar-test-aaa-markers` and `gajaguar-test-no-extra-comments`: set it in
+  the `options` table of the plugin's `[[plugins]]` entry, which no other
+  plugin sees, or as a configuration option (`[options]` in `ferrolint.toml`,
+  or the Pylint file); the plugin's own value wins. Without either, the markers
+  are `Arrange, Act, Assert`. The `TEST_SECTION_MARKERS` environment variable
+  is not visible to a plugin.
+
+  ```toml
+  [[plugins]]
+  path = "pylint_gajaguar_ferrolint.wasm"
+  sha256 = "…"
+  options = { test-section-markers = "Given, When, Then" }
+  ```
+
 * A file counts as a test file by its path as ferrolint reports it, relative
   to the working directory; Pylint checks the absolute path, so a parent
   directory named `tests` above the working directory no longer counts.
