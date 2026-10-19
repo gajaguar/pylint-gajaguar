@@ -26,3 +26,8 @@ See [`log.md`](log.md) for the bundle's change history.
 
 * [Python](python/index.md) - the interpreter source and the
   `pyproject.toml` settings left out on purpose.
+
+## ferrolint
+
+* [ferrolint plugin](ferrolint/index.md) - the rules ported to a WASM plugin
+  and how it is built and tested.

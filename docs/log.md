@@ -1,5 +1,10 @@
 # Directory Update Log
 
+## 2026-10-18
+
+* **Addition**: [`ferrolint/plugin.md`](ferrolint/plugin.md) documents the
+  `ferrolint/` crate, `make ferrolint-*` and the fixtures.
+
 ## 2026-10-02
 
 * **Change**: the first `make docs-retag` run re-assigned the tags of several
