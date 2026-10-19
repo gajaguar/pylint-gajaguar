@@ -7,6 +7,7 @@ mod require_final;
 mod test_aaa_markers;
 mod test_name_implementation_detail;
 mod test_no_blank_lines;
+mod test_no_extra_comments;
 mod test_partial_assertion;
 mod testing;
 mod unused_arg_use_del;
@@ -29,6 +30,7 @@ impl Checker for Gajaguar {
             .rule(test_aaa_markers::rule())
             .rule(test_name_implementation_detail::rule())
             .rule(test_no_blank_lines::rule())
+            .rule(test_no_extra_comments::rule())
             .rule(test_partial_assertion::rule())
             .rule(unused_arg_use_del::rule())
             .rule(use_contextlib_suppress::rule())
@@ -44,6 +46,7 @@ impl Checker for Gajaguar {
         test_aaa_markers::visit(node, cx);
         test_name_implementation_detail::visit(node, cx);
         test_no_blank_lines::visit(node, cx);
+        test_no_extra_comments::visit(node, cx);
         test_partial_assertion::visit(node, cx);
         unused_arg_use_del::visit(node, cx);
         use_contextlib_suppress::visit(node, cx);

@@ -27,6 +27,7 @@ makes cargo fetch it with the `git` CLI, so SSH credentials apply.
 | `GAJ012` | `W9012` | `gajaguar-use-contextlib-suppress`         |
 | `GAJ013` | `W9013` | `gajaguar-frozenset-constant`              |
 | `GAJ014` | `C9014` | `gajaguar-require-final`                   |
+| `GAJ015` | `W9015` | `gajaguar-test-no-extra-comments`          |
 | `GAJ016` | `W9016` | `gajaguar-test-partial-assertion`          |
 | `GAJ017` | `W9017` | `gajaguar-test-name-implementation-detail` |
 
