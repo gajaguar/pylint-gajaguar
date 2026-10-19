@@ -50,8 +50,9 @@ pub fn def_line(node: &Node<'_>, lines: &[(usize, &str)]) -> usize {
 /// A range covering one line's text, from its indentation to its end.
 pub fn line_range(number: usize, lines: &[(usize, &str)]) -> Range {
     let (start, text) = lines.get(number - 1).copied().unwrap_or((0, ""));
-    let indent = text.len() - text.trim_start().len();
-    let end = text.trim_end().len().max(indent);
+    let body = text.trim_end();
+    let indent = body.len() - body.trim_start().len();
+    let end = body.len();
     let position = |offset: usize| Position {
         offset: u32::try_from(start + offset).unwrap_or_default(),
         line: u32::try_from(number).unwrap_or_default(),
