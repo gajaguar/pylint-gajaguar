@@ -5,6 +5,11 @@
 * **Change**: the `Makefile` runs `okflint` and `typesafe` at `@latest`, as it
   already ran `conventional-git`, and `toolchain/layering-rule.md` matches.
 
+## 2026-10-18
+
+* **Addition**: [`ferrolint/plugin.md`](ferrolint/plugin.md) documents the
+  `ferrolint/` crate, `make ferrolint-*` and the fixtures.
+
 ## 2026-10-02
 
 * **Change**: the first `make docs-retag` run re-assigned the tags of several

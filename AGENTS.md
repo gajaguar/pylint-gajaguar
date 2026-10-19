@@ -113,6 +113,13 @@ scopes.py -> shared section-marker option + test-scoping helpers,
   `enable = ["gajaguar"]` turns on every rule, including future ones. The
   `gajaguar-*` names are message symbols, not checker names.
 
+## ferrolint plugin
+
+- `ferrolint/` ports the rules to a WASM plugin; `make ferrolint-test`
+  compares it with these checkers on `ferrolint/fixtures`. Port a rule change
+  to both. See
+  [`docs/ferrolint/plugin.md`](docs/ferrolint/plugin.md).
+
 ## Adding a checker
 
 - Follow the three-file procedure in
