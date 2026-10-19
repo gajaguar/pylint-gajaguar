@@ -1,6 +1,7 @@
 mod frozenset_constant;
 mod module_const_naming;
 mod no_docstrings;
+mod no_file_level_disable;
 mod no_inline_imports;
 mod no_relative_imports;
 mod require_final;
@@ -24,6 +25,7 @@ impl Checker for Gajaguar {
             .rule(frozenset_constant::rule())
             .rule(module_const_naming::rule())
             .rule(no_docstrings::rule())
+            .rule(no_file_level_disable::rule())
             .rule(no_inline_imports::rule())
             .rule(no_relative_imports::rule())
             .rule(require_final::rule())
@@ -40,6 +42,7 @@ impl Checker for Gajaguar {
         frozenset_constant::visit(node, cx);
         module_const_naming::visit(node, cx);
         no_docstrings::visit(node, cx);
+        no_file_level_disable::visit(node, cx);
         no_inline_imports::visit(node, cx);
         no_relative_imports::visit(node, cx);
         require_final::visit(node, cx);

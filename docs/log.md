@@ -5,7 +5,8 @@
 * **Addition**: [`ferrolint/plugin.md`](ferrolint/plugin.md) documents the
   `ferrolint/` crate, `make ferrolint-*` and the fixtures.
 * **Change**: `ferrolint/plugin.md` documents the plugin's `test-section-markers`
-  option and the fixtures' `options.json`.
+  option and the fixtures' `options.json`, lists the 14 ported rules and drops
+  the not-ported section.
 
 ## 2026-10-02
 
