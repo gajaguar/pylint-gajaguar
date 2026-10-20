@@ -1,6 +1,6 @@
 use ferrolint_plugin_sdk::prelude::*;
 
-use crate::testing::{def_line, is_test_function, line_range, lines, section_markers};
+use crate::testing::{def_line, from_line, is_test_function, line_range, lines, section_markers};
 
 pub const CODE: &str = "GAJ002";
 
@@ -18,7 +18,7 @@ pub fn visit(node: &Node<'_>, cx: &mut Context<'_>) {
         return;
     }
     let lines = lines(cx.source());
-    let first = def_line(node, &lines);
+    let first = from_line(node, cx);
     let last = node.range.end.line as usize;
     let raw: String = lines[first - 1..last.min(lines.len())]
         .iter()
@@ -36,5 +36,9 @@ pub fn visit(node: &Node<'_>, cx: &mut Context<'_>) {
         node.name.unwrap_or_default(),
         missing.join(", ")
     );
-    cx.report(Diagnostic::new(CODE, message, line_range(first, &lines)));
+    cx.report(Diagnostic::new(
+        CODE,
+        message,
+        line_range(def_line(node, &lines), &lines),
+    ));
 }
