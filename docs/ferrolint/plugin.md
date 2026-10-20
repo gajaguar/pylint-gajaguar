@@ -3,7 +3,7 @@ type: reference
 title: ferrolint plugin
 description: The ferrolint/ crate ports the gajaguar-* rules to a single WASM plugin; how it is built, tested against the Python checkers and where it differs.
 tags: [ferrolint]
-status: draft
+status: stable
 ---
 
 # ferrolint plugin
@@ -37,6 +37,8 @@ The code is `GAJ0` plus the last two digits of the Pylint msg-id.
 ## Build and test
 
 * `make ferrolint-build` builds `ferrolint/target/wasm32-wasip2/release/pylint_gajaguar_ferrolint.wasm`.
+  `make ferrolint-sha256` builds it and prints the file's sha256, the value
+  for `sha256` in `ferrolint.toml`.
 * `make ferrolint-test FERROLINT=<binary>` builds it, then lints every
   `ferrolint/fixtures/<CODE>/` directory with ferrolint (selecting only that
   rule) and with Pylint, and fails when the sets of file, line and message
@@ -48,7 +50,25 @@ The code is `GAJ0` plus the last two digits of the Pylint msg-id.
 
 None of these targets is part of `make check` or `make test`: building needs
 the SDK from a private git repository and the fixtures need a ferrolint
-binary, neither of which CI has.
+binary. The `ferrolint` workflow (`.github/workflows/ferrolint.yml`) runs them
+on a change to the crate, to the Python checkers or to the fixture runner. It
+reads an SSH deploy key for the private repository from the
+`FERROLINT_DEPLOY_KEY` secret and installs ferrolint at the tag in its
+`FERROLINT_TAG`.
+
+## Getting the plugin
+
+There is no published `.wasm`: build it from this repository. It needs a Rust
+toolchain with the `wasm32-wasip2` target (`rustup target add wasm32-wasip2`)
+and SSH access to the ferrolint repository, where the SDK lives.
+
+```bash
+make ferrolint-sha256
+```
+
+builds the plugin and prints its sha256. The hash can change with the toolchain,
+so compute it on the machine that will load the file and put both in
+`ferrolint.toml`; ferrolint refuses a plugin whose hash differs.
 
 ## Differences from the Python checkers
 
@@ -68,8 +88,11 @@ binary, neither of which CI has.
   ```
 
 * A file counts as a test file by its path as ferrolint reports it, relative
-  to the working directory; Pylint checks the absolute path, so a parent
-  directory named `tests` above the working directory no longer counts.
+  to the working directory; Pylint checks the absolute path. The two differ
+  only when the working directory itself is, or sits below, a directory named
+  `test` or `tests`: run ferrolint from the project root. The fixtures cover
+  `test/` and `tests/` directories inside the working directory, and names
+  that only look like one (`contests/`, `pkg_test/`).
 * `gajaguar-no-file-level-disable` finds a comment's line by the comment
   ranges the SDK gives, not by tokens. Like Pylint it counts the closing line
   of a multi-line string as standalone, and a string implicitly concatenated
