@@ -14,10 +14,11 @@ pub fn rule() -> Rule {
 }
 
 pub fn visit(node: &Node<'_>, cx: &mut Context<'_>) {
-    // A bound name is a store-context name, or the `as` name of an except handler.
+    // A bound name is a store-context name, the `as` name of an except handler or
+    // the capture of a `match` pattern (a pattern carries a name only when it binds one).
     let bound = match node.kind {
         NodeKind::Name => node.context == ExprContext::Store,
-        NodeKind::ExceptHandler => node.name.is_some(),
+        NodeKind::ExceptHandler | NodeKind::Pattern => node.name.is_some(),
         _ => false,
     };
     if !bound || cx.scope(node).kind != ScopeKind::Module {

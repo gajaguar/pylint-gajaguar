@@ -70,7 +70,6 @@ binary, neither of which CI has.
 * A file counts as a test file by its path as ferrolint reports it, relative
   to the working directory; Pylint checks the absolute path, so a parent
   directory named `tests` above the working directory no longer counts.
-* `gajaguar-module-const-naming` does not see names bound by `match` patterns.
 * `gajaguar-no-file-level-disable` finds a comment's line by the comment
   ranges the SDK gives, not by tokens. Like Pylint it counts the closing line
   of a multi-line string as standalone, and a string implicitly concatenated
