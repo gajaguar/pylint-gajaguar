@@ -1,6 +1,6 @@
 # The ferrolint plugin in ferrolint/ is outside LANG_*_TARGETS: building it
 # fetches the SDK from a private git repository and testing it needs a
-# ferrolint binary, neither of which CI has.
+# ferrolint binary, so only the ferrolint workflow (which has the SSH key) runs it.
 CARGO := cd ferrolint && cargo
 WASM := ferrolint/target/wasm32-wasip2/release/pylint_gajaguar_ferrolint.wasm
 # The ferrolint binary the fixtures run under; build one in the ferrolint
@@ -18,7 +18,10 @@ ferrolint-clippy: ## Lint the ferrolint plugin with clippy
 ferrolint-fmt: ## Format the ferrolint plugin with rustfmt
 	$(CARGO) fmt
 
+ferrolint-sha256: ferrolint-build ## Print the sha256 of the built plugin, the value for sha256 in ferrolint.toml
+	@shasum -a 256 $(WASM) | cut -d' ' -f1
+
 ferrolint-test: ferrolint-build ## Compare the plugin with pylint on ferrolint/fixtures — accepts FERROLINT=<binary> and CODES="GAJ009 ..."
 	FERROLINT="$(FERROLINT)" python3 tools/ferrolint-fixtures.py $(WASM) $(CODES)
 
-.PHONY: ferrolint-build ferrolint-clippy ferrolint-fmt ferrolint-test
+.PHONY: ferrolint-build ferrolint-clippy ferrolint-fmt ferrolint-sha256 ferrolint-test
