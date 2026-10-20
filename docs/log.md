@@ -1,5 +1,11 @@
 # Directory Update Log
 
+## 2026-10-19
+
+* **Change**: `ferrolint/plugin.md` drops the concatenated-string difference of
+  `gajaguar-no-file-level-disable` and notes the f-string limit; the plugin
+  builds against the SDK of ferrolint v0.18.0.
+
 ## 2026-10-18
 
 * **Addition**: [`ferrolint/plugin.md`](ferrolint/plugin.md) documents the

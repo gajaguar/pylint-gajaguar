@@ -73,7 +73,8 @@ binary, neither of which CI has.
 * `gajaguar-module-const-naming` does not see names bound by `match` patterns.
 * `gajaguar-no-file-level-disable` finds a comment's line by the comment
   ranges the SDK gives, not by tokens. Like Pylint it counts the closing line
-  of a multi-line string as standalone, but it also does so when another
-  string is implicitly concatenated after the multi-line one on that line.
+  of a multi-line string as standalone, and a string implicitly concatenated
+  after it on that line as code. It finds the literals by scanning the text,
+  so a quote nested inside an f-string replacement field can end one early.
 * Reported ranges are ferrolint's (the whole statement for most rules); only
   the line and the message are compared with Pylint.
