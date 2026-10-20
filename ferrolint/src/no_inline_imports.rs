@@ -1,3 +1,4 @@
+use crate::testing::{def_line, lines};
 use ferrolint_plugin_sdk::prelude::*;
 
 pub const CODE: &str = "GAJ008";
@@ -25,9 +26,13 @@ pub fn visit(node: &Node<'_>, cx: &mut Context<'_>) {
     let frame = match scope.kind {
         ScopeKind::Class => "ClassDef",
         ScopeKind::Lambda => "Lambda",
-        _ if cx
-            .node(scope.node)
-            .is_some_and(|def| cx.text(def).trim_start().starts_with("async")) =>
+        _ if cx.node(scope.node).is_some_and(|def| {
+            let lines = lines(cx.source());
+            lines[def_line(def, &lines) - 1]
+                .1
+                .trim_start()
+                .starts_with("async")
+        }) =>
         {
             "AsyncFunctionDef"
         }
