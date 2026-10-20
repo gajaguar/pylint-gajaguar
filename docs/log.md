@@ -2,6 +2,9 @@
 
 ## 2026-10-20
 
+* **Change**: `ferrolint/plugin.md` drops the f-string limit of
+  `gajaguar-no-file-level-disable`: nested quotes are scanned correctly.
+
 * **Change**: `ferrolint/plugin.md` is now `stable`: every rule has edge-case
   fixtures (decorators, `async def`, `match`, f-strings, test directories) that
   match Pylint. It drops the `match` difference of `gajaguar-module-const-naming`,
