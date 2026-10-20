@@ -11,7 +11,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 # Pinned by revision: the SDK's version is the plugin contract's version.
-ferrolint-plugin-sdk = { git = "ssh://git@github.com/gajaguar/ferrolint.git", tag = "v0.17.0" }
+ferrolint-plugin-sdk = { git = "ssh://git@github.com/gajaguar/ferrolint.git", tag = "v0.18.0" }
 
 [lints.rust]
 unsafe_code = "forbid"
