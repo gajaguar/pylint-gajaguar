@@ -2,6 +2,8 @@
 
 ## 2026-10-19
 
+* **Addition**: `README.md` gains "Use with ferrolint", linking
+  [`ferrolint/plugin.md`](ferrolint/plugin.md).
 * **Change**: `ferrolint/plugin.md` drops the concatenated-string difference of
   `gajaguar-no-file-level-disable` and notes the f-string limit; the plugin
   builds against the SDK of ferrolint v0.18.0.
