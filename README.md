@@ -15,6 +15,7 @@ self-linting this repository.
 - [Key features](#key-features)
 - [Requirements](#requirements)
 - [Usage](#usage)
+  - [Use with ferrolint](#use-with-ferrolint)
 - [Getting started](#getting-started)
 - [Architecture](#architecture)
 - [Built with](#built-with)
@@ -105,6 +106,25 @@ Override the AAA section markers without editing config:
 ```bash
 TEST_SECTION_MARKERS="Given When Then" make pylint
 ```
+
+### Use with ferrolint
+
+The same rules also ship as a [ferrolint](https://github.com/gajaguar/ferrolint)
+WASM plugin, with the same msg-ids and symbols as aliases. Build it and list
+it in `ferrolint.toml`:
+
+```bash
+make ferrolint-build
+```
+
+```toml
+[[plugins]]
+path = "ferrolint/target/wasm32-wasip2/release/pylint_gajaguar_ferrolint.wasm"
+sha256 = "<sha256 of the file>"
+```
+
+[ferrolint plugin](docs/ferrolint/plugin.md) lists the rules, the fixtures
+that compare the plugin with Pylint and the known differences.
 
 ## Getting started
 
