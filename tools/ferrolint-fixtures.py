@@ -65,6 +65,8 @@ def pylint(command: str, code: str, directory: pathlib.Path, options: dict[str, 
     result = set()
     for row in run.stdout.splitlines():
         parts = row.split("\t")
+        if len(parts) == 4 and parts[2] == "E0001":
+            sys.exit(f"{code}: a fixture does not parse\n{row}")
         if len(parts) == 4 and parts[2][1:] == "9" + code[3:]:  # noqa: PLR2004
             result.add(((ROOT / parts[0]).relative_to(directory).as_posix(), int(parts[1]), parts[3]))
     return result
