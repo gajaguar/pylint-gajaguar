@@ -1,0 +1,29 @@
+name: ferrolint
+on:
+  push:
+    branches: [main]
+    paths: [ferrolint/**, src/pylint_gajaguar/**, mk/rust.mk, tools/ferrolint-fixtures.py, .github/workflows/ferrolint.yml]
+  pull_request:
+    paths: [ferrolint/**, src/pylint_gajaguar/**, mk/rust.mk, tools/ferrolint-fixtures.py, .github/workflows/ferrolint.yml]
+env:
+  # The ferrolint binary the fixtures run under; the plugin builds against the SDK pinned in ferrolint/Cargo.toml.
+  FERROLINT_TAG: v0.20.0
+  CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+jobs:
+  plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # The SDK and the ferrolint binary come from a private repository; the secret is a read-only deploy key.
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.FERROLINT_DEPLOY_KEY }}
+      - uses: jdx/mise-action@v5
+      - run: rustup toolchain install stable --profile minimal --component clippy,rustfmt --target wasm32-wasip2
+      - run: make ferrolint-build
+      - run: make ferrolint-clippy
+      - run: make ferrolint-fmt && git diff --exit-code
+      - run: cargo install --git ssh://git@github.com/gajaguar/ferrolint.git --tag "$FERROLINT_TAG" --locked ferrolint
+      - run: uv sync --locked
+      - run: make ferrolint-test
+      - run: make ferrolint-sha256
