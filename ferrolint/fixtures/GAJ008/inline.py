@@ -55,3 +55,25 @@ def outer():
         return heapq
 
     return inner
+
+
+async def fetch():
+    import json
+    return json
+
+
+def deco(func):
+    return func
+
+
+@deco
+@deco
+async def decorated():
+    from os import path
+    return path
+
+
+@deco
+def decorated_sync():
+    import csv
+    return csv
