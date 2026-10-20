@@ -19,7 +19,7 @@ pub fn visit(node: &Node<'_>, cx: &mut Context<'_>) {
     }
     let lines = lines(cx.source());
     let last = (node.range.end.line as usize).min(lines.len());
-    // The first blank line after the `def` line, as the Python checker does.
+    // The first blank line after astroid's `fromlineno`, as the Python checker does.
     let blank =
         (from_line(node, cx) + 1..=last).find(|number| lines[number - 1].1.trim().is_empty());
     if let Some(number) = blank {
