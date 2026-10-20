@@ -50,3 +50,7 @@ class Holder:
         # pylint: disable=too-few-public-methods
     pass
 	# pylint: disable=unused-import
+IMPLICIT = """text
+""" "more"  # pylint: disable=unused-import
+IMPLICIT_TAIL = "a" """text
+"""  # pylint: disable=unused-import
