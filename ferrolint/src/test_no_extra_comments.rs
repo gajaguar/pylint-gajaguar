@@ -1,6 +1,6 @@
 use ferrolint_plugin_sdk::prelude::*;
 
-use crate::testing::{def_line, is_test_function, lines, section_markers};
+use crate::testing::{from_line, is_test_function, section_markers};
 
 pub const CODE: &str = "GAJ015";
 
@@ -26,7 +26,7 @@ pub fn visit(node: &Node<'_>, cx: &mut Context<'_>) {
     if !is_test_function(node, cx) {
         return;
     }
-    let first = def_line(node, &lines(cx.source()));
+    let first = from_line(node, cx);
     let last = node.range.end.line as usize;
     let allowed = section_markers(cx);
     let found: Vec<Diagnostic> = cx

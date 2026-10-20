@@ -72,6 +72,18 @@ pub fn def_line(node: &Node<'_>, lines: &[(usize, &str)]) -> usize {
         .unwrap_or(first)
 }
 
+/// The 1-based line astroid calls `fromlineno`: the first decorator's line plus
+/// the lines the decorators span, which is the `def` line unless a comment or a
+/// blank line sits between a decorator and the `def`.
+pub fn from_line(node: &Node<'_>, cx: &Context<'_>) -> usize {
+    let spans: u32 = cx
+        .children(node)
+        .filter(|child| child.kind == NodeKind::Decorator)
+        .map(|decorator| decorator.range.end.line - decorator.range.start.line + 1)
+        .sum();
+    (node.range.start.line + spans) as usize
+}
+
 /// A range covering one line's text, from its indentation to its end.
 pub fn line_range(number: usize, lines: &[(usize, &str)]) -> Range {
     let (start, text) = lines.get(number - 1).copied().unwrap_or((0, ""));
