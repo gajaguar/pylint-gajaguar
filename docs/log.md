@@ -1,5 +1,15 @@
 # Directory Update Log
 
+## 2026-10-20
+
+* **Change**: `ferrolint/plugin.md` is now `stable`: every rule has edge-case
+  fixtures (decorators, `async def`, `match`, f-strings, test directories) that
+  match Pylint. It drops the `match` difference of `gajaguar-module-const-naming`,
+  narrows the test-directory difference and adds "Getting the plugin" with
+  `make ferrolint-sha256`.
+* **Change**: `README.md` tells how to build the plugin and get its hash; the
+  `ferrolint` workflow runs the crate's build, clippy, rustfmt and fixtures.
+
 ## 2026-10-19
 
 * **Addition**: `README.md` gains "Use with ferrolint", linking

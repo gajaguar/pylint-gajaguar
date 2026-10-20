@@ -111,10 +111,13 @@ TEST_SECTION_MARKERS="Given When Then" make pylint
 
 The same rules also ship as a [ferrolint](https://github.com/gajaguar/ferrolint)
 WASM plugin, with the same msg-ids and symbols as aliases. Build it and list
-it in `ferrolint.toml`:
+it in `ferrolint.toml`; there is no published binary, so build it from this
+repository (it needs Rust with the `wasm32-wasip2` target and SSH access to
+the ferrolint repository) and take its hash from the second command:
 
 ```bash
 make ferrolint-build
+make ferrolint-sha256
 ```
 
 ```toml
