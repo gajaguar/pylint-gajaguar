@@ -23,7 +23,7 @@ checksum = "00d174d5400e5e8fd687ad1049e2f578285fa914201b1af7e8b112a4546bd826"
 [[package]]
 name = "ferrolint-plugin-sdk"
 version = "0.4.0"
-source = "git+ssh://git@github.com/gajaguar/ferrolint.git?tag=v0.18.0#3cba64de7903db326ddaed6530891237084ee448"
+source = "git+ssh://git@github.com/gajaguar/ferrolint.git?tag=v0.24.0#53d980d19c9d8b56b689a5ffcfb24e8e51c72308"
 dependencies = [
  "wit-bindgen",
 ]
