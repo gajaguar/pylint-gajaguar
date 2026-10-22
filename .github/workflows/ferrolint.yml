@@ -7,7 +7,7 @@ on:
     paths: [ferrolint/**, src/pylint_gajaguar/**, mk/rust.mk, tools/ferrolint-fixtures.py, .github/workflows/ferrolint.yml]
 env:
   # The ferrolint binary the fixtures run under; the plugin builds against the SDK pinned in ferrolint/Cargo.toml.
-  FERROLINT_TAG: v0.20.0
+  FERROLINT_TAG: v0.24.0
   CARGO_NET_GIT_FETCH_WITH_CLI: "true"
 jobs:
   plugin:

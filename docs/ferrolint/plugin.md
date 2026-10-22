@@ -14,6 +14,9 @@ plugin. Each rule keeps its Pylint msg-id and symbol as an alias, so
 `# pylint: disable=gajaguar-no-docstrings` and `select = ["W9001"]` still work.
 The crate depends on the plugin SDK by git revision; `ferrolint/.cargo/config.toml`
 makes cargo fetch it with the `git` CLI, so SSH credentials apply.
+The plugin needs ferrolint 0.24 or later: from that version a plugin alias
+such as `W9006` owns its id while `pylint.extensions.docparams` is not in
+`load-plugins`. With that extension loaded, ferrolint refuses the plugin.
 
 | Code     | Pylint  | Symbol                                     |
 | :------- | :------ | :----------------------------------------- |
