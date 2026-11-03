@@ -57,30 +57,16 @@ repos:
 
   - repo: local
     hooks:
-      - id: ruff-fix
-        name: ruff lint --fix
-        entry: make lint-fix
+      - id: rust-fmt
+        name: rustfmt
+        entry: make fmt
         language: system
-        types: [python]
+        types: [rust]
         pass_filenames: false
 
-      - id: ruff-format
-        name: ruff format
-        entry: make format
+      - id: clippy
+        name: clippy
+        entry: make clippy
         language: system
-        types: [python]
-        pass_filenames: false
-
-      - id: mypy
-        name: mypy
-        entry: make mypy
-        language: system
-        types: [python]
-        pass_filenames: false
-
-      - id: pylint
-        name: pylint (pylint-gajaguar)
-        entry: make pylint
-        language: system
-        types: [python]
+        types: [rust]
         pass_filenames: false
