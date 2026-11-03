@@ -1,0 +1,28 @@
+[package]
+name = "pylint-gajaguar"
+version = "3.0.0"
+edition = "2024"
+description = "The pylint-gajaguar rules as a ferrolint WASM plugin"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# The SDK's version is the plugin contract's version.
+ferrolint-plugin-sdk = "=1.1.0"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "warn"
+expect_used = "warn"
+dbg_macro = "warn"
+todo = "warn"
+cognitive_complexity = "warn"
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"

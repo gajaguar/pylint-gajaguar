@@ -21,7 +21,7 @@ import sys
 import tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-FIXTURES = ROOT / "ferrolint" / "fixtures"
+FIXTURES = ROOT / "tests" / "fixtures"
 
 
 def ferrolint(
