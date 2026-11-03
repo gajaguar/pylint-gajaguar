@@ -1,22 +1,38 @@
 ---
 type: reference
 title: ferrolint plugin
-description: The ferrolint/ crate ports the gajaguar-* rules to a single WASM plugin; how it is built, tested against the Python checkers and where it differs.
+description: pylint-gajaguar 3.0.0 is a ferrolint WASM plugin; how to install, build and test it, and where it differs from 2.0.3 under Pylint.
 tags: [ferrolint]
 status: stable
 ---
 
 # ferrolint plugin
 
-`ferrolint/` is a Rust crate built as one `cdylib` for `wasm32-wasip2`. It
-ports the `gajaguar-*` rules to a [ferrolint](https://github.com/gajaguar/ferrolint)
-plugin. Each rule keeps its Pylint msg-id and symbol as an alias, so
-`# pylint: disable=gajaguar-no-docstrings` and `select = ["W9001"]` still work.
-The crate depends on the plugin SDK by git revision; `ferrolint/.cargo/config.toml`
-makes cargo fetch it with the `git` CLI, so SSH credentials apply.
-The plugin needs ferrolint 0.24 or later: from that version a plugin alias
-such as `W9006` owns its id while `pylint.extensions.docparams` is not in
-`load-plugins`. With that extension loaded, ferrolint refuses the plugin.
+pylint-gajaguar is a Rust crate built as one `cdylib` for `wasm32-wasip2` and
+shipped in a `py3-none-any` wheel. From 3.0.0 it replaces the Pylint checkers:
+2.0.3 is the last version that loads in Pylint, and 3.0.0 needs
+[ferrolint](https://github.com/gajaguar/ferrolint) 1.1.0 or later. Each rule
+keeps its Pylint msg-id and symbol as an alias, so `# pylint: disable=gajaguar-no-docstrings`
+and `select = ["W9001"]` still work.
+
+## Install
+
+```bash
+uv pip install pylint-gajaguar
+```
+
+ferrolint finds the plugin through the `ferrolint.plugins` entry point of the
+virtual environment in `VIRTUAL_ENV`, and loads it only when `load-plugins`
+names the entry point, `pylint_gajaguar`:
+
+```toml
+[tool.pylint.main]
+load-plugins = ["pylint_gajaguar"]
+```
+
+Every rule is then on. ferrolint does not read the Pylint checker name, so
+`enable = ["gajaguar"]` selects nothing; with `disable = ["all"]` the plugin
+reports nothing. Narrow the set with `select` and `ignore` in `ferrolint.toml`.
 
 | Code     | Pylint  | Symbol                                     |
 | :------- | :------ | :----------------------------------------- |
@@ -39,53 +55,39 @@ The code is `GAJ0` plus the last two digits of the Pylint msg-id.
 
 ## Build and test
 
-* `make ferrolint-build` builds `ferrolint/target/wasm32-wasip2/release/pylint_gajaguar_ferrolint.wasm`.
-  `make ferrolint-sha256` builds it and prints the file's sha256, the value
-  for `sha256` in `ferrolint.toml`.
-* `make ferrolint-test FERROLINT=<binary>` builds it, then lints every
-  `ferrolint/fixtures/<CODE>/` directory with ferrolint (selecting only that
-  rule) and with Pylint, and fails when the sets of file, line and message
-  differ. `CODES="GAJ009"` limits the run. Pylint is the oracle, so a fixture
-  needs no hand-written expectation. A directory may carry a suffix
-  (`GAJ015-markers`) and an `options.json` of option names to text, which
-  ferrolint reads as the plugin's options and Pylint as `--name=value`.
-* `make ferrolint-clippy` and `make ferrolint-fmt` lint and format the crate.
+* `make plugin-build` builds `target/wasm32-wasip2/release/pylint_gajaguar.wasm`.
+  `make plugin` copies it to `python/pylint_gajaguar/plugin.wasm` and
+  `make wheel` builds the wheel into `dist/`. `make ferrolint-sha256` prints the
+  file's sha256, for a `[[plugins]]` entry outside pip.
+* `make ferrolint-test` (part of `make test`) lints every `tests/fixtures/<CODE>/`
+  directory with ferrolint, selecting only that rule, and fails when the set of
+  file, line and message differs from the directory's `expected` file. The
+  `expected` files were frozen from the Pylint checkers of 2.0.3, so they are
+  the oracle; regenerate one only for a deliberate change. `CODES="GAJ009"`
+  limits the run and `FERROLINT=<binary>` picks the binary (default `ferrolint`
+  on `PATH`). A directory may carry a suffix (`GAJ015-markers`) and an
+  `options.json` of option names to text, which ferrolint reads as the plugin's
+  options.
+* `make clippy`, `make fmt` and `make deny` lint, format and audit the crate;
+  `make check` runs them.
 
-None of these targets is part of `make check` or `make test`: building needs
-the SDK from a private git repository and the fixtures need a ferrolint
-binary. The `ferrolint` workflow (`.github/workflows/ferrolint.yml`) runs them
-on a change to the crate, to the Python checkers or to the fixture runner. It
-reads an SSH deploy key for the private repository from the
-`FERROLINT_DEPLOY_KEY` secret and installs ferrolint at the tag in its
-`FERROLINT_TAG`.
+The `rust` workflow (`.github/workflows/rust.yml`) runs `make check` and
+`make test` with `uv tool install ferrolint==1.1.0`. A published release runs the
+`publish` workflow, which builds the wheel and uploads it to PyPI.
 
-## Getting the plugin
-
-There is no published `.wasm`: build it from this repository. It needs a Rust
-toolchain with the `wasm32-wasip2` target (`rustup target add wasm32-wasip2`)
-and SSH access to the ferrolint repository, where the SDK lives.
-
-```bash
-make ferrolint-sha256
-```
-
-builds the plugin and prints its sha256. The hash can change with the toolchain,
-so compute it on the machine that will load the file and put both in
-`ferrolint.toml`; ferrolint refuses a plugin whose hash differs.
-
-## Differences from the Python checkers
+## Differences from 2.0.3 under Pylint
 
 * `test-section-markers` is a comma-separated list read by
   `gajaguar-test-aaa-markers` and `gajaguar-test-no-extra-comments`: set it in
-  the `options` table of the plugin's `[[plugins]]` entry, which no other
-  plugin sees, or as a configuration option (`[options]` in `ferrolint.toml`,
-  or the Pylint file); the plugin's own value wins. Without either, the markers
-  are `Arrange, Act, Assert`. The `TEST_SECTION_MARKERS` environment variable
-  is not visible to a plugin.
+  the `options` table of a `[[plugins]]` entry (a plugin loaded by path), which
+  no other plugin sees, or as a configuration option (`[options]` in
+  `ferrolint.toml`, or the Pylint file); the plugin's own value wins. Without
+  either, the markers are `Arrange, Act, Assert`. The `TEST_SECTION_MARKERS`
+  environment variable is not visible to a plugin.
 
   ```toml
   [[plugins]]
-  path = "pylint_gajaguar_ferrolint.wasm"
+  path = "pylint_gajaguar.wasm"
   sha256 = "…"
   options = { test-section-markers = "Given, When, Then" }
   ```

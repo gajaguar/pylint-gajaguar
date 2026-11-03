@@ -13,12 +13,12 @@ interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 ## What this is
 
-A pylint plugin that adds 14 opinionated rules (`gajaguar-*` messages) plus a
-smoke checker, encoding review preferences that ruff's `lint.select = ["ALL"]`
-doesn't cover: no docstrings, mandatory AAA section markers in tests, `Final`
-on module constants, and so on. The plugin self-lints this repository:
-`make pylint` runs its rules against `src` and `tests`, so a regression in the
-plugin fails the same gate it defines.
+A ferrolint plugin (Rust, built to WASM and shipped in a `py3-none-any` wheel)
+that adds 14 opinionated rules (`GAJ001`..`GAJ017`, with the `gajaguar-*`
+Pylint symbols as aliases), encoding review preferences that ruff's
+`lint.select = ["ALL"]` doesn't cover: no docstrings, mandatory AAA section
+markers in tests, `Final` on module constants, and so on. From 3.0.0 it works
+only with ferrolint; 2.0.3 is the last version for Pylint.
 
 ## Command surface
 
@@ -27,11 +27,9 @@ plugin fails the same gate it defines.
   `make help` lists them.
 - Give every new target a `##` help line; `make help` prints it and
   `make help-check` fails on a target without one.
-- Scope a target to specific files with `FILES=`, for example
-  `make lint FILES="src/pylint_gajaguar/scopes.py"` or
-  `make pytest FILES="tests/checkers/test_scopes.py::test_name -x"`.
-- Override the AAA section markers without touching config with
-  `TEST_SECTION_MARKERS="Given When Then" make pylint`.
+- Scope the fixture run with `CODES=`, for example
+  `make ferrolint-test CODES="GAJ009"`, and pick the binary with
+  `FERROLINT=<binary>`; `make fmt FILES="src/lib.rs"` limits rustfmt.
 - Treat `check*` targets as read-only (they exit non-zero on problems and form
   the CI gate) and `fix*` targets as mutating files in place.
 
@@ -92,92 +90,50 @@ Once a pull request is open, the agent MUST:
 ## Architecture
 
 ```text
-pylint --load-plugins=pylint_gajaguar
-  -> src/pylint_gajaguar/__init__.py (re-exports register)
-    -> pylint_gajaguar/_register.py: register(linter)
-      -> instantiates and registers each Checker class
-scopes.py -> shared section-marker option + test-scoping helpers,
-             consumed by gajaguar-test-* checkers
+ferrolint (load-plugins = ["pylint_gajaguar"])
+  -> ferrolint.plugins entry point -> python/pylint_gajaguar/plugin.wasm
+    -> src/lib.rs: registers each rule module
+tests/fixtures/<CODE>*/ -> *.py inputs + expected findings per rule
 ```
 
-- The distribution is `pylint-gajaguar` and the single top-level package is
-  `pylint_gajaguar`: hatchling finds `src/pylint_gajaguar/` from the project
-  name and installs it without the `src/` prefix. In-repo imports read
-  `from pylint_gajaguar.foo import Bar`, not `from src.pylint_gajaguar.foo
-  import Bar`.
-- Keep pylint's plugin loading and messages-control `enable` list in
-  `pyproject.toml` (`[tool.pylint.main]`, `[tool.pylint."messages
-  control"]`), not in CLI flags, so `mk/python.mk`'s `pylint` target and the
-  pre-commit `pylint` hook stay in sync by construction.
-- Register every checker under the single name `gajaguar`, so
-  `enable = ["gajaguar"]` turns on every rule, including future ones. The
-  `gajaguar-*` names are message symbols, not checker names.
+- The distribution is `pylint-gajaguar`, the Cargo package is `pylint-gajaguar`
+  and the Python package that carries `plugin.wasm` is `pylint_gajaguar`. The
+  entry point name `pylint_gajaguar` is what a project's `load-plugins` names.
+- Describe the plugin in [`docs/ferrolint/plugin.md`](docs/ferrolint/plugin.md).
 
-## ferrolint plugin
+## Adding a rule
 
-- `ferrolint/` ports the rules to a WASM plugin; `make ferrolint-test`
-  compares it with these checkers on `ferrolint/fixtures`. Port a rule change
-  to both. See
-  [`docs/ferrolint/plugin.md`](docs/ferrolint/plugin.md).
-
-## Adding a checker
-
-- Follow the three-file procedure in
-  [`CONTRIBUTING.md`](CONTRIBUTING.md#adding-a-checker): the checker module,
-  its registration in `_register.py`, and its test.
-- Set `name = "gajaguar"` on the checker, with a unique `gajaguar-...` message
-  symbol and a unique message code.
-- Derive the expected message span in a test from `node_position` (a node's
-  header position, not its full body span): pylint reports
-  `FunctionDef`/`ClassDef` messages against `node.position`.
-- Run `make check` and `make test` afterwards: `make check` runs the new rule
-  against the plugin's own source, so a rule its own code violates surfaces
-  immediately.
+- Follow the three-step procedure in
+  [`CONTRIBUTING.md`](CONTRIBUTING.md#adding-a-rule): the rule module in
+  `src/`, its registration in `src/lib.rs`, and a `tests/fixtures/GAJ0nn/`
+  directory with an `expected` file.
+- Give the rule a unique `GAJ0nn` code and keep the Pylint msg-id and symbol
+  as its alias.
+- Treat `expected` as the oracle: it was frozen from the Pylint checkers of
+  2.0.3. Change one only for a deliberate change of the rule's behavior.
+- Run `make check` and `make test` afterwards.
 
 ## Test scoping
 
-- Expect `gajaguar-test-*` checkers to activate only on files whose stem
-  starts with `test_`, ends with `_test`, or whose parent directory is named
-  `test`/`tests` (`scopes.is_test_file`), and only on `test_*` functions
-  within them (`scopes.is_test_function`).
-- Expect the other checkers (`gajaguar-no-docstrings`,
-  `gajaguar-module-const-naming`, `gajaguar-require-final`, ...) to apply
-  everywhere.
+- Expect `GAJ002`, `GAJ003`, `GAJ015`, `GAJ016` and `GAJ017` (the
+  `gajaguar-test-*` rules) to activate only on files whose stem starts with
+  `test_`, ends with `_test`, or whose parent directory is named `test`/`tests`,
+  and only on `test_*` functions within them.
+- Expect the other rules to apply everywhere.
 
-## Python
+## Rust
 
-- Write no docstrings on functions, methods or classes; add a comment only
-  where the *why* is not obvious from the code. `gajaguar-no-docstrings`
-  fails `make check` on any docstring, and pylint has no autofix for it, so
-  remove them by hand.
-- Enable the plugin with `enable = ["gajaguar"]` in `pyproject.toml`'s
-  `[tool.pylint."messages control"]`, not with a list of rules, so a rule
-  added by a `pylint-gajaguar` upgrade runs without a config change.
-- Run `make install` when `make conventional-git-latest` (part of
-  `make check`) reports that `conventional-git` is behind PyPI.
-- Keep `pyproject.toml` to settings that differ from the tool's default, and
-  keep a `lint.per-file-ignores` entry only while it matches a current
-  violation; see
-  [`docs/python/pyproject-defaults.md`](docs/python/pyproject-defaults.md).
-- Use absolute imports (`gajaguar-no-relative-imports`):
-  `from pylint_gajaguar.foo import Bar`, not `from .foo import Bar`.
-- Name module-level constants in `SCREAMING_SNAKE_CASE`
-  (`gajaguar-module-const-naming`), annotate them `Final`
-  (`gajaguar-require-final`) and write module-level set constants as
-  `frozenset(...)` (`gajaguar-frozenset-constant`).
-- Disable a rule inline or with `disable-next`, never with a standalone
-  `# pylint: disable=` (`gajaguar-no-file-level-disable`).
-- Keep imports at module top (`gajaguar-no-inline-imports`).
-- Use `contextlib.suppress(...)` over `try/except/pass`
-  (`gajaguar-use-contextlib-suppress`).
-- Write test bodies with exactly the configured AAA section markers (default
-  `# Arrange` / `# Act` / `# Assert`) as comments, no blank lines and no extra
-  comments (`gajaguar-test-aaa-markers`, `gajaguar-test-no-blank-lines`,
-  `gajaguar-test-no-extra-comments`). Treat `gajaguar-test-partial-assertion`
-  and `gajaguar-test-name-implementation-detail` as advisory heuristics with a
-  known false-positive rate, not hard gates.
-- Justify a ruff ignore with an inline `# noqa: <rule>`. mypy runs `strict`
-  and pyright is clean on `src` (tests are excluded from both).
+- Pin the Rust version, its components and its compile targets in `mise.toml`
+  only; never add `rust-toolchain.toml`, which mise does not read.
+- Let `make fmt` decide `.rs` whitespace: rustfmt does not read
+  `.editorconfig`.
+- Set lint levels in `[lints]` in `Cargo.toml`, never as flags in `mk/rust.mk`.
+- Pin `cargo-deny` in `mk/rust.mk` and install it with `cargo install`, not
+  mise; `make deny` runs in `make check`.
+- Depend on `ferrolint-plugin-sdk` from crates.io, pinned to `=1.1.0`: the SDK
+  version is the plugin contract's version.
 - Tag a minor or major bump with `make release-tag` after its pull request
   merges, as [`docs/conventions/versioning.md`](docs/conventions/versioning.md)
-  describes; the target tags the base branch as `v<project.version>`.
+  describes; the target tags the base branch as `v<package.version>`, read
+  from `Cargo.toml`. Keep `pyproject.toml`'s `version` equal to it: the
+  `publish` workflow fails otherwise.

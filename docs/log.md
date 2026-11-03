@@ -1,5 +1,16 @@
 # Directory Update Log
 
+## 2026-11-03
+
+* **Change**: `pylint-gajaguar` 3.0.0 is a ferrolint plugin only: the Pylint
+  checkers are gone, and [`ferrolint/plugin.md`](ferrolint/plugin.md) describes
+  installing it with pip, building it and testing it against the `expected`
+  findings frozen from 2.0.3.
+* **Change**: `toolchain/layering-rule.md` lists the Rust toolchain and
+  `cargo-deny` and drops the Python dev tools.
+* **Removal**: the `python/` notes (`interpreter-source.md`,
+  `pyproject-defaults.md`), which described the Python checkers' toolchain.
+
 ## 2026-10-28
 
 * **Change**: the `Makefile` runs `okflint` and `typesafe` at `@latest`, as it

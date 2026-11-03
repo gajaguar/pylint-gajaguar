@@ -17,12 +17,13 @@ class of drift this rule exists to prevent.
 
 | Tool                                | Where                                      | Why                                                |
 | :---------------------------------- | :----------------------------------------- | :------------------------------------------------- |
-| node, pnpm, python, uv              | `mise.toml`                                | bootstrap: nothing else can install them           |
+| node, pnpm, uv                      | `mise.toml`                                | bootstrap: nothing else can install them           |
+| rust, clippy, rustfmt               | `mise.toml` `[tools.rust]`                 | bootstrap: the toolchain and its wasm target       |
 | checkmake                           | `mise.toml`                                | Go binary, no ecosystem in this repo               |
 | pre-commit                          | `mise.toml`                                | meta-tool; must run before any ecosystem is set up |
 | cspell, markdownlint-cli2           | `package.json`                             | Node dev deps, lockfile-managed                    |
-| ruff, mypy, pyright, pytest, pylint | `pyproject.toml` `[dependency-groups].dev` | Python dev deps, `uv.lock`-managed                 |
-| okflint, typesafe                   | `uvx` in the `Makefile`                    | Python tools, run on demand, at `@latest`          |
+| cargo-deny                          | `mk/rust.mk` (`cargo install`, pinned)     | Rust tool, installed by cargo itself               |
+| okflint, typesafe, conventional-git | `uvx` in the `Makefile`                    | Python tools, run on demand, at `@latest`          |
 
 See [`rejected-install-backends.md`](rejected-install-backends.md) for the
 alternatives this decision ruled out.

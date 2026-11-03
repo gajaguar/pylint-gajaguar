@@ -8,7 +8,7 @@ documentation fixes, and code are all welcome.
 - Report a bug or propose a feature by opening a GitHub issue. For a bug,
   include the steps to reproduce it and what you expected to happen.
 - Fix or extend documentation under `docs/`.
-- Submit a pull request for a bug fix or a new checker. For anything larger
+- Submit a pull request for a bug fix or a new rule. For anything larger
   than a small fix, open an issue first so the approach can be agreed before
   you invest time in it.
 
@@ -23,41 +23,35 @@ make install
 
 Run `make help` for the full list of targets.
 
-## Adding a checker
+## Adding a rule
 
-A new checker touches three files. Keep them in this order:
+A new rule touches three places. Keep them in this order:
 
-1. Create the checker module in `src/pylint_gajaguar/<name>.py`. Subclass
-   `pylint.checkers.BaseChecker`, set `name = "gajaguar"` (shared by every
-   checker), a unique `gajaguar-...` message symbol and a unique message code,
-   and group test-related checkers around the helpers in
-   `src/pylint_gajaguar/scopes.py`.
-2. Register the class in `src/pylint_gajaguar/_register.py`. Import the new
-   checker and add `linter.register_checker(NewChecker(linter))` to
-   `register`. The order is cosmetic but stable.
-3. Add `tests/checkers/test_<name>.py`. Use `pylint.testutils.CheckerTestCase`
-   and the builders in `tests/conftest.py` (`build_module_from_source`,
-   `build_test_module_from_source`, `node_position`). When the checker is
-   test-scoped, build the module through `build_test_module_from_source` so
-   the filename starts with `test_`.
+1. Create `src/<name>.rs` with `pub const CODE: &str = "GAJ0nn"`, a
+   `pub fn rule() -> Rule` (code, name, message, and `.pylint(msg-id, symbol)`
+   for the alias) and a `pub fn visit(node, cx)` that reports through
+   `cx.report`. `src/no_relative_imports.rs` is the smallest example.
+2. Register it in `src/lib.rs`: add `mod <name>;`, `.rule(<name>::rule())` in
+   `info` and `<name>::visit(node, cx)` in `visit`.
+3. Add `tests/fixtures/GAJ0nn/` with the Python inputs and an `expected` file of
+   `path<TAB>line<TAB>message` rows, one per finding. A test-scoped rule needs
+   inputs named `test_*.py`. An option goes in `options.json`; a second variant
+   of the same rule goes in `GAJ0nn-<suffix>/`.
 
-The rule is enabled automatically, because `pyproject.toml` enables the
-shared `gajaguar` name. `make check` runs it against the plugin's own
-source, so a change that violates its own rule surfaces there first. Keep
-each checker in its own pull request.
+`make test` compares the findings of the built plugin with each `expected`
+file. Keep each rule in its own pull request.
 
 ## Conventions
 
-- No docstrings. Use comments only when the *why* isn't obvious from the
-  code; `gajaguar-no-docstrings` fails `make check` on any.
-- Absolute imports only; `gajaguar-no-relative-imports` enforces this.
-- Justified ruff ignores are written with `# noqa: <rule>` next to the line.
-- mypy runs in `strict` mode and pyright is clean. Use `TYPE_CHECKING` for
-  third-party and pylint imports.
+- Justify a clippy allow with a comment next to it; `make clippy` treats
+  warnings as errors.
+- Do not add a dependency for a few lines; `make deny` audits licenses and
+  advisories.
 
 ## Before opening a pull request
 
-Run the gate and the tests; both MUST pass:
+Run the gate and the tests (the latter needs `ferrolint` on `PATH`, see the
+[README](README.md#develop-this-repository)); both MUST pass:
 
 ```bash
 make check
@@ -73,7 +67,7 @@ CI runs the same targets and blocks the merge when either fails.
   [Conventional Commits](https://www.conventionalcommits.org/).
 - Branch names follow
   [Conventional Branch](https://conventionalbranch.org/):
-  `<type>/<description>`, for example `feat/add-checker` or
+  `<type>/<description>`, for example `feat/add-rule` or
   `fix/frozenset-false-positive`. The branch type is one of `feat`, `fix`,
   `hotfix`, `release`, or `chore`; documentation work uses `chore/`.
 

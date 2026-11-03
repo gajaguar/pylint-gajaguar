@@ -22,12 +22,7 @@ See [`log.md`](log.md) for the bundle's change history.
 * [Release](release/index.md) - how this project ships new versions to
   PyPI.
 
-## Python
-
-* [Python](python/index.md) - the interpreter source and the
-  `pyproject.toml` settings left out on purpose.
-
 ## ferrolint
 
-* [ferrolint plugin](ferrolint/index.md) - the rules ported to a WASM plugin
-  and how it is built and tested.
+* [ferrolint plugin](ferrolint/index.md) - the rules as a ferrolint WASM
+  plugin, how to install, build and test it.
