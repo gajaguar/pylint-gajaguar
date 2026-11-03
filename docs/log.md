@@ -8,6 +8,9 @@
   findings frozen from 2.0.3.
 * **Change**: `toolchain/layering-rule.md` lists the Rust toolchain and
   `cargo-deny` and drops the Python dev tools.
+* **Change**: `release/pypi-trusted-publishing.md` is now
+  [`conventions/trusted-publishing.md`](conventions/trusted-publishing.md) and
+  covers the crates.io publication besides PyPI; `docs/release/` is gone.
 * **Removal**: the `python/` notes (`interpreter-source.md`,
   `pyproject-defaults.md`), which described the Python checkers' toolchain.
 

@@ -17,11 +17,6 @@ out under this directory.
 
 See [`log.md`](log.md) for the bundle's change history.
 
-## Release
-
-* [Release](release/index.md) - how this project ships new versions to
-  PyPI.
-
 ## ferrolint
 
 * [ferrolint plugin](ferrolint/index.md) - the rules as a ferrolint WASM

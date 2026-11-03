@@ -4,7 +4,11 @@ version = "3.0.0"
 edition = "2024"
 description = "The pylint-gajaguar rules as a ferrolint WASM plugin"
 license = "MIT"
-publish = false
+repository = "https://github.com/gajaguar/pylint-gajaguar"
+readme = "README.md"
+keywords = ["ferrolint", "pylint", "linter", "python", "wasm"]
+categories = ["development-tools"]
+include = ["/src", "/LICENSE", "/README.md"]
 
 [lib]
 crate-type = ["cdylib"]
