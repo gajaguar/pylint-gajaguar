@@ -1,0 +1,19 @@
+module_test.py	1	Test method 'test_in_a_suffix_test_file' missing AAA marker(s): # Arrange, # Act, # Assert
+pkg/tests/deep/module.py	1	Test method 'test_in_a_test_directory' missing AAA marker(s): # Arrange, # Act, # Assert
+pkg/tests/deep/module.py	5	Test method 'test_async_in_a_test_directory' missing AAA marker(s): # Arrange, # Act, # Assert
+test/module.py	1	Test method 'test_in_a_test_directory' missing AAA marker(s): # Arrange, # Act, # Assert
+test/module.py	5	Test method 'test_async_in_a_test_directory' missing AAA marker(s): # Arrange, # Act, # Assert
+test_decorator_gap.py	26	Test method 'test_multiline_decorator' missing AAA marker(s): # Act, # Assert
+test_decorator_gap.py	34	Test method 'test_comments_between_decorators' missing AAA marker(s): # Act
+test_edges.py	6	Test method 'test_decorated' missing AAA marker(s): # Arrange, # Act, # Assert
+test_edges.py	12	Test method 'test_stacked_async' missing AAA marker(s): # Arrange, # Act, # Assert
+test_edges.py	49	Test method 'test_inner' missing AAA marker(s): # Arrange, # Act, # Assert
+test_edges.py	60	Test method 'test_decorated_async_method' missing AAA marker(s): # Arrange, # Act, # Assert
+test_markers.py	10	Test method 'test_missing_all' missing AAA marker(s): # Arrange, # Act, # Assert
+test_markers.py	14	Test method 'test_missing_assert' missing AAA marker(s): # Assert
+test_markers.py	32	Test method 'test_async_missing' missing AAA marker(s): # Arrange, # Act, # Assert
+test_markers.py	37	Test method 'test_method_missing' missing AAA marker(s): # Arrange, # Act, # Assert
+test_markers.py	41	Test method 'test_decorated_missing' missing AAA marker(s): # Arrange, # Act, # Assert
+test_markers.py	45	Test method 'test_marker_text_without_hash' missing AAA marker(s): # Arrange, # Act, # Assert
+tests/module.py	1	Test method 'test_in_a_test_directory' missing AAA marker(s): # Arrange, # Act, # Assert
+tests/module.py	5	Test method 'test_async_in_a_test_directory' missing AAA marker(s): # Arrange, # Act, # Assert

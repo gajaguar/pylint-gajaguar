@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""Compare the ferrolint plugin with the pylint plugin on the fixtures.
+"""Run the ferrolint plugin on the fixtures and compare with their expected findings.
 
-ferrolint/fixtures/<CODE>*/*.py are linted by both. For the rule <CODE> (GAJ0nn
-is pylint message 9"0nn"), the (file, line, message) triples must be equal.
+ferrolint/fixtures/<CODE>*/*.py are linted with only the rule <CODE> selected.
+The (file, line, message) triples must equal the tab-separated rows of the
+directory's `expected` file, frozen from pylint-gajaguar 2.0.3 under Pylint.
 A directory may add a suffix (GAJ015-markers) and an options.json, a flat
-object of option name to text: ferrolint reads it as the plugin's options,
-pylint as --name=value.
+object of option name to text that ferrolint reads as the plugin's options.
 
 Usage: ferrolint-fixtures.py WASM [CODE ...]
-Environment: FERROLINT (the binary, default "ferrolint"), PYLINT (default
-"uv run pylint").
+Environment: FERROLINT (the binary, default "ferrolint").
 """
 
 import hashlib
@@ -46,37 +45,15 @@ def ferrolint(
     return {(d["path"], d["range"]["start"]["line"], d["message"]) for d in found}
 
 
-def pylint(command: str, code: str, directory: pathlib.Path, options: dict[str, str]) -> set[tuple[str, int, str]]:
-    run = subprocess.run(
-        [
-            *shlex.split(command),
-            "--load-plugins=pylint_gajaguar",
-            "--disable=all",
-            "--enable=gajaguar",
-            *(f"--{name}={value}" for name, value in options.items()),
-            "--msg-template={path}\t{line}\t{msg_id}\t{msg}",
-            str(directory),
-        ],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    result = set()
-    for row in run.stdout.splitlines():
-        parts = row.split("\t")
-        if len(parts) == 4 and parts[2] == "E0001":
-            sys.exit(f"{code}: a fixture does not parse\n{row}")
-        if len(parts) == 4 and parts[2][1:] == "9" + code[3:]:  # noqa: PLR2004
-            result.add(((ROOT / parts[0]).relative_to(directory).as_posix(), int(parts[1]), parts[3]))
-    return result
+def expected(directory: pathlib.Path) -> set[tuple[str, int, str]]:
+    rows = (row.split("\t") for row in (directory / "expected").read_text().splitlines())
+    return {(path, int(line), message) for path, line, message in rows}
 
 
 def main() -> int:
     wasm = pathlib.Path(sys.argv[1]).resolve()
     wanted = set(sys.argv[2:])
     binary = os.environ.get("FERROLINT", "ferrolint")
-    command = os.environ.get("PYLINT", "uv run pylint")
     failed = False
     for directory in sorted(FIXTURES.iterdir()):
         code = directory.name[:6]
@@ -85,9 +62,9 @@ def main() -> int:
         settings = directory / "options.json"
         options = json.loads(settings.read_text()) if settings.exists() else {}
         ours = ferrolint(binary, wasm, code, directory, options)
-        theirs = pylint(command, code, directory, options)
+        theirs = expected(directory)
         if not theirs:
-            sys.exit(f"{directory.name}: pylint found nothing; the fixtures prove nothing")
+            sys.exit(f"{directory.name}: expected is empty; the fixtures prove nothing")
         status = "ok" if ours == theirs else "DIFF"
         print(f"{directory.name}: {status} ({len(theirs)} findings)")  # noqa: T201
         if ours != theirs:
@@ -95,7 +72,7 @@ def main() -> int:
             for item in sorted(ours - theirs):
                 print(f"  only ferrolint: {item}")  # noqa: T201
             for item in sorted(theirs - ours):
-                print(f"  only pylint:    {item}")  # noqa: T201
+                print(f"  only expected:  {item}")  # noqa: T201
     return 1 if failed else 0
 
 
