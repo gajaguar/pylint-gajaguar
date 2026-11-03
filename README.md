@@ -1,13 +1,16 @@
-# Pylint Plugin
+# pylint-gajaguar
 
 [![CI](https://github.com/gajaguar/pylint-gajaguar/actions/workflows/ci.yml/badge.svg)](https://github.com/gajaguar/pylint-gajaguar/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/pylint-gajaguar.svg)](https://pypi.org/project/pylint-gajaguar/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Python 3.14+](https://img.shields.io/badge/python-3.14%2B-blue.svg)](pyproject.toml)
-[![Topics](https://img.shields.io/badge/topics-pylint%20%7C%20pylint--plugin%20%7C%20code--quality%20%7C%20coding--standards%20%7C%20lint%20%7C%20linter%20%7C%20python%20%7C%20python--linter%20%7C%20static--analysis-informational)](https://github.com/gajaguar/pylint-gajaguar)
+[![Topics](https://img.shields.io/badge/topics-ferrolint%20%7C%20pylint%20%7C%20code--quality%20%7C%20lint%20%7C%20linter%20%7C%20python%20%7C%20static--analysis-informational)](https://github.com/gajaguar/pylint-gajaguar)
 
-Opinionated pylint checkers that encode review preferences beyond ruff,
-self-linting this repository.
+Opinionated lint rules that encode review preferences beyond ruff, as a
+[ferrolint](https://github.com/gajaguar/ferrolint) plugin.
+
+> **From 3.0.0 the package only works with ferrolint.** It no longer loads in
+> Pylint. Pin `pylint-gajaguar==2.0.3`, the last version for Pylint, to keep
+> using it there.
 
 ## Table of Contents
 
@@ -22,10 +25,8 @@ self-linting this repository.
   - [Rule reference](#rule-reference)
   - [Options](#options)
   - [Test scoping](#test-scoping)
-  - [Make variables](#make-variables)
 - [Contributing](#contributing)
 - [Security](#security)
-- [Open items](#open-items)
 - [License](#license)
 
 ## About
@@ -36,142 +37,93 @@ AAA section markers inside tests, `Final` annotations on module-level
 constants, and similar project-specific rules. Restating these in code
 review is repetitive and lossy.
 
-This plugin encodes those preferences as 14 pylint checkers and runs them
-against its own source tree. `make pylint` self-lints the repository with
-the same rules, so a regression in the codebase fails the same gate that
-defines the rule.
+This plugin encodes those preferences as 14 ferrolint rules. Each keeps the
+Pylint msg-id and symbol it had in 2.0.3 as an alias.
 
 ## Key features
 
-- **14 enforced checkers**: docstrings, AAA test markers, blank-line
-  discipline, imports, naming, `Final` annotations, `frozenset`
-  constants, and `contextlib.suppress`.
-- **Test-scoped rules**: the `gajaguar-test-*` checkers activate only on files
-  under `tests/`, files matching `test_*.py` or `*_test.py`, or any parent
-  named `test` or `tests`. Production code paths stay unaffected.
-- **Configurable section markers**: tune the AAA markers via pylint
-  option or environment variable without editing the plugin source.
-- **One runtime dependency**: the wheel requires only `pylint`
-  (`pylint>=4.0`).
-- **Self-linting**: the plugin runs against itself in CI and in
-  pre-commit; a rule violation fails the same gate that defines it.
+- **14 rules**: docstrings, AAA test markers, blank-line discipline, imports,
+  naming, `Final` annotations, `frozenset` constants, and
+  `contextlib.suppress`.
+- **Test-scoped rules**: the `gajaguar-test-*` rules apply only to files named
+  `test_*.py` or `*_test.py`, or under a directory named `test` or `tests`.
+- **Configurable section markers**: tune the AAA markers with the
+  `test-section-markers` option.
+- **No Python dependencies**: the wheel carries one WASM component, built from
+  the Rust crate in this repository.
 
 ## Requirements
 
-Python 3.14 or higher — the package declares `requires-python = ">=3.14"`.
-Install [uv](https://docs.astral.sh/uv/) for dependency management and
-virtual environments. Install [pnpm](https://pnpm.io/) (or another Node
-package manager) only if you plan to run the Markdown lint and spell
-targets.
+[ferrolint](https://github.com/gajaguar/ferrolint) 1.1.0 or later. To build
+from source: Rust with the `wasm32-wasip2` target, [uv](https://docs.astral.sh/uv/)
+and, for the Markdown lint and spell targets, [pnpm](https://pnpm.io/).
 
 ## Usage
 
-Run pylint with the plugin against your source tree:
+Install the package into the virtual environment that ferrolint reads:
 
 ```bash
-uv run pylint --load-plugins=pylint_gajaguar \
-  --disable=all --enable=gajaguar src tests
+uv pip install pylint-gajaguar
 ```
 
-The `pylint_gajaguar` argument is the module the wheel installs (see
-[Architecture](#architecture)). The `--disable=all` flag is
-deliberate: pylint's built-in rules overlap with ruff (line length,
-import placement), and `missing-module-docstring` conflicts with
-`gajaguar-no-docstrings`. `--enable=gajaguar` selects only the plugin's own
-rules: every checker registers under the single name `gajaguar`, so rules
-added in a later release are enabled without touching your configuration.
+ferrolint finds the plugin only through `VIRTUAL_ENV`, and loads it only when
+`load-plugins` names it. In `pyproject.toml`:
 
-To run a subset, enable rules by message name instead, for example
-`--enable=gajaguar-no-docstrings,gajaguar-require-final`.
-
-For the local development loop in this repository:
-
-```bash
-make check   # read-only gate: lint, format, mypy, pyright, md-lint, spell, pylint
-make fix     # apply safe auto-fixes
-make test    # run the test suite
-make help    # list every target
+```toml
+[tool.pylint.main]
+load-plugins = ["pylint_gajaguar"]
 ```
 
-Scope a target to specific files:
+Then run `ferrolint` in the project. Every rule is on; ferrolint does not read
+the Pylint checker name, so `enable = ["gajaguar"]` selects nothing. Narrow the
+set with `select` and `ignore` in `ferrolint.toml`, for example
+`ignore = ["GAJ016", "GAJ017"]` to drop the two advisory rules.
 
-```bash
-make lint FILES="src/pylint_gajaguar/scopes.py"
-make pylint FILES="src"
-```
-
-Override the AAA section markers without editing config:
-
-```bash
-TEST_SECTION_MARKERS="Given When Then" make pylint
-```
+See [ferrolint plugin](docs/ferrolint/plugin.md) for the codes, how the plugin
+is built and tested, and where it differs from 2.0.3.
 
 ## Getting started
 
 ### Use in another project
 
-Install the plugin from [PyPI](https://pypi.org/project/pylint-gajaguar/)
-as a dev dependency:
-
-```bash
-uv add --dev pylint-gajaguar
-```
-
-or with pip:
-
-```bash
-pip install pylint-gajaguar
-```
-
-Then run pylint with the plugin loaded (see [Usage](#usage) for the
-`--enable=gajaguar` command).
+Follow [Usage](#usage).
 
 ### Develop this repository
-
-Clone the repository and install everything (toolchain, Python deps,
-Node toolchain, git hook):
 
 ```bash
 git clone https://github.com/gajaguar/pylint-gajaguar.git
 cd pylint-gajaguar
 make install
+make help
 ```
+
+`make check` is the read-only gate, `make fix` applies safe fixes and
+`make test` runs the plugin over the fixtures with `ferrolint` on `PATH`
+(`uv tool install ferrolint==1.1.0`). `make wheel` builds the wheel into
+`dist/`.
 
 ## Architecture
 
 ```text
-pylint --load-plugins=pylint_gajaguar
-  -> pylint_gajaguar/__init__.py (re-exports register)
-    -> pylint_gajaguar/_register.py: register(linter)
-      -> instantiates and registers each Checker class
-         -> pylint messages
-scopes.py -> shared section-marker option + test-scoping helpers,
-             consumed by the gajaguar-test-* checkers
+ferrolint (load-plugins = ["pylint_gajaguar"])
+  -> ferrolint.plugins entry point -> python/pylint_gajaguar/plugin.wasm
+    -> src/lib.rs: registers each rule module (one file per rule)
+tests/fixtures/<CODE>*/ -> *.py inputs + expected findings per rule
 ```
 
-The wheel ships a single top-level package, `pylint_gajaguar`: hatchling
-finds `src/pylint_gajaguar/` from the project name and installs it as
-`pylint_gajaguar`, without the `src/` prefix. That is why
-`--load-plugins=pylint_gajaguar` resolves: pylint calls `register` from the
-package's `__init__.py`.
-
-`pylint_gajaguar/__init__.py` re-exports `register` from `_register.py`,
-which instantiates and registers each checker with the pylint linter.
-`scopes.py` provides the shared section-marker option and test-scoping
-helpers that the `gajaguar-test-*` checkers consume.
+The crate builds to `target/wasm32-wasip2/release/pylint_gajaguar.wasm`;
+`make plugin` copies it into the `pylint_gajaguar` package, which hatchling
+packs into a `py3-none-any` wheel with the `ferrolint.plugins` entry point.
 
 ## Built with
 
-- [uv](https://docs.astral.sh/uv/) — dependency management and venv
-- [hatchling](https://hatch.pypa.io/) — build backend
-- [pylint](https://pylint.pycqa.org/) /
-  [astroid](https://github.com/PyCQA/astroid) — checker host runtime
-- [ruff](https://docs.astral.sh/ruff/) — lint and format
-  (`lint.select = ["ALL"]`)
-- [mypy](https://mypy-lang.org/) +
-  [pyright](https://microsoft.github.io/pyright/) — strict static type
-  checking
-- [pytest](https://docs.pytest.org/) — test runner
+- [Rust](https://www.rust-lang.org/) and the
+  [ferrolint plugin SDK](https://crates.io/crates/ferrolint-plugin-sdk) — the
+  rules
+- [hatchling](https://hatch.pypa.io/) and [uv](https://docs.astral.sh/uv/) —
+  the wheel
+- [clippy](https://doc.rust-lang.org/clippy/), rustfmt and
+  [cargo-deny](https://embarkstudios.github.io/cargo-deny/) — Rust checks
 - [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2)
   and [cspell](https://cspell.org/) via pnpm (dev-only) — Markdown lint
   and spell
@@ -181,26 +133,22 @@ helpers that the `gajaguar-test-*` checkers consume.
 
 ### Rule reference
 
-`gajaguar-smoke` registers with pylint but carries no messages; it exists to
-verify the registration wiring. The remaining 14 rules each carry a
-message code and report violations.
-
-| Rule (`name`)                              | Code  | Enforces                                                        |
-| ------------------------------------------ | ----- | --------------------------------------------------------------- |
-| `gajaguar-no-docstrings`                   | W9001 | No docstrings on functions, methods, or classes (use comments)  |
-| `gajaguar-test-aaa-markers`                | W9002 | `test_*` bodies contain `# Arrange`, `# Act`, `# Assert`        |
-| `gajaguar-test-no-blank-lines`             | W9003 | No blank lines inside test method bodies                        |
-| `gajaguar-unused-arg-use-del`              | W9004 | Use `del arg` at body top, not a `_`-prefixed arg               |
-| `gajaguar-module-const-naming`             | C9005 | Module-level names are `SCREAMING_SNAKE_CASE`                   |
-| `gajaguar-no-file-level-disable`           | W9006 | No standalone `# pylint: disable=`; use inline / `disable-next` |
-| `gajaguar-no-inline-imports`               | W9008 | Imports at module top, not inside functions                     |
-| `gajaguar-no-relative-imports`             | W9009 | Absolute imports only                                           |
-| `gajaguar-use-contextlib-suppress`         | W9012 | `contextlib.suppress(...)` over `try/except/pass`               |
-| `gajaguar-frozenset-constant`              | W9013 | Module-level set constants use `frozenset(...)`                 |
-| `gajaguar-require-final`                   | C9014 | Module-level constants carry a `Final` annotation               |
-| `gajaguar-test-no-extra-comments`          | W9015 | Test bodies carry only the configured section markers           |
-| `gajaguar-test-partial-assertion`          | W9016 | Field assertions without a whole-object assertion (advisory)    |
-| `gajaguar-test-name-implementation-detail` | W9017 | Test names naming mocks, patches, internals (advisory)          |
+| Code     | Rule (`name`)                              | Pylint  | Enforces                                                        |
+| -------- | ------------------------------------------ | ------- | --------------------------------------------------------------- |
+| `GAJ001` | `gajaguar-no-docstrings`                   | `W9001` | No docstrings on functions, methods, or classes (use comments)  |
+| `GAJ002` | `gajaguar-test-aaa-markers`                | `W9002` | `test_*` bodies contain `# Arrange`, `# Act`, `# Assert`        |
+| `GAJ003` | `gajaguar-test-no-blank-lines`             | `W9003` | No blank lines inside test method bodies                        |
+| `GAJ004` | `gajaguar-unused-arg-use-del`              | `W9004` | Use `del arg` at body top, not a `_`-prefixed arg               |
+| `GAJ005` | `gajaguar-module-const-naming`             | `C9005` | Module-level names are `SCREAMING_SNAKE_CASE`                   |
+| `GAJ006` | `gajaguar-no-file-level-disable`           | `W9006` | No standalone `# pylint: disable=`; use inline / `disable-next` |
+| `GAJ008` | `gajaguar-no-inline-imports`               | `W9008` | Imports at module top, not inside functions                     |
+| `GAJ009` | `gajaguar-no-relative-imports`             | `W9009` | Absolute imports only                                           |
+| `GAJ012` | `gajaguar-use-contextlib-suppress`         | `W9012` | `contextlib.suppress(...)` over `try/except/pass`               |
+| `GAJ013` | `gajaguar-frozenset-constant`              | `W9013` | Module-level set constants use `frozenset(...)`                 |
+| `GAJ014` | `gajaguar-require-final`                   | `C9014` | Module-level constants carry a `Final` annotation               |
+| `GAJ015` | `gajaguar-test-no-extra-comments`          | `W9015` | Test bodies carry only the configured section markers           |
+| `GAJ016` | `gajaguar-test-partial-assertion`          | `W9016` | Field assertions without a whole-object assertion (advisory)    |
+| `GAJ017` | `gajaguar-test-name-implementation-detail` | `W9017` | Test names naming mocks, patches, internals (advisory)          |
 
 `gajaguar-test-partial-assertion` and `gajaguar-test-name-implementation-detail`
 use heuristics with a measurable false-positive rate; treat their output
@@ -208,21 +156,14 @@ as advisory, not a hard gate.
 
 ### Options
 
-| Option                   | Type    | Default              | Description                                                                               |
-| ------------------------ | ------- | -------------------- | ----------------------------------------------------------------------------------------- |
-| `--test-section-markers` | csv     | `Arrange,Act,Assert` | Section names a test body must carry, in order, without their leading `#` comment marker. |
-| `TEST_SECTION_MARKERS`   | env var | (unset)              | Space-separated section names. Overrides `--test-section-markers` when set.               |
+| Option                 | Type | Default              | Description                                                                |
+| ---------------------- | ---- | -------------------- | -------------------------------------------------------------------------- |
+| `test-section-markers` | csv  | `Arrange,Act,Assert` | Section names a test body must carry, in order, without the `#` mark.      |
 
-Resolution order: `TEST_SECTION_MARKERS` (env) →
-`--test-section-markers` (linter config) → the default tuple. Set the
-env var to experiment with markers without rewriting the linter config.
-
-In `pyproject.toml` the option lives under the checker name:
-
-```toml
-[tool.pylint.gajaguar]
-test-section-markers = ["Given", "When", "Then"]
-```
+Set it as a configuration option (`[options]` in `ferrolint.toml`), or in the
+`options` table of a `[[plugins]]` entry. The `TEST_SECTION_MARKERS`
+environment variable of 2.0.3 is gone. See
+[ferrolint plugin](docs/ferrolint/plugin.md#differences-from-203-under-pylint).
 
 ### Test scoping
 
@@ -234,20 +175,12 @@ The `gajaguar-test-*` rules activate only on files matching one of these:
 
 Files outside those paths are skipped entirely. Function-scoping applies
 on top: a `test_*` function inside a test file is checked; a `helper`
-function in the same file is not.
-
-### Make variables
-
-| Variable | Behavior         | Examples                                                                            |
-| -------- | ---------------- | ----------------------------------------------------------------------------------- |
-| `FILES`  | Scope by path    | `FILES="src/pylint_gajaguar/scopes.py"` or `FILES="src/pylint_gajaguar/*.py"`       |
-| `check*` | Read-only gate   | `make check`, `make lint`, `make pylint`, `make mypy`, `make md-lint`, `make spell` |
-| `fix*`   | Mutates in place | `make fix`, `make lint-fix`, `make format`, `make md-fix`                           |
+function in the same file is not. Run ferrolint from the project root.
 
 ## Contributing
 
 Read [CONTRIBUTING.md][contributing] for the local setup, the conventions
-and the procedure for adding a checker.
+and the procedure for adding a rule.
 
 ## Security
 
@@ -256,11 +189,6 @@ open a public issue, pull request, or discussion.
 
 See [SECURITY.md][security] for supported versions and the reporting
 process.
-
-## Open items
-
-- Dynamic checker discovery to remove the three-file registration step.
-- `CHANGELOG.md`.
 
 ## License
 

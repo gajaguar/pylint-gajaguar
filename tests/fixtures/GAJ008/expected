@@ -1,0 +1,35 @@
+edges.py	6	Import of 'os' inside FunctionDef; move to top of module
+edges.py	11	Import of 'sys' inside AsyncFunctionDef; move to top of module
+edges.py	17	Import of 'json' inside AsyncFunctionDef; move to top of module
+edges.py	21	Import of 're' inside AsyncFunctionDef; move to top of module
+edges.py	31	Import of 'os' inside FunctionDef; move to top of module
+edges.py	33	Import of 'path' inside FunctionDef; move to top of module
+edges.py	38	Import of 'os' inside FunctionDef; move to top of module
+edges.py	41	Import of 'p, sys' inside AsyncFunctionDef; move to top of module
+edges.py	47	Import of 'os' inside ClassDef; move to top of module
+edges.py	50	Import of 'os' inside FunctionDef; move to top of module
+edges.py	53	Import of 'sibling' inside AsyncFunctionDef; move to top of module
+edges.py	56	Import of 'p, sep' inside ClassDef; move to top of module
+edges.py	64	Import of 'os' inside FunctionDef; move to top of module
+edges.py	66	Import of 'json' inside FunctionDef; move to top of module
+edges.py	70	Import of 'path' inside FunctionDef; move to top of module
+edges.py	72	Import of 're' inside FunctionDef; move to top of module
+edges.py	74	Import of 'sys' inside FunctionDef; move to top of module
+edges.py	84	Import of 'TYPE_CHECKING' inside FunctionDef; move to top of module
+edges.py	87	Import of 'os' inside FunctionDef; move to top of module
+edges.py	92	Import of 'name' inside FunctionDef; move to top of module
+edges.py	93	Import of 'typing' inside FunctionDef; move to top of module
+edges.py	98	Import of 'pathsep' inside FunctionDef; move to top of module
+edges.py	100	Import of 'os.path' inside FunctionDef; move to top of module
+edges.py	107	Import of 'os' inside AsyncFunctionDef; move to top of module
+inline.py	13	Import of 're' inside FunctionDef; move to top of module
+inline.py	14	Import of 'p, sep' inside FunctionDef; move to top of module
+inline.py	15	Import of 'dom, string' inside FunctionDef; move to top of module
+inline.py	20	Import of 'asyncio' inside AsyncFunctionDef; move to top of module
+inline.py	27	Import of 'fractions' inside FunctionDef; move to top of module
+inline.py	48	Import of 'random' inside ClassDef; move to top of module
+inline.py	49	Import of 'pi' inside ClassDef; move to top of module
+inline.py	54	Import of 'heapq' inside FunctionDef; move to top of module
+inline.py	61	Import of 'json' inside AsyncFunctionDef; move to top of module
+inline.py	72	Import of 'path' inside AsyncFunctionDef; move to top of module
+inline.py	78	Import of 'csv' inside FunctionDef; move to top of module

@@ -477,3 +477,6 @@ pyrightconfig.json
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,macos,jetbrains+all,visualstudiocode,node,python
+
+# The component is built by `make plugin`.
+python/pylint_gajaguar/plugin.wasm

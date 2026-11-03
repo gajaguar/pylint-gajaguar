@@ -1,0 +1,29 @@
+test_decorator_gap.py	7	Test name 'test_mock_name' names an implementation detail: mock
+test_decorator_gap.py	16	Test name 'test_stub_name' names an implementation detail: stub
+test_edges.py	6	Test name 'test_decorated_mock' names an implementation detail: mock
+test_edges.py	12	Test name 'test_stacked_async_patch' names an implementation detail: patch
+test_edges.py	16	Test name 'test_async_called' names an implementation detail: called
+test_edges.py	20	Test name 'test_Mock_upper' names an implementation detail: mock
+test_edges.py	24	Test name 'test_MOCK_RETURN_VALUE' names an implementation detail: mock, return_value
+test_edges.py	32	Test name 'test_impl_detail' names an implementation detail: impl
+test_edges.py	44	Test name 'test_return_value_is_set' names an implementation detail: return_value
+test_edges.py	52	Test name 'test_call_count_calls' names an implementation detail: calls
+test_edges.py	56	Test name 'test_spy_and_stub' names an implementation detail: spy, stub
+test_edges.py	60	Test name 'test_double__underscore__mock' names an implementation detail: mock
+test_edges.py	68	Test name 'test_mock_2' names an implementation detail: mock
+test_edges.py	72	Test name 'test_café_mock' names an implementation detail: mock
+test_edges.py	77	Test name 'test_inner_mock' names an implementation detail: mock
+test_edges.py	85	Test name 'test_method_mock' names an implementation detail: mock
+test_edges.py	92	Test name 'test_nested_spy' names an implementation detail: spy
+test_names.py	5	Test name 'test_function_is_called_once' names an implementation detail: called
+test_names.py	9	Test name 'test_calls_the_service' names an implementation detail: calls
+test_names.py	17	Test name 'test_uses_impl_directly' names an implementation detail: impl
+test_names.py	21	Test name 'test_mock_and_patch_together' names an implementation detail: mock, patch
+test_names.py	25	Test name 'test_return_value_is_used' names an implementation detail: return_value
+test_names.py	29	Test name 'test_handles_internal_state' names an implementation detail: internal
+test_names.py	33	Test name 'test_private_helper' names an implementation detail: private
+test_names.py	37	Test name 'test_spy_and_stub' names an implementation detail: spy, stub
+test_names.py	41	Test name 'test_Mixed_CASE_Mock' names an implementation detail: mock
+test_names.py	49	Test name 'test_async_called' names an implementation detail: called
+test_names.py	54	Test name 'test_method_calls_it' names an implementation detail: calls
+test_names.py	58	Test name 'test_decorated_stub' names an implementation detail: stub

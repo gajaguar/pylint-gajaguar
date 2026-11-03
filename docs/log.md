@@ -1,9 +1,52 @@
 # Directory Update Log
 
+## 2026-11-03
+
+* **Change**: `pylint-gajaguar` 3.0.0 is a ferrolint plugin only: the Pylint
+  checkers are gone, and [`ferrolint/plugin.md`](ferrolint/plugin.md) describes
+  installing it with pip, building it and testing it against the `expected`
+  findings frozen from 2.0.3.
+* **Change**: `toolchain/layering-rule.md` lists the Rust toolchain and
+  `cargo-deny` and drops the Python dev tools.
+* **Change**: `release/pypi-trusted-publishing.md` is now
+  [`conventions/trusted-publishing.md`](conventions/trusted-publishing.md) and
+  covers the crates.io publication besides PyPI; `docs/release/` is gone.
+* **Removal**: the `python/` notes (`interpreter-source.md`,
+  `pyproject-defaults.md`), which described the Python checkers' toolchain.
+
 ## 2026-10-28
 
 * **Change**: the `Makefile` runs `okflint` and `typesafe` at `@latest`, as it
   already ran `conventional-git`, and `toolchain/layering-rule.md` matches.
+
+## 2026-10-20
+
+* **Change**: `ferrolint/plugin.md` drops the f-string limit of
+  `gajaguar-no-file-level-disable`: nested quotes are scanned correctly.
+
+* **Change**: `ferrolint/plugin.md` is now `stable`: every rule has edge-case
+  fixtures (decorators, `async def`, `match`, f-strings, test directories) that
+  match Pylint. It drops the `match` difference of `gajaguar-module-const-naming`,
+  narrows the test-directory difference and adds "Getting the plugin" with
+  `make ferrolint-sha256`.
+* **Change**: `README.md` tells how to build the plugin and get its hash; the
+  `ferrolint` workflow runs the crate's build, clippy, rustfmt and fixtures.
+
+## 2026-10-19
+
+* **Addition**: `README.md` gains "Use with ferrolint", linking
+  [`ferrolint/plugin.md`](ferrolint/plugin.md).
+* **Change**: `ferrolint/plugin.md` drops the concatenated-string difference of
+  `gajaguar-no-file-level-disable` and notes the f-string limit; the plugin
+  builds against the SDK of ferrolint v0.18.0.
+
+## 2026-10-18
+
+* **Addition**: [`ferrolint/plugin.md`](ferrolint/plugin.md) documents the
+  `ferrolint/` crate, `make ferrolint-*` and the fixtures.
+* **Change**: `ferrolint/plugin.md` documents the plugin's `test-section-markers`
+  option and the fixtures' `options.json`, lists the 14 ported rules and drops
+  the not-ported section.
 
 ## 2026-10-02
 

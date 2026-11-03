@@ -24,3 +24,5 @@ ignorePaths:
   - "**/.pytest_cache/**"
   - "**/htmlcov/**"
   - "**/uv.lock"
+  - "**/target/**"
+  - "**/fixtures/*/expected" # findings frozen from Pylint, not prose

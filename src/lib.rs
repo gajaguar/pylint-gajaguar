@@ -1,0 +1,59 @@
+mod frozenset_constant;
+mod module_const_naming;
+mod no_docstrings;
+mod no_file_level_disable;
+mod no_inline_imports;
+mod no_relative_imports;
+mod require_final;
+mod test_aaa_markers;
+mod test_name_implementation_detail;
+mod test_no_blank_lines;
+mod test_no_extra_comments;
+mod test_partial_assertion;
+mod testing;
+mod unused_arg_use_del;
+mod use_contextlib_suppress;
+
+use ferrolint_plugin_sdk::prelude::*;
+
+#[derive(Default)]
+struct Gajaguar;
+
+impl Checker for Gajaguar {
+    fn info() -> Info {
+        Info::new("pylint-gajaguar", env!("CARGO_PKG_VERSION"))
+            .rule(frozenset_constant::rule())
+            .rule(module_const_naming::rule())
+            .rule(no_docstrings::rule())
+            .rule(no_file_level_disable::rule())
+            .rule(no_inline_imports::rule())
+            .rule(no_relative_imports::rule())
+            .rule(require_final::rule())
+            .rule(test_aaa_markers::rule())
+            .rule(test_name_implementation_detail::rule())
+            .rule(test_no_blank_lines::rule())
+            .rule(test_no_extra_comments::rule())
+            .rule(test_partial_assertion::rule())
+            .rule(unused_arg_use_del::rule())
+            .rule(use_contextlib_suppress::rule())
+    }
+
+    fn visit(&mut self, node: &Node<'_>, cx: &mut Context<'_>) {
+        frozenset_constant::visit(node, cx);
+        module_const_naming::visit(node, cx);
+        no_docstrings::visit(node, cx);
+        no_file_level_disable::visit(node, cx);
+        no_inline_imports::visit(node, cx);
+        no_relative_imports::visit(node, cx);
+        require_final::visit(node, cx);
+        test_aaa_markers::visit(node, cx);
+        test_name_implementation_detail::visit(node, cx);
+        test_no_blank_lines::visit(node, cx);
+        test_no_extra_comments::visit(node, cx);
+        test_partial_assertion::visit(node, cx);
+        unused_arg_use_del::visit(node, cx);
+        use_contextlib_suppress::visit(node, cx);
+    }
+}
+
+export_checker!(Gajaguar);

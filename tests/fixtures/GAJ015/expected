@@ -1,0 +1,42 @@
+test_comments.py	21	Test method 'test_explanatory' has an explanatory comment at line 21: # the value under test
+test_comments.py	22	Test method 'test_explanatory' has an explanatory comment at line 22: # compute the result
+test_comments.py	28	Test method 'test_marker_lookalikes' has an explanatory comment at line 28: #Arrange
+test_comments.py	29	Test method 'test_marker_lookalikes' has an explanatory comment at line 29: # Arrange: set up
+test_comments.py	30	Test method 'test_marker_lookalikes' has an explanatory comment at line 30: #   Act
+test_comments.py	31	Test method 'test_marker_lookalikes' has an explanatory comment at line 31: # arrange
+test_comments.py	32	Test method 'test_marker_lookalikes' has an explanatory comment at line 32: # Assert  # and more
+test_comments.py	49	Test method 'test_pragma_lookalikes' has an explanatory comment at line 49: #noqa
+test_comments.py	50	Test method 'test_pragma_lookalikes' has an explanatory comment at line 50: # NOQA
+test_comments.py	51	Test method 'test_pragma_lookalikes' has an explanatory comment at line 51: # Noqa: F841
+test_comments.py	52	Test method 'test_pragma_lookalikes' has an explanatory comment at line 52: # pylint : disable=foo
+test_comments.py	56	Test method 'test_def_line_comment' has an explanatory comment at line 56: # explains the test
+test_comments.py	67	Test method 'test_multiline_call' has an explanatory comment at line 67: # first key
+test_comments.py	68	Test method 'test_multiline_call' has an explanatory comment at line 68: # second key
+test_comments.py	87	Test method 'test_outer' has an explanatory comment at line 87: # outer note
+test_comments.py	89	Test method 'test_inner' has an explanatory comment at line 89: # inner note
+test_comments.py	89	Test method 'test_outer' has an explanatory comment at line 89: # inner note
+test_comments.py	96	Test method 'test_empty_comment' has an explanatory comment at line 96: #
+test_comments.py	101	Test method 'test_async_explained' has an explanatory comment at line 101: # await the thing
+test_comments.py	107	Test method 'test_method_explained' has an explanatory comment at line 107: # explain
+test_comments.py	117	Test method 'test_static_explained' has an explanatory comment at line 117: # still explained
+test_comments.py	121	Test method 'test_tabbed' has an explanatory comment at line 121: # tab indented
+test_decorator_gap.py	5	Test method 'test_one' has an explanatory comment at line 5: # comment between
+test_decorator_gap.py	13	Test method 'test_two' has an explanatory comment at line 13: # comment between decorators
+test_decorator_gap.py	22	Test method 'test_three' has an explanatory comment at line 22: # after a multi-line decorator
+test_edges.py	8	Test method 'test_decorated' has an explanatory comment at line 8: # explains
+test_edges.py	14	Test method 'test_stacked_async' has an explanatory comment at line 14: # def line
+test_edges.py	15	Test method 'test_stacked_async' has an explanatory comment at line 15: # why
+test_edges.py	22	Test method 'test_async' has an explanatory comment at line 22: # awaiting
+test_edges.py	27	Test method 'test_f_string' has an explanatory comment at line 27: # real comment
+test_edges.py	35	Test method 'test_hash_in_strings' has an explanatory comment at line 35: # trailing
+test_edges.py	40	Test method 'test_match' has an explanatory comment at line 40: # subject
+test_edges.py	41	Test method 'test_match' has an explanatory comment at line 41: # case comment
+test_edges.py	42	Test method 'test_match' has an explanatory comment at line 42: # one
+test_edges.py	50	Test method 'test_nested_function' has an explanatory comment at line 50: # inner comment
+test_edges.py	53	Test method 'test_nested_function' has an explanatory comment at line 53: # outer
+test_edges.py	63	Test method 'test_continuation' has an explanatory comment at line 63: # first
+test_edges.py	64	Test method 'test_continuation' has an explanatory comment at line 64: # second
+test_edges.py	82	Test method 'test_method' has an explanatory comment at line 82: # between decorator and def
+test_edges.py	83	Test method 'test_method' has an explanatory comment at line 83: # def line
+test_edges.py	84	Test method 'test_method' has an explanatory comment at line 84: # method comment
+test_edges.py	95	Test method 'test_after_module_comment' has an explanatory comment at line 95: # trailing

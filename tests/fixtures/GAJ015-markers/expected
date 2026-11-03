@@ -1,0 +1,4 @@
+test_custom.py	11	Test method 'test_default_markers_are_extra' has an explanatory comment at line 11: # Arrange
+test_custom.py	12	Test method 'test_default_markers_are_extra' has an explanatory comment at line 12: # Act
+test_custom.py	13	Test method 'test_default_markers_are_extra' has an explanatory comment at line 13: # Assert
+test_custom.py	19	Test method 'test_explained' has an explanatory comment at line 19: # explained

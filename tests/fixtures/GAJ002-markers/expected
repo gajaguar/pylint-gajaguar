@@ -1,0 +1,2 @@
+test_custom.py	10	Test method 'test_default_markers_do_not_count' missing AAA marker(s): # Given, # When, # Then
+test_custom.py	17	Test method 'test_missing_then' missing AAA marker(s): # Then
