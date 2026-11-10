@@ -15,7 +15,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 # The SDK's version is the plugin contract's version.
-ferrolint-plugin-sdk = "=1.1.0"
+ferrolint-plugin-sdk = "=1.2.0"
 
 [lints.rust]
 unsafe_code = "forbid"
