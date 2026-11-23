@@ -99,7 +99,7 @@ make help
 
 `make check` is the read-only gate, `make fix` applies safe fixes and
 `make test` runs the plugin over the fixtures with `ferrolint` on `PATH`
-(`uv tool install ferrolint==1.1.0`). `make wheel` builds the wheel into
+(`uv tool install ferrolint==1.2.0`). `make wheel` builds the wheel into
 `dist/`.
 
 ## Architecture

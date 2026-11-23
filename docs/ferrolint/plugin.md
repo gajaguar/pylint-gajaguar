@@ -72,7 +72,7 @@ The code is `GAJ0` plus the last two digits of the Pylint msg-id.
   `make check` runs them.
 
 The `rust` workflow (`.github/workflows/rust.yml`) runs `make check` and
-`make test` with `uv tool install ferrolint==1.1.0`. A published release runs the
+`make test` with `uv tool install ferrolint==1.2.0`. A published release runs the
 `publish` workflow, which builds the wheel and uploads it to PyPI.
 
 ## Differences from 2.0.3 under Pylint
