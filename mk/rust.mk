@@ -3,7 +3,7 @@ CARGO_DENY_VERSION := 0.20.2
 WASM_TARGET := wasm32-wasip2
 PLUGIN := target/$(WASM_TARGET)/release/pylint_gajaguar.wasm
 PACKAGE_DIR := python/pylint_gajaguar
-# The ferrolint binary the fixtures run under (uv tool install ferrolint==1.2.0).
+# The ferrolint binary the fixtures run under (uv tool install ferrolint==1.1.0).
 FERROLINT ?= ferrolint
 
 LANG_INSTALL_TARGETS += install-rust
